@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Strike | AI-Powered Sports & Crypto Signals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-100: #f7f7f7;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            --primary: #3b82f6;
+            --primary-light: #93c5fd;
+            --primary-dark: #1d4ed8;
+            --accent: #f59e0b;
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.5;
+            background-color: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            letter-spacing: -0.025em;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            color: var(--gray-600);
+            margin-bottom: 1.25rem;
+            font-size: 1.125rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--gray-900);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-100);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--black);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-accent:hover {
+            opacity: 0.9;
+            box-shadow: var(--shadow);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            height: 100%;
+            border: 1px solid var(--gray-200);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: var(--gray-100);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+        }
+
+        .pill.primary {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .pill.accent {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .grid-cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--black);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 500;
+            font-size: 0.9375rem;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--black);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 7rem;
+            padding-bottom: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            display: block;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--gray-100);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .stat-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+        }
+
+        .stat-text p {
+            font-size: 0.9375rem;
+            color: var(--gray-500);
+            margin-bottom: 0;
+        }
+
+        /* Features Section */
+        .features {
+            background-color: var(--gray-100);
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title p {
+            font-size: 1.125rem;
+            color: var(--gray-500);
+        }
+
+        .feature-card {
+            padding: 2rem;
+            text-align: left;
+        }
+
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        /* Problem Solution */
+        .problem-solution {
+            background: var(--black);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-solution h2,
+        .problem-solution h3,
+        .problem-solution p {
+            color: var(--white);
+        }
+
+        .ps-card {
+            padding: 2rem;
+            background: var(--gray-900);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-800);
+        }
+
+        .ps-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ps-card ul {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .ps-card ul li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--gray-300);
+        }
+
+        .ps-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Roadmap */
+        .roadmap-container {
+            position: relative;
+            padding-left: 1.5rem;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        .roadmap-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--gray-200);
+        }
+
+        .roadmap-item {
+            position: relative;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border-left: 3px solid var(--primary);
+            border: 1px solid var(--gray-200);
+        }
+
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            top: 2.5rem;
+            left: -0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--white);
+        }
+
+        .roadmap-item.current {
+            border-left-color: var(--accent);
+        }
+
+        .roadmap-item.current::before {
+            background: var(--accent);
+        }
+
+        .roadmap-item.completed {
+            border-left-color: var(--gray-400);
+        }
+
+        .roadmap-item.completed::before {
+            background: var(--gray-400);
+        }
+
+        .roadmap-date {
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+        }
+
+        .roadmap-date i {
+            color: var(--accent);
+        }
+
+        .roadmap-item ul {
+            list-style: none;
+        }
+
+        .roadmap-item ul li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--gray-600);
+        }
+
+        .roadmap-item ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--gray-400);
+        }
+
+        .strategy-tags {
+            margin-top: 1rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: var(--gray-900);
+            color: var(--white);
+            border-top: 1px solid var(--gray-800);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .cta .section-title h2,
+        .cta .section-title p {
+            color: var(--white);
+        }
+
+        /* Waitlist Form */
+        .waitlist-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 40rem;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            font-size: 0.9375rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 8rem;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover {
+            background-color: var(--gray-800);
+        }
+
+        /* Social Links Box */
+        .social-links-box {
+            background: var(--gray-800);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem auto 0;
+            text-align: center;
+            border: 1px solid var(--gray-700);
+            max-width: 40rem;
+        }
+
+        .social-links-box h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .social-link-item {
+            background: var(--gray-700);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .social-link-item:hover {
+            background: var(--gray-600);
+        }
+
+        .social-link-item a {
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .social-link-item i {
+            font-size: 1.25rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gray-900);
+            color: var(--gray-400);
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2rem;
+            height: 2px;
+            background: var(--gray-700);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9375rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius);
+            background: var(--gray-800);
+            color: var(--gray-400);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--gray-700);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--gray-800);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text, .hero-image {
+                text-align: center;
+                width: 100%;
+            }
+
+            .hero-buttons, .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+                margin-bottom: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 6rem;
+                padding-bottom: 4rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .waitlist-form {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                margin-bottom: 2rem;
+            }
+
+            .social-links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Apex Strike</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#solution">How It Works</a></li>
+                    <li><a href="#roadmap">Roadmap</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+            <a href="#contact" class="btn btn-primary">Get Started</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>AI-Powered Signals for Sports & Crypto Markets</h1>
+                    <p>Apex Strike combines sports data science with market intelligence to deliver high-probability signals for trading and betting.</p>
+                    <div class="hero-buttons">
+                        <a href="#solution" class="btn btn-primary">
+                            How It Works
+                        </a>
+                        <a href="#roadmap" class="btn btn-secondary">
+                            Development Roadmap
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3>5+</h3>
+                                <p>Football Leagues Covered</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3>3</h3>
+                                <p>Crypto Strategies Live</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3>0.5s</h3>
+                                <p>Signal Generation Speed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Apex Strike Analytics Dashboard">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Dual Stream Analytics</h2>
+                <p>Two specialized AI systems working in tandem to identify high-probability opportunities</p>
+            </div>
+
+            <div class="grid-cols-2">
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3>Sports Analysis Engine</h3>
+                    <p>Machine learning models trained on historical and real-time sports data to predict outcomes with precision.</p>
+
+                    <h4>Current Coverage:</h4>
+                    <div class="pill primary">Premier League</div>
+                    <div class="pill primary">La Liga</div>
+                    <div class="pill primary">Bundesliga</div>
+                    <div class="pill">Serie A (Q3)</div>
+                    <div class="pill">Ligue 1 (Q4)</div>
+
+                    <div style="margin-top: 2rem;">
+                        <h4>Development Path:</h4>
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; margin-bottom: 1.5rem;">
+                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Now - 2mo</div>
+                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200); padding-bottom: 1rem;">
+                                    <strong>MVP Launch:</strong> Core European football leagues with basic metrics (xG, form, H2H)
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Next 4mo</div>
+                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200);">
+                                    <strong>Secondary Leagues:</strong> Championship, 2.Bundesliga with refined models
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Market Analysis Engine</h3>
+                    <p>Quantitative models scanning crypto markets for high-probability trading setups using multiple strategies.</p>
+
+                    <h4>Current Strategies:</h4>
+                    <div class="pill accent">MACD Cross</div>
+                    <div class="pill accent">RSI Extremes</div>
+                    <div class="pill accent">SQL Momentum</div>
+                    <div class="pill">Volume Spikes (Q3)</div>
+                    <div class="pill">Liquidation Heatmap (Q4)</div>
+
+                    <div style="margin-top: 2rem;">
+                        <h4>Development Path:</h4>
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; margin-bottom: 1.5rem;">
+                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Now - 1mo</div>
+                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200); padding-bottom: 1rem;">
+                                    <strong>MVP Launch:</strong> Core crypto pairs with MACD/RSI/SQL signals (BTC, ETH, SOL)
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Next 3mo</div>
+                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200);">
+                                    <strong>Strategy Fusion:</strong> Combined signal confidence scoring and backtesting
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section problem-solution" id="solution">
+        <div class="container">
+            <div class="section-title">
+                <h2>How Our System Works</h2>
+                <p>High-level architecture of our AI-powered signal generation pipeline</p>
+            </div>
+
+            <div class="grid-cols-3">
+                <div class="card ps-card">
+                    <h3><i class="fas fa-database"></i> Data Acquisition Layer</h3>
+                    <ul>
+                        <li><strong>Sports:</strong> Custom scrapers collecting team stats, player performance, and betting odds from multiple bookmakers</li>
+                        <li><strong>Markets:</strong> CCXT integration with Binance, Bybit, OKX APIs for real-time crypto data</li>
+                        <li>Automated data validation and cleaning pipelines</li>
+                        <li>Historical database for backtesting (5+ years sports data, full crypto history)</li>
+                    </ul>
+                </div>
+
+                <div class="card ps-card">
+                    <h3><i class="fas fa-brain"></i> Analysis Engine</h3>
+                    <ul>
+                        <li><strong>Sports Models:</strong> xG models, team form analysis, injury impact prediction, referee bias detection</li>
+                        <li><strong>Market Models:</strong> MACD/RSI/SQL momentum with dynamic parameter optimization</li>
+                        <li>Custom ensemble models weighting multiple strategies</li>
+                        <li>Real-time signal generation every 30-60 seconds</li>
+                        <li>Automated backtesting framework for strategy validation</li>
+                    </ul>
+                </div>
+
+                <div class="card ps-card">
+                    <h3><i class="fas fa-bell"></i> Signal Delivery</h3>
+                    <ul>
+                        <li>Discord/TG bots for instant alerts with detailed rationale</li>
+                        <li>Web dashboard with historical performance tracking</li>
+                        <li>API access for automated trading systems</li>
+                        <li>Daily email summaries with top opportunities</li>
+                        <li>Risk management recommendations for each signal</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="section" id="roadmap">
+        <div class="container">
+            <div class="section-title">
+                <h2>6-Quarter Development Plan</h2>
+                <p>Focused roadmap to build a billion-dollar analytics engine</p>
+            </div>
+
+            <div class="roadmap-container">
+                <!-- Q3 2024 -->
+                <div class="roadmap-item current">
+                    <div class="roadmap-date">
+                        <i class="fas fa-sync-alt"></i> Q3 2024 (Now)
+                    </div>
+                    <h3>Foundation Phase</h3>
+                    <ul>
+                        <li><strong>Football:</strong> Core European leagues MVP (Premier League, La Liga, Bundesliga)</li>
+                        <li><strong>Crypto:</strong> MACD/RSI/SQL strategy implementation for top 10 coins</li>
+                        <li>Basic Discord/TG alert integration</li>
+                        <li>Automated data collection pipelines</li>
+                    </ul>
+                    <div class="strategy-tags">
+                        <span class="pill primary">Football MVP</span>
+                        <span class="pill accent">Crypto MVP</span>
+                    </div>
+                </div>
+
+                <!-- Q4 2024 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-date">
+                        <i class="fas fa-calendar-alt"></i> Q4 2024
+                    </div>
+                    <h3>Expansion Phase</h3>
+                    <ul>
+                        <li><strong>Football:</strong> Add secondary leagues (Championship, 2.Bundesliga) + cup competitions</li>
+                        <li><strong>Crypto:</strong> Volume spike detection strategy and liquidity analysis</li>
+                        <li>Enhanced backtesting framework</li>
+                        <li>Basic web dashboard for performance tracking</li>
+                    </ul>
+                </div>
+
+                <!-- Q1 2025 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-date">
+                        <i class="fas fa-calendar-alt"></i> Q1 2025
+                    </div>
+                    <h3>Fusion Phase</h3>
+                    <ul>
+                        <li><strong>Football:</strong> Live in-game prediction models with odds tracking</li>
+                        <li><strong>Crypto:</strong> Strategy combination algorithms and confidence scoring</li>
+                        <li>Premium subscription tier launch</li>
+                        <li>Automated weekly performance reports</li>
+                    </ul>
+                </div>
+
+                <!-- Q2 2025 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-date">
+                        <i class="fas fa-calendar-alt"></i> Q2 2025
+                    </div>
+                    <h3>Automation Phase</h3>
+                    <ul>
+                        <li><strong>Football:</strong> Automated value bet identification across bookmakers</li>
+                        <li><strong>Crypto:</strong> Exchange API integration for auto-trading signals</li>
+                        <li>Advanced risk management system</li>
+                        <li>Community features for strategy sharing</li>
+                    </ul>
+                </div>
+
+                <!-- Q3 2025 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-date">
+                        <i class="fas fa-calendar-alt"></i> Q3 2025
+                    </div>
+                    <h3>Intelligence Phase</h3>
+                    <ul>
+                        <li><strong>Football:</strong> Player-level performance prediction and transfer market analysis</li>
+                        <li><strong>Crypto:</strong> Liquidation heatmap integration and order flow analysis</li>
+                        <li>Predictive model self-improvement system</li>
+                        <li>Institutional-grade reporting tools</li>
+                    </ul>
+                </div>
+
+                <!-- Q4 2025 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-date">
+                        <i class="fas fa-calendar-alt"></i> Q4 2025
+                    </div>
+                    <h3>Monetization Phase</h3>
+                    <ul>
+                        <li>Enterprise API for institutional clients</li>
+                        <li>White-label solutions for betting companies</li>
+                        <li>Data marketplace for historical signals</li>
+                        <li>Partner network for signal distribution</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ready to Transform Your Strategy?</h2>
+                <p>Be among the first to access our AI-powered sports and crypto signals</p>
+            </div>
+
+            <!-- Waitlist Form -->
+            <div id="waitlist" class="waitlist-form">
+                <h3>Join Our Waitlist</h3>
+                <p>Get early access to our AI-powered signals by filling out this form:</p>
+
+                <form id="waitlistForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">How do you plan to use our signals? (Optional)</label>
+                        <textarea id="message" name="message"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Submit & Join Waitlist</button>
+                </form>
+            </div>
+
+            <!-- Social Links Box -->
+            <div class="social-links-box">
+                <h3>Connect With Us</h3>
+                <div class="social-links-grid">
+                    <div class="social-link-item">
+                        <a href="https://kick.com/apexstrikelive" target="_blank">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Kick</span>
+                        </a>
+                    </div>
+                    <div class="social-link-item">
+                        <a href="https://www.youtube.com/@ApexStrikeLive" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                            <span>YouTube</span>
+                        </a>
+                    </div>
+                    <div class="social-link-item">
+                        <a href="https://www.twitch.tv/apexstrikelive" target="_blank">
+                            <i class="fab fa-twitch"></i>
+                            <span>Twitch</span>
+                        </a>
+                    </div>
+                    <div class="social-link-item">
+                        <a href="https://x.com/ApexStrikeLive" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter/X</span>
+                        </a>
+                    </div>
+                    <div class="social-link-item">
+                        <a href="https://www.patreon.com/c/ApexStrike/membership" target="_blank">
+                            <i class="fab fa-patreon"></i>
+                            <span>Patreon</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="section">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Apex Strike</h3>
+                    <p>AI-powered signals for sports betting and crypto trading. Built by one developer with a vision.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Products</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Sports Signals</a></li>
+                        <li><a href="#features">Crypto Signals</a></li>
+                        <li><a href="#">API Access</a></li>
+                        <li><a href="#">Data Packages</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Legal</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Apex Strike. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('nav ul');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            const isOpen = navMenu.style.display === 'flex';
+            navMenu.style.display = isOpen ? 'none' : 'flex';
+            mobileMenuBtn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 768) {
+                    navMenu.style.display = 'none';
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Form submission handling
+        const waitlistForm = document.getElementById('waitlistForm');
+        if (waitlistForm) {
+            waitlistForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                // Replace with your actual form submission logic
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Thank you for joining our waitlist! We\'ll be in touch soon.');
+                        waitlistForm.reset();
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                })
+                .catch(error => {
+                    alert('There was a problem submitting your form. Please try again later.');
+                    console.error('Form submission error:', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
