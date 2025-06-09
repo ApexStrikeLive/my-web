@@ -1092,7 +1092,7 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
+        <!-- CTA Section -->
     <section class="section cta" id="contact">
         <div class="container">
             <div class="section-title">
@@ -1105,7 +1105,8 @@
                 <h3>Join Us</h3>
                 <p>Get access to our AI-powered signals by filling out this form:</p>
 
-                <form id="waitlistForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <!-- UPDATED FORM WITH FUNCTIONAL FORMSPREE INTEGRATION -->
+                <form id="waitlistForm" action="https://formspree.io/f/xyzjewjw" method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" required>
@@ -1167,7 +1168,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>Apex Strike</h3>
-                    <p> 1 AI-powered, 1 Man Idea, Built by 1 with a vision.</p>
+                    <p>1 AI-powered, 1 Man Idea, Built by 1 with a vision.</p>
                     <div class="social-links">
 
                     </div>
@@ -1228,15 +1229,22 @@
                 });
             });
         });
-
-        // Form submission handling
+ // UPDATED FORM SUBMISSION HANDLING
         const waitlistForm = document.getElementById('waitlistForm');
         if (waitlistForm) {
             waitlistForm.addEventListener('submit', function(e) {
                 e.preventDefault();
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
+
+                // Get form data
                 const formData = new FormData(this);
 
-                // Replace with your actual form submission logic
+                // Send form data
                 fetch(this.action, {
                     method: 'POST',
                     body: formData,
@@ -1255,9 +1263,12 @@
                 .catch(error => {
                     alert('There was a problem submitting your form. Please try again later.');
                     console.error('Form submission error:', error);
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
                 });
             });
         }
     </script>
 </body>
-</html>
