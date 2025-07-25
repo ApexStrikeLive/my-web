@@ -128,7 +128,7 @@
                 <p id="successfulSignals" class="text-2xl font-bold text-green-600">0</p>
             </div>
             <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Closed Unsuccessful Signals:</p>
+                <p class="text-lg font-medium text-blue-700">Unsuccessful Signals:</p>
                 <p id="closedUnsuccessfulSignals" class="text-2xl font-bold text-red-600">0</p>
             </div>
             <div class="p-3 bg-white rounded-md shadow-sm">
@@ -248,8 +248,7 @@
                 const symbolsToFetch = new Set();
                 Object.values(mergedData).forEach(signal => {
                     const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
-                    // Only fetch live prices for OPEN signals
-                    if (signal.monitoring_status === 'OPEN' && baseSymbol && coinGeckoIdMap[baseSymbol]) {
+                    if (baseSymbol && coinGeckoIdMap[baseSymbol]) {
                         symbolsToFetch.add(coinGeckoIdMap[baseSymbol]);
                     }
                 });
@@ -268,47 +267,31 @@
                             console.log("Fetched live prices:", livePrices);
 
                             Object.values(mergedData).forEach(signal => {
-                                // Only update for OPEN signals
-                                if (signal.monitoring_status === 'OPEN') {
-                                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
-                                    const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
-                                    if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
-                                        const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
-                                        signal.current_price = newCurrentPrice; // Update current_price for OPEN signals
+                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
+                                const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
+                                if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
+                                    const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
+                                    signal.current_price = newCurrentPrice;
 
-                                        // Recalculate profit_loss_percentage and unrealized_pnl for OPEN signals
-                                        if (typeof signal.entry_price === 'number' && signal.entry_price !== 0 && typeof signal.initial_investment === 'number') {
-                                            if (signal.signal_type === 'BUY') {
-                                                signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
-                                                signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
-                                            } else if (signal.signal_type === 'SELL') {
-                                                signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
-                                                signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
-                                            }
+                                    // Recalculate profit_loss_percentage and unrealized_pnl ONLY for OPEN signals
+                                    if (signal.monitoring_status === 'OPEN' && typeof signal.entry_price === 'number' && signal.entry_price !== 0) {
+                                        if (signal.signal_type === 'BUY') {
+                                            signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
+                                            signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
+                                        } else if (signal.signal_type === 'SELL') {
+                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
+                                            signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
+                                        }
+                                    } else if (signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
+                                        // For closed signals, ensure unrealized_pnl is 0 and profit_loss_percentage reflects realized PnL
+                                        signal.unrealized_pnl = 0;
+                                        if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
+                                            signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
                                         } else {
-                                            // Default to 0 if entry_price or initial_investment is invalid/missing for OPEN signals
-                                            signal.profit_loss_percentage = 0;
-                                            signal.unrealized_pnl = 0;
+                                            signal.profit_loss_percentage = 0; // Default to 0 if data is missing for calculation
                                         }
-                                    } else {
-                                        // If live price not available for an OPEN symbol, keep existing PnL or default to 0
-                                        if (typeof signal.profit_loss_percentage !== 'number' || isNaN(signal.profit_loss_percentage)) {
-                                            signal.profit_loss_percentage = 0;
-                                        }
-                                        if (typeof signal.unrealized_pnl !== 'number' || isNaN(signal.unrealized_pnl)) {
-                                            signal.unrealized_pnl = 0;
-                                        }
-                                    }
-                                } else if (signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
-                                    // For CLOSED signals, ensure unrealized_pnl is 0 and profit_loss_percentage reflects realized PnL
-                                    signal.unrealized_pnl = 0;
-                                    if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
-                                        signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
-                                    } else {
-                                        signal.profit_loss_percentage = 0;
                                     }
                                 }
-                                // For any other status or if no specific condition met, values remain as they were or default.
                             });
                         } else {
                             console.warn(`Could not fetch live prices from CoinGecko (status: ${priceResponse.status}).`);
@@ -317,7 +300,7 @@
                         console.error("Error fetching live prices from CoinGecko:", priceError);
                     }
                 } else {
-                    console.log("No OPEN symbols found in the data to fetch live prices for.");
+                    console.log("No symbols found in the data to fetch live prices for.");
                 }
 
                 currentSignalsData = Object.values(mergedData); // Update global data with merged and live prices
@@ -478,7 +461,7 @@
 
         /**
          * Renders the signals data into the HTML, grouped by date.
-         * @param {Array<Object>} signals - The array of all signal objects.
+         * @param {Array<Object>} signals - The array of signal objects.
          * @param {number} maxAgeHoursForTodaySignals - Max age in hours for signals to be displayed for the current day.
          */
         function renderSignals(signals, maxAgeHoursForTodaySignals) {
@@ -494,14 +477,11 @@
             }
             charts = {}; // Reset charts object
 
-            // Filter for only OPEN signals to be displayed in the main content area
-            const openSignals = signals.filter(signal => signal.monitoring_status === 'OPEN');
+            // Sort signals by entry_time in descending order
+            const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
 
-            // Sort only the OPEN signals by entry_time in descending order
-            const sortedOpenSignals = [...openSignals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
-
-            // Group OPEN signals by date
-            const signalsByDate = sortedOpenSignals.reduce((acc, signal) => {
+            // Group signals by date
+            const signalsByDate = sortedSignals.reduce((acc, signal) => {
                 const date = signal.entry_time ? new Date(signal.entry_time).toISOString().split('T')[0] : 'Unknown Date'; // Handle null entry_time
                 if (!acc[date]) {
                     acc[date] = [];
@@ -542,12 +522,12 @@
                         return signal.entry_time && new Date(signal.entry_time).getTime() >= oneHourAgo.getTime();
                     });
                 } else {
-                    // For previous days, show all signals (which are already filtered to be OPEN)
+                    // For previous days, show all signals
                     signalsForDate = signalsByDate[date];
                 }
 
                 if (signalsForDate.length === 0) {
-                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">No OPEN signals for this date within the last hour (or no OPEN signals for previous dates).</p>';
+                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">No signals for this date within the last hour (or no signals for previous dates).</p>';
                 } else {
                     signalsForDate.forEach(signal => {
                         const signalCard = document.createElement('div');
@@ -572,7 +552,7 @@
                             <div class="signal-card-body">
                                 <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Entry Time:</b> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
                                 <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
@@ -600,18 +580,13 @@
                 detailsElement.appendChild(dateSignalsDiv);
                 signalsContainer.appendChild(detailsElement);
             }
-            if (sortedOpenSignals.length === 0) {
-                signalsContainer.innerHTML = '<p class="text-center text-gray-600 text-2xl mt-8">No OPEN signals to display.</p>';
-            }
-
 
             // Add event listeners for toggle chart buttons
             document.querySelectorAll('.toggle-chart-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const signalId = event.target.dataset.signalId;
                     const chartContainer = document.getElementById(`chart-container-${signalId}`);
-                    // Find the signal from the original (unfiltered) currentSignalsData
-                    const signal = currentSignalsData.find(s => s.signal_id === signalId);
+                    const signal = signals.find(s => s.signal_id === signalId);
 
                     if (chartContainer.classList.contains('hidden')) {
                         chartContainer.classList.remove('hidden');
@@ -640,21 +615,50 @@
             const maxAgeHoursForTodaySignals = 1; // <--- This value is now 1 hour
 
             const signals = await fetchSignals();
-            updateSummaryStatistics(signals); // Still update summary for ALL signals
-            renderSignals(signals, maxAgeHoursForTodaySignals); // Render only OPEN signals
+            updateSummaryStatistics(signals);
+            renderSignals(signals, maxAgeHoursForTodaySignals);
         }
 
-        // Initial load and frequent updates
+        // Schedule updates three times a day
+        const updateHours = [9, 15, 21]; // Example: 9 AM, 3 PM, 9 PM (local time)
+
+        function scheduleDailyUpdates() {
+            const now = new Date();
+            const currentHour = now.getHours();
+
+            let nextUpdateHour = updateHours.find(hour => hour > currentHour);
+            if (!nextUpdateHour) {
+                // If all update hours for today have passed, schedule for the first hour tomorrow
+                nextUpdateHour = updateHours[0];
+                now.setDate(now.getDate() + 1); // Move to next day
+            }
+
+            const nextUpdateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextUpdateHour, 0, 0, 0);
+            const timeToNextUpdate = nextUpdateTime.getTime() - new Date().getTime();
+
+            console.log(`Next data refresh scheduled for: ${nextUpdateTime.toLocaleString()}`);
+
+            // Clear any existing timeout to prevent multiple schedules
+            if (window._updateTimeout) {
+                clearTimeout(window._updateTimeout);
+            }
+
+            window._updateTimeout = setTimeout(async () => {
+                console.log("Performing scheduled data refresh...");
+                await loadAndRenderSignals();
+                // After refresh, schedule the next update for the next cycle
+                scheduleDailyUpdates();
+            }, timeToNextUpdate);
+        }
+
+
+        // Initial load and event listeners
         document.addEventListener('DOMContentLoaded', () => {
             loadAndRenderSignals(); // Initial load
 
-            // Schedule frequent updates for live prices (every 30 seconds)
-            // CoinGecko free API has rate limits, typically 50 calls/minute. 30 seconds is a safe interval.
-            setInterval(async () => {
-                console.log("Performing scheduled live data refresh...");
-                await loadAndRenderSignals();
-            }, 30000); // 30000 milliseconds = 30 seconds
+            // Start scheduling daily updates
+            scheduleDailyUpdates();
         });
     </script>
 </body>
-</html>
+</html> 
