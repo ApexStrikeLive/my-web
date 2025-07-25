@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Signals</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            color: #334155; /* Darker text color */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Light gray border */
+        }
+        th {
+            background-color: #f8fafc; /* Lighter header background */
+            font-weight: 600;
+            color: #475569; /* Slightly darker header text */
+        }
+        tr:hover {
+            background-color: #f1f5f9; /* Lighter hover effect */
+        }
+        .signal-card {
+            border: 1px solid #cbd5e1; /* Gray border */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .signal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .signal-card-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .signal-card-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .signal-card-item strong {
+            color: #1e293b; /* Darker label */
+        }
+        .chart-container {
+            margin-top: 1.5rem;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            /* Ensure the container has a defined height for TradingView widget */
+            height: 400px; /* Set a default height */
+            overflow: hidden; /* Hide overflow if widget is larger */
+        }
+        .buy-signal {
+            color: #10b981; /* Green for BUY */
+            font-weight: bold;
+        }
+        .sell-signal {
+            color: #ef4444; /* Red for SELL */
+            font-weight: bold;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="text-4xl font-extrabold text-center text-blue-700 mb-8">Trade Signals Dashboard</h1>
+
+        <!-- Summary Statistics Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6 p-4 bg-blue-50 rounded-lg shadow-sm text-center">
+            <div class="p-3 bg-white rounded-md shadow-sm">
+                <p class="text-lg font-medium text-blue-700">Total Signals:</p>
+                <p id="totalSignals" class="text-2xl font-bold text-gray-900">0</p>
+            </div>
+            <div class="p-3 bg-white rounded-md shadow-sm">
+                <p class="text-lg font-medium text-blue-700">Successful Signals:</p>
+                <p id="successfulSignals" class="text-2xl font-bold text-green-600">0</p>
+            </div>
+            <div class="p-3 bg-white rounded-md shadow-sm">
+                <p class="text-lg font-medium text-blue-700">Closed Unsuccessful Signals:</p>
+                <p id="closedUnsuccessfulSignals" class="text-2xl font-bold text-red-600">0</p>
+            </div>
+            <div class="p-3 bg-white rounded-md shadow-sm">
+                <p class="text-lg font-medium text-blue-700">Open Signals:</p>
+                <p id="openSignals" class="text-2xl font-bold text-blue-600">0</p>
+            </div>
+        </div>
+
+        <div id="signalsContainer" class="mt-8">
+            <!-- Signals will be rendered here, grouped by date -->
+        </div>
+    </div>
+
+    <script>
+        // Sample JSON data (replace with fetch from a URL in a real application)
+        // This data will be updated by the fetchSignals function
+        let currentSignalsData = [
+            {
+                "signal_id": "348c7ad6-17e1-46a6-93a9-acc5782b04d6",
+                "symbol": "CVX/USDT",
+                "timeframe": "1h",
+                "signal_type": "BUY",
+                "entry_price": 5.004,
+                "entry_time": "2025-07-23T08:58:43.336319",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_SL (1.36%)",
+                "current_price": 5.081,
+                "profit_loss_percentage": 1.3387689848121673,
+                "realized_pnl": 1.358752997601929,
+                "unrealized_pnl": 0.3846922462030418,
+                "stop_loss_price": 5.084064,
+                "take_profit_target": 0.0,
+                "closed_percentage": 100.0,
+                "exit_price": 5.081,
+                "exit_time": "2025-07-23T09:18:57.930246",
+                "partial_closes": [
+                    {
+                        "level": "tp_0.7",
+                        "percentage": 25,
+                        "price": 5.051,
+                        "time": "2025-07-23T09:17:40.909564",
+                        "realized_pnl_usd": 0.1848121502797792
+                    },
+                    {
+                        "level": "tp_1.2",
+                        "percentage": 25,
+                        "price": 5.079,
+                        "time": "2025-07-23T09:17:58.753601",
+                        "realized_pnl_usd": 0.32470023980815443
+                    },
+                    {
+                        "level": "tp_2.0",
+                        "percentage": 25,
+                        "price": 5.117,
+                        "time": "2025-07-23T09:18:36.728848",
+                        "realized_pnl_usd": 0.5145483613109534
+                    }
+                ],
+                "notes": "Closed by Stop Loss",
+                "strategy_name": "Binance_OPT_PROD",
+                "initial_investment": 100.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [
+                    "tp_0.7",
+                    "tp_0.8",
+                    "tp_1.2",
+                    "tp_1.5",
+                    "tp_1.8",
+                    "tp_2.0"
+                ]
+            },
+            {
+                "signal_id": "e0a456c4-77fb-42fa-ae1a-f19e51658f82",
+                "symbol": "APT/USDT",
+                "timeframe": "1h",
+                "signal_type": "BUY",
+                "entry_price": 5.562,
+                "entry_time": "2025-07-23T09:43:44.472165",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_SL (0.86%)",
+                "current_price": 5.614,
+                "profit_loss_percentage": 0.734915498022287,
+                "realized_pnl": 0.8607695073714441,
+                "unrealized_pnl": 0.4674577490111435,
+                "stop_loss_price": 5.6176200000000005,
+                "take_profit_target": 0.0,
+                "closed_percentage": 100.0,
+                "exit_price": 5.614,
+                "exit_time": "2025-07-23T11:01:03.065955",
+                "partial_closes": [
+                    {
+                        "level": "tp_0.7",
+                        "percentage": 25,
+                        "price": 5.615,
+                        "time": "2025-07-23T10:58:21.910142",
+                        "realized_pnl_usd": 0.18822366055375733
+                    },
+                    {
+                        "level": "tp_1.2",
+                        "percentage": 25,
+                        "price": 5.641,
+                        "time": "2025-07-23T10:59:44.143565",
+                        "realized_pnl_usd": 0.3050880978065432
+                    }
+                ],
+                "notes": "Closed by Stop Loss",
+                "strategy_name": "Binance_OPT_PROD",
+                "initial_investment": 100.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [
+                    "tp_0.7",
+                    "tp_0.8",
+                    "tp_1.2",
+                    "tp_1.5"
+                ]
+            },
+            {
+                "signal_id": "c0576269-3ec9-40b5-9ae7-af1d5d152ce9",
+                "symbol": "METIS/USDT",
+                "timeframe": "1h",
+                "signal_type": "SELL",
+                "entry_price": 18.99,
+                "entry_time": "2025-07-23T11:18:46.293005",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_SL (1.37%)",
+                "current_price": 18.7,
+                "profit_loss_percentage": 1.3271195365982051,
+                "realized_pnl": 1.3666140073722937,
+                "unrealized_pnl": 0.3817798841495513,
+                "stop_loss_price": 18.686159999999997,
+                "take_profit_target": 0.0,
+                "closed_percentage": 100.0,
+                "exit_price": 18.7,
+                "exit_time": "2025-07-23T12:21:30.121495",
+                "partial_closes": [
+                    {
+                        "level": "tp_0.7",
+                        "percentage": 25,
+                        "price": 18.8,
+                        "time": "2025-07-23T11:30:13.673271",
+                        "realized_pnl_usd": 0.20013164823591068
+                    },
+                    {
+                        "level": "tp_1.2",
+                        "percentage": 25,
+                        "price": 18.72,
+                        "time": "2025-07-23T12:00:11.751441",
+                        "realized_pnl_usd": 0.3054502369668241
+                    },
+                    {
+                        "level": "tp_2.0",
+                        "percentage": 25,
+                        "price": 18.55,
+                        "time": "2025-07-23T12:12:47.043015",
+                        "realized_pnl_usd": 0.5292522380200075
+                    }
+                ],
+                "notes": "Closed by Stop Loss",
+                "strategy_name": "Binance_OPT_PROD",
+                "initial_investment": 100.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [
+                    "tp_0.7",
+                    "tp_0.8",
+                    "tp_1.2",
+                    "tp_1.5",
+                    "tp_1.8",
+                    "tp_2.0"
+                ]
+            },
+            {
+                "signal_id": "c6f2c7a2-9db5-480d-ac95-5eac2d8de381",
+                "symbol": "GAS/USDT",
+                "timeframe": "1h",
+                "signal_type": "BUY",
+                "entry_price": 3.628,
+                "entry_time": "2025-07-23T11:18:46.293005",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_TP (1.87%)",
+                "current_price": 3.761,
+                "profit_loss_percentage": 3.46593164277839,
+                "realized_pnl": 1.8672546857772863,
+                "unrealized_pnl": 0.9164829106945975,
+                "stop_loss_price": 3.7259559999999996,
+                "take_profit_target": 0.0,
+                "closed_percentage": 100.0,
+                "exit_price": 3.761,
+                "exit_time": "2025-07-23T11:36:15.436213",
+                "partial_closes": [
+                    {
+                        "level": "tp_0.7",
+                        "percentage": 25,
+                        "price": 3.661,
+                        "time": "2025-07-23T11:33:41.370733",
+                        "realized_pnl_usd": 0.17739801543550104
+                    },
+                    {
+                        "level": "tp_1.2",
+                        "percentage": 25,
+                        "price": 3.682,
+                        "time": "2025-07-23T11:34:26.568021",
+                        "realized_pnl_usd": 0.3221058434399106
+                    },
+                    {
+                        "level": "tp_2.0",
+                        "percentage": 25,
+                        "price": 3.708,
+                        "time": "2025-07-23T11:35:40.206860",
+                        "realized_pnl_usd": 0.5012679162072772
+                    },
+                    {
+                        "level": "tp_3.3",
+                        "percentage": 25.0,
+                        "price": 3.761,
+                        "time": "2025-07-23T11:36:15.436078",
+                        "realized_pnl_usd": 0.8664829106945975
+                    }
+                ],
+                "notes": "Fully closed by Take Profit",
+                "strategy_name": "Binance_OPT_PROD",
+                "initial_investment": 100.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [
+                    "tp_0.7",
+                    "tp_0.8",
+                    "tp_1.2",
+                    "tp_1.5",
+                    "tp_1.8",
+                    "tp_2.0",
+                    "tp_2.4",
+                    "tp_2.6",
+                    "tp_2.8",
+                    "tp_3.0",
+                    "tp_3.3"
+                ]
+            },
+            {
+                "signal_id": "4bcddf0e-d3ed-4cf4-aec2-13727ce6db7f",
+                "symbol": "SSV/USDT",
+                "timeframe": "1h",
+                "signal_type": "SELL",
+                "entry_price": 10.51,
+                "entry_time": "2025-07-23T11:18:46.293005",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_SL (1.51%)",
+                "current_price": 10.3,
+                "profit_loss_percentage": 1.798097050428155,
+                "realized_pnl": 1.5126546146527087,
+                "unrealized_pnl": 0.4995242626070387,
+                "stop_loss_price": 10.2998,
+                "take_profit_target": 0.0,
+                "closed_percentage": 100.0,
+                "exit_price": 10.3,
+                "exit_time": "2025-07-23T12:15:49.029964",
+                "partial_closes": [
+                    {
+                        "level": "tp_0.7",
+                        "percentage": 25,
+                        "price": 10.39,
+                        "time": "2025-07-23T11:30:12.668679",
+                        "realized_pnl_usd": 0.2354424357754501
+                    },
+                    {
+                        "level": "tp_1.2",
+                        "percentage": 25,
+                        "price": 10.36,
+                        "time": "2025-07-23T11:30:31.265279",
+                        "realized_pnl_usd": 0.3068030447193158
+                    },
+                    {
+                        "level": "tp_2.0",
+                        "percentage": 25,
+                        "price": 10.27,
+                        "time": "2025-07-23T12:00:49.892756",
+                        "realized_pnl_usd": 0.5208848715509043
+                    }
+                ],
+                "notes": "Closed by Stop Loss",
+                "strategy_name": "Binance_OPT_PROD",
+                "initial_investment": 100.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [
+                    "tp_0.7",
+                    "tp_0.8",
+                    "tp_1.2",
+                    "tp_1.5",
+                    "tp_1.8",
+                    "tp_2.0",
+                    "tp_2.4",
+                    "tp_2.6"
+                ]
+            },
+            {
+                "signal_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+                "symbol": "BTC/USDT",
+                "timeframe": "4h",
+                "signal_type": "BUY",
+                "entry_price": 60000.00,
+                "entry_time": "2025-07-24T00:00:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "OPEN",
+                "current_price": 61500.00,
+                "profit_loss_percentage": 2.50,
+                "realized_pnl": 0.0,
+                "unrealized_pnl": 1500.0,
+                "stop_loss_price": 59000.00,
+                "take_profit_target": 63000.00,
+                "closed_percentage": 0.0,
+                "exit_price": 0.0,
+                "exit_time": null,
+                "partial_closes": [],
+                "notes": "New signal, monitoring",
+                "strategy_name": "LongTerm_Hold",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            },
+            {
+                "signal_id": "f5e4d3c2-b1a0-9876-5432-10fedcba9876",
+                "symbol": "ETH/USDT",
+                "timeframe": "1h",
+                "signal_type": "SELL",
+                "entry_price": 3200.00,
+                "entry_time": "2025-07-24T05:30:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_TP (3.00%)",
+                "current_price": 3100.00,
+                "profit_loss_percentage": 3.125,
+                "realized_pnl": 3.00,
+                "unrealized_pnl": 0.0,
+                "stop_loss_price": 3250.00,
+                "take_profit_target": 3104.00,
+                "closed_percentage": 100.0,
+                "exit_price": 3104.00,
+                "exit_time": "2025-07-24T06:00:00.000000",
+                "partial_closes": [
+                    {
+                        "level": "tp_0.7",
+                        "percentage": 25,
+                        "price": 3180.00,
+                        "time": "2025-07-24T05:40:00.000000",
+                        "realized_pnl_usd": 0.5
+                    },
+                    {
+                        "level": "tp_1.2",
+                        "percentage": 25,
+                        "price": 3160.00,
+                        "time": "2025-07-24T05:50:00.000000",
+                        "realized_pnl_usd": 0.75
+                    },
+                    {
+                        "level": "tp_2.0",
+                        "percentage": 25,
+                        "price": 3136.00,
+                        "time": "2025-07-24T05:55:00.000000",
+                        "realized_pnl_usd": 1.0
+                    },
+                    {
+                        "level": "tp_3.3",
+                        "percentage": 25,
+                        "price": 3104.00,
+                        "time": "2025-07-24T06:00:00.000000",
+                        "realized_pnl_usd": 0.75
+                    }
+                ],
+                "notes": "Fully closed by Take Profit",
+                "strategy_name": "Scalping_ETH",
+                "initial_investment": 500.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [
+                    "tp_0.7",
+                    "tp_0.8",
+                    "tp_1.2",
+                    "tp_1.5",
+                    "tp_1.8",
+                    "tp_2.0",
+                    "tp_2.4",
+                    "tp_2.6",
+                    "tp_2.8",
+                    "tp_3.0",
+                    "tp_3.3"
+                ]
+            },
+            {
+                "signal_id": "12345678-90ab-cdef-1234-567890abcdef",
+                "symbol": "ADA/USDT",
+                "timeframe": "30m",
+                "signal_type": "BUY",
+                "entry_price": 0.4500,
+                "entry_time": "2025-07-22T14:00:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_SL (-4.00%)",
+                "current_price": 0.4320,
+                "profit_loss_percentage": -4.00,
+                "realized_pnl": -4.00,
+                "unrealized_pnl": 0.0,
+                "stop_loss_price": 0.4320,
+                "take_profit_target": 0.0,
+                "closed_percentage": 100.0,
+                "exit_price": 0.4320,
+                "exit_time": "2025-07-22T14:30:00.000000",
+                "partial_closes": [],
+                "notes": "Total loss by Stop Loss",
+                "strategy_name": "ShortTerm_ADA",
+                "initial_investment": 200.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            }
+        ];
+
+        // Define TP levels as provided by the user
+        const tpLevelsDefinition = [
+            { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
+            { level: 0.8, close_percentage: 0, sl_profit_net: 0.2 },
+            { level: 1.2, close_percentage: 25, sl_profit_net: 0.6 },
+            { level: 1.5, close_percentage: 0, sl_profit_net: 0.8 },
+            { level: 1.8, close_percentage: 0, sl_profit_net: 1.0 },
+            { level: 2.0, close_percentage: 25, sl_profit_net: 1.4 },
+            { level: 2.4, close_percentage: 0, sl_profit_net: 1.6 },
+            { level: 2.6, close_percentage: 0, sl_profit_net: 1.8 },
+            { level: 2.8, close_percentage: 0, sl_profit_net: 2.0 },
+            { level: 3.0, close_percentage: 0, sl_profit_net: 2.5 },
+            { level: 3.3, close_percentage: 100, sl_profit_net: null }
+        ];
+
+        let charts = {}; // Object to store chart instances (now TradingView widget references)
+
+        /**
+         * Shows the loading overlay.
+         */
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        /**
+         * Hides the loading overlay.
+         */
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        /**
+         * Fetches signals data from a JSON URL.
+         * In a real application, replace this with your actual API endpoint.
+         * @returns {Promise<Array<Object>>} A promise that resolves with the signals data.
+         */
+        async function fetchSignals() {
+            showLoading();
+            try {
+                // Changed the JSON file name to traced_signals.json
+                // IMPORTANT: For this to work in a browser, traced_signals.json must be accessible
+                // via a public URL (e.g., hosted on GitHub Pages, a web server, etc.).
+                // If you are running this locally without a server, you might encounter CORS issues.
+                const response = await fetch('traced_signals.json');
+                if (!response.ok) {
+                    console.warn(`Could not fetch live data from traced_signals.json (status: ${response.status}). Using current in-memory data.`);
+                    return currentSignalsData;
+                }
+                const data = await response.json();
+                const mergedData = {};
+                currentSignalsData.forEach(signal => mergedData[signal.signal_id] = signal);
+                data.forEach(signal => mergedData[signal.signal_id] = signal);
+                currentSignalsData = Object.values(mergedData); // Update global data
+                return currentSignalsData;
+            } catch (error) {
+                console.error("Error fetching JSON data:", error);
+                return currentSignalsData;
+            } finally {
+                hideLoading();
+            }
+        }
+
+        /**
+         * Calculates the price for a given TP level based on entry price and signal type.
+         * This function is now primarily for internal logic, not directly for chart rendering in TradingView.
+         * @param {number} entryPrice - The entry price of the signal.
+         * @param {string} signalType - The type of signal ('BUY' or 'SELL').
+         * @param {number} tpPercentage - The TP percentage (e.g., 0.7 for 0.7%).
+         * @returns {number} The calculated TP price.
+         */
+        function calculateTpPrice(entryPrice, signalType, tpPercentage) {
+            if (signalType === 'BUY') {
+                return entryPrice * (1 + tpPercentage / 100);
+            } else if (signalType === 'SELL') {
+                return entryPrice * (1 - tpPercentage / 100);
+            }
+            return 0; // Should not happen
+        }
+
+        /**
+         * Updates the summary statistics at the top of the page.
+         * @param {Array<Object>} signals - The array of all signal objects.
+         */
+        function updateSummaryStatistics(signals) {
+            const totalSignals = signals.length;
+            let successfulSignals = 0; // Signals with profitable outcome (realized_pnl > 0)
+            let closedUnsuccessfulSignals = 0; // Signals closed by SL with significant loss
+            let openSignals = 0; // Signals currently open
+
+            signals.forEach(signal => {
+                // Successful if realized PnL is positive
+                if (signal.realized_pnl > 0) {
+                    successfulSignals++;
+                }
+
+                // Unsuccessful if closed by SL and profit/loss percentage is significantly negative (e.g., < -2.5%)
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && signal.profit_loss_percentage < -2.5) {
+                    closedUnsuccessfulSignals++;
+                }
+
+                // Open if monitoring_status is "OPEN"
+                if (signal.monitoring_status === "OPEN") {
+                    openSignals++;
+                }
+            });
+
+            document.getElementById('totalSignals').textContent = totalSignals;
+            document.getElementById('successfulSignals').textContent = successfulSignals;
+            document.getElementById('closedUnsuccessfulSignals').textContent = closedUnsuccessfulSignals;
+            document.getElementById('openSignals').textContent = openSignals;
+        }
+
+        /**
+         * Creates and renders a TradingView chart for a given signal.
+         * @param {Object} signal - The signal object.
+         * @param {string} containerId - The ID of the container element where the chart will be rendered.
+         */
+        function createChart(signal, containerId) {
+            const chartContainer = document.getElementById(containerId);
+            chartContainer.innerHTML = ''; // Clear any previous content in the container
+
+            // Construct the TradingView symbol string (e.g., "BINANCE:BTCUSDT")
+            // Assuming symbols are in "PAIR/BASE" format, convert to "EXCHANGE:PAIRBASE"
+            // You might need to adjust the exchange prefix (e.g., "BINANCE:", "BYBIT:", etc.)
+            // based on where TradingView gets its data for the specific symbol.
+            const [base, quote] = signal.symbol.split('/');
+            const tradingViewSymbol = `BINANCE:${base}${quote}`; // Defaulting to BINANCE
+
+            // Generate a unique ID for the inner TradingView widget container
+            const innerWidgetId = `tradingview_widget_${signal.signal_id}`;
+
+            // Determine the interval for TradingView
+            let tvInterval = "D"; // Default to Daily
+            if (signal.timeframe.includes('m')) {
+                tvInterval = signal.timeframe.replace('m', ''); // e.g., "30m" -> "30"
+            } else if (signal.timeframe.includes('h')) {
+                tvInterval = signal.timeframe.replace('h', 'H'); // e.g., "1h" -> "1H"
+            }
+
+            // Create the main widget container div
+            const widgetWrapper = document.createElement('div');
+            widgetWrapper.className = 'tradingview-widget-container';
+            widgetWrapper.style.height = '100%';
+            widgetWrapper.style.width = '100%';
+
+            // Create the inner widget div where TradingView will render the chart
+            const innerWidgetDiv = document.createElement('div');
+            innerWidgetDiv.id = innerWidgetId;
+            innerWidgetDiv.className = 'tradingview-widget-container__widget';
+            innerWidgetDiv.style.height = 'calc(100% - 32px)';
+            innerWidgetDiv.style.width = '100%';
+
+            // Create the copyright element
+            const copyrightDiv = document.createElement('div');
+            copyrightDiv.className = 'tradingview-widget-copyright';
+            copyrightDiv.innerHTML = `<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>`;
+
+            // Create the script element
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+            script.async = true;
+
+            // Prepare the TradingView widget configuration as a JSON string
+            const widgetConfig = {
+                "width": "100%",
+                "height": "400", // Fixed height for better layout. Adjust as needed.
+                "symbol": tradingViewSymbol,
+                "interval": tvInterval,
+                "timezone": "Etc/UTC",
+                "theme": "light", // Can be 'dark'
+                "style": "1", // Candlestick style
+                "locale": "en",
+                "toolbar_bg": "#f1f5f9", // Matches body background
+                "enable_publishing": false,
+                "allow_symbol_change": true,
+                "container_id": innerWidgetId, // Point to the inner div
+                "hide_side_toolbar": false,
+                "hide_top_toolbar": false,
+                "withdateranges": true,
+                "save_image": false,
+                "details": false,
+                "hotlist": false,
+                "calendar": false,
+                "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"], // Example studies
+                "show_popup_button": true,
+                "popup_width": "1000",
+                "popup_height": "650",
+            };
+
+            // Set the script's text content to the JSON configuration
+            script.textContent = JSON.stringify(widgetConfig);
+
+            // Append elements to the wrapper
+            widgetWrapper.appendChild(innerWidgetDiv);
+            widgetWrapper.appendChild(copyrightDiv);
+            widgetWrapper.appendChild(script); // Append the script last
+
+            // Append the wrapper to the chart container
+            chartContainer.appendChild(widgetWrapper);
+
+            // Store a reference to the container so we can clear it later if needed
+            charts[signal.signal_id] = chartContainer;
+        }
+
+
+        /**
+         * Renders the signals data into the HTML, grouped by date.
+         * @param {Array<Object>} signals - The array of signal objects.
+         * @param {number} maxAgeHoursForTodaySignals - Max age in hours for signals to be displayed for the current day.
+         */
+        function renderSignals(signals, maxAgeHoursForTodaySignals) {
+            const signalsContainer = document.getElementById('signalsContainer');
+            signalsContainer.innerHTML = ''; // Clear previous content
+
+            // Destroy existing chart instances (clear their HTML) before re-rendering
+            for (const id in charts) {
+                if (charts[id]) {
+                    charts[id].innerHTML = ''; // Clear the content of the chart container
+                    charts[id] = null; // Remove reference
+                }
+            }
+            charts = {}; // Reset charts object
+
+            // Sort signals by entry_time in descending order
+            const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
+
+            // Group signals by date
+            const signalsByDate = sortedSignals.reduce((acc, signal) => {
+                const date = new Date(signal.entry_time).toISOString().split('T')[0]; // YYYY-MM-DD
+                if (!acc[date]) {
+                    acc[date] = [];
+                }
+                acc[date].push(signal);
+                return acc;
+            }, {});
+
+            // Get today's date for default open section
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const oneHourAgo = new Date(now.getTime() - maxAgeHoursForTodaySignals * 60 * 60 * 1000);
+
+            // Render each date group
+            for (const date in signalsByDate) {
+                const isToday = date === today;
+                const detailsElement = document.createElement('details');
+                detailsElement.className = 'mb-4';
+                if (isToday) {
+                    detailsElement.setAttribute('open', ''); // Open today's section by default
+                }
+
+                const summaryElement = document.createElement('summary');
+                summaryElement.className = 'bg-blue-200 p-4 rounded-t-lg cursor-pointer font-semibold text-xl text-blue-800 hover:bg-blue-300 transition duration-200';
+                summaryElement.textContent = `Signals for ${date}`;
+                if (isToday) {
+                    summaryElement.textContent += ' (Today)';
+                }
+                detailsElement.appendChild(summaryElement);
+
+                const dateSignalsDiv = document.createElement('div');
+                dateSignalsDiv.className = 'p-4 border border-t-0 border-blue-200 rounded-b-lg bg-white';
+
+                let signalsForDate;
+                if (isToday) {
+                    // Filter signals for today to include only those from the last hour
+                    signalsForDate = signalsByDate[date].filter(signal => {
+                        return new Date(signal.entry_time).getTime() >= oneHourAgo.getTime();
+                    });
+                } else {
+                    // For previous days, show all signals
+                    signalsForDate = signalsByDate[date];
+                }
+
+                if (signalsForDate.length === 0) {
+                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">No signals for this date within the last hour (or no signals for previous dates).</p>';
+                } else {
+                    signalsForDate.forEach(signal => {
+                        const signalCard = document.createElement('div');
+                        signalCard.className = 'signal-card';
+                        signalCard.id = `signal-${signal.signal_id}`;
+
+                        const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
+
+                        signalCard.innerHTML = `
+                            <div class="signal-card-header">
+                                <h2 class="text-2xl font-bold text-gray-900">${signal.symbol} <span class="${signalTypeClass}">(${signal.signal_type})</span></h2>
+                                <button class="toggle-chart-btn px-4 py-2 bg-purple-600 text-white rounded-md shadow-sm hover:bg-purple-700 transition duration-200" data-signal-id="${signal.signal_id}">
+                                    Show Chart
+                                </button>
+                            </div>
+                            <div class="signal-card-body">
+                                <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe}</span></div>
+                                <div class="signal-card-item"><strong>Entry Price:</strong> <span>${signal.entry_price.toFixed(4)}</span></div>
+                                <div class="signal-card-item"><strong>Entry Time:</strong> <span>${new Date(signal.entry_time).toLocaleString()}</span></div>
+                                <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status}</span></div>
+                                <div class="signal-card-item"><strong>Current Price:</strong> <span>${signal.current_price.toFixed(4)}</span></div>
+                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600'}">${signal.profit_loss_percentage.toFixed(2)}%</span></div>
+                                <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${signal.realized_pnl.toFixed(2)}</span></div>
+                                <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${signal.unrealized_pnl.toFixed(2)}</span></div>
+                                <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${signal.stop_loss_price.toFixed(4)}</span></div>
+                                <div class="signal-card-item"><strong>Exit Price:</strong> <span>${signal.exit_price.toFixed(4)}</span></div>
+                                <div class="signal-card-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes}</span></div>
+                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${signal.initial_investment.toFixed(2)}</span></div>
+                                <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${signal.activated_tp_levels.join(', ')}</span></div>
+                            </div>
+                            <div id="chart-container-${signal.signal_id}" class="chart-container hidden">
+                                <!-- TradingView chart will be loaded here -->
+                            </div>
+                        `;
+                        dateSignalsDiv.appendChild(signalCard);
+                    });
+                }
+                detailsElement.appendChild(dateSignalsDiv);
+                signalsContainer.appendChild(detailsElement);
+            }
+
+            // Add event listeners for toggle chart buttons
+            document.querySelectorAll('.toggle-chart-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const signalId = event.target.dataset.signalId;
+                    const chartContainer = document.getElementById(`chart-container-${signalId}`);
+                    const signal = signals.find(s => s.signal_id === signalId);
+
+                    if (chartContainer.classList.contains('hidden')) {
+                        chartContainer.classList.remove('hidden');
+                        event.target.textContent = 'Hide Chart';
+                        // Create TradingView chart
+                        createChart(signal, `chart-container-${signalId}`);
+                    } else {
+                        chartContainer.classList.add('hidden');
+                        event.target.textContent = 'Show Chart';
+                        // Clear the TradingView widget content when hidden
+                        if (charts[signalId]) {
+                            charts[signalId].innerHTML = '';
+                            charts[signalId] = null; // Remove reference
+                        }
+                    }
+                });
+            });
+        }
+
+        /**
+         * Main function to load and render signals.
+         */
+        async function loadAndRenderSignals() {
+            // Define the maximum age in hours for signals to be displayed on the current day.
+            // Only signals with entry_time within the last 'maxAgeHoursForTodaySignals' hours will be shown for today.
+            const maxAgeHoursForTodaySignals = 1; // <--- This value is now 1 hour
+
+            const signals = await fetchSignals();
+            updateSummaryStatistics(signals);
+            renderSignals(signals, maxAgeHoursForTodaySignals);
+        }
+
+        // Schedule updates three times a day
+        const updateHours = [9, 15, 21]; // Example: 9 AM, 3 PM, 9 PM (local time)
+
+        function scheduleDailyUpdates() {
+            const now = new Date();
+            const currentHour = now.getHours();
+
+            let nextUpdateHour = updateHours.find(hour => hour > currentHour);
+            if (!nextUpdateHour) {
+                // If all update hours for today have passed, schedule for the first hour tomorrow
+                nextUpdateHour = updateHours[0];
+                now.setDate(now.getDate() + 1); // Move to next day
+            }
+
+            const nextUpdateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextUpdateHour, 0, 0, 0);
+            const timeToNextUpdate = nextUpdateTime.getTime() - new Date().getTime();
+
+            console.log(`Next data refresh scheduled for: ${nextUpdateTime.toLocaleString()}`);
+
+            // Clear any existing timeout to prevent multiple schedules
+            if (window._updateTimeout) {
+                clearTimeout(window._updateTimeout);
+            }
+
+            window._updateTimeout = setTimeout(async () => {
+                console.log("Performing scheduled data refresh...");
+                await loadAndRenderSignals();
+                // After refresh, schedule the next update for the next cycle
+                scheduleDailyUpdates();
+            }, timeToNextUpdate);
+        }
+
+
+        // Initial load and event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAndRenderSignals(); // Initial load
+
+            // Start scheduling daily updates
+            scheduleDailyUpdates();
+        });
+    </script>
+</body>
+</html>
