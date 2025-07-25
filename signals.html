@@ -308,7 +308,7 @@
             if (signal.timeframe.includes('m')) {
                 tvInterval = signal.timeframe.replace('m', ''); // e.g., "30m" -> "30"
             } else if (signal.timeframe.includes('h')) {
-                tvInterval = signal.timeframe.replace('h', 'H'); // e.g., "3h" -> "3H"
+                tvInterval = signal.timeframe.replace('h', 'H'); // e.g., "1h" -> "1H"
             }
 
             // Create the main widget container div
