@@ -247,8 +247,8 @@
 
                 const symbolsToFetch = new Set();
                 Object.values(mergedData).forEach(signal => {
-                    const baseSymbol = signal.symbol.split('/')[0];
-                    if (coinGeckoIdMap[baseSymbol]) {
+                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
+                    if (baseSymbol && coinGeckoIdMap[baseSymbol]) {
                         symbolsToFetch.add(coinGeckoIdMap[baseSymbol]);
                     }
                 });
@@ -267,14 +267,14 @@
                             console.log("Fetched live prices:", livePrices);
 
                             Object.values(mergedData).forEach(signal => {
-                                const baseSymbol = signal.symbol.split('/')[0];
-                                const coinGeckoId = coinGeckoIdMap[baseSymbol];
+                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
+                                const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
                                 if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
                                     const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
                                     signal.current_price = newCurrentPrice;
 
                                     // Recalculate profit_loss_percentage and unrealized_pnl ONLY for OPEN signals
-                                    if (signal.monitoring_status === 'OPEN' && signal.entry_price !== null && signal.entry_price !== undefined && signal.entry_price !== 0) {
+                                    if (signal.monitoring_status === 'OPEN' && typeof signal.entry_price === 'number' && signal.entry_price !== 0) {
                                         if (signal.signal_type === 'BUY') {
                                             signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
                                             signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
@@ -285,8 +285,10 @@
                                     } else if (signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
                                         // For closed signals, ensure unrealized_pnl is 0 and profit_loss_percentage reflects realized PnL
                                         signal.unrealized_pnl = 0;
-                                        if (signal.realized_pnl !== null && signal.initial_investment !== null && signal.initial_investment !== 0) {
+                                        if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
                                             signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
+                                        } else {
+                                            signal.profit_loss_percentage = 0; // Default to 0 if data is missing for calculation
                                         }
                                     }
                                 }
