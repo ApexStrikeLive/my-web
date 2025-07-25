@@ -213,23 +213,21 @@
         async function fetchSignals() {
             showLoading();
             try {
-                // Changed the JSON file name to traced_signals.json
-                // IMPORTANT: For this to work in a browser, traced_signals.json must be accessible
-                // via a public URL (e.g., hosted on GitHub Pages, a web server, etc.).
-                // If you are running this locally without a server, you might encounter CORS issues.
-                const response = await fetch('traced_signals.json');
+                // Changed the JSON file name to the raw GitHub URL
+                const response = await fetch('https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json');
                 if (!response.ok) {
-                    console.warn(`Could not fetch live data from traced_signals.json (status: ${response.status}). Using current in-memory data.`);
+                    console.warn(`Could not fetch live data from GitHub (status: ${response.status}). Using current in-memory data.`);
                     return currentSignalsData;
                 }
                 const data = await response.json();
                 const mergedData = {};
+                // Merge fetched data with existing in-memory data (if any)
                 currentSignalsData.forEach(signal => mergedData[signal.signal_id] = signal);
                 data.forEach(signal => mergedData[signal.signal_id] = signal);
                 currentSignalsData = Object.values(mergedData); // Update global data
                 return currentSignalsData;
             } catch (error) {
-                console.error("Error fetching JSON data:", error);
+                console.error("Error fetching JSON data from GitHub:", error);
                 return currentSignalsData;
             } finally {
                 hideLoading();
