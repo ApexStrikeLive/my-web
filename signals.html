@@ -206,34 +206,107 @@
         }
 
         /**
-         * Fetches signals data from a JSON URL.
-         * In a real application, replace this with your actual API endpoint.
-         * @returns {Promise<Array<Object>>} A promise that resolves with the signals data.
+         * Fetches signals data from a JSON URL and live prices from CoinGecko.
+         * @returns {Promise<Array<Object>>} A promise that resolves with the updated signals data.
          */
         async function fetchSignals() {
             showLoading();
             try {
-                // Changed the JSON file name to the raw GitHub URL
-                const url = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
-                console.log("Attempting to fetch from:", url); // Dodany log
-                const response = await fetch(url);
-                console.log("Fetch response status:", response.status); // Dodany log
-                if (!response.ok) {
-                    console.error(`HTTP error! status: ${response.status}`); // Bardziej szczegółowy błąd
-                    console.warn(`Could not fetch live data from GitHub (status: ${response.status}). Using current in-memory data.`);
-                    return currentSignalsData;
+                // Fetch historical data from GitHub
+                const githubUrl = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
+                console.log("Attempting to fetch historical data from:", githubUrl);
+                const response = await fetch(githubUrl);
+                console.log("Historical data fetch response status:", response.status);
+
+                let fetchedData = [];
+                if (response.ok) {
+                    fetchedData = await response.json();
+                    console.log("Fetched historical data:", fetchedData);
+                } else {
+                    console.error(`HTTP error fetching historical data! status: ${response.status}`);
+                    console.warn(`Could not fetch historical data from GitHub. Using current in-memory data.`);
+                    fetchedData = currentSignalsData; // Fallback to in-memory if GitHub fetch fails
                 }
-                const data = await response.json();
-                console.log("Fetched data:", data); // Dodany log
+
                 const mergedData = {};
-                // Merge fetched data with existing in-memory data (if any)
-                currentSignalsData.forEach(signal => mergedData[signal.signal_id] = signal);
-                data.forEach(signal => mergedData[signal.signal_id] = signal);
-                currentSignalsData = Object.values(mergedData); // Update global data
+                // Start with fetched data (or in-memory fallback)
+                fetchedData.forEach(signal => mergedData[signal.signal_id] = signal);
+
+                // Define a mapping for coin symbols to CoinGecko IDs
+                const coinGeckoIdMap = {
+                    "BTC": "bitcoin",
+                    "ETH": "ethereum",
+                    "ADA": "cardano",
+                    "CVX": "convex-finance",
+                    "APT": "aptos",
+                    "METIS": "metisdao",
+                    "GAS": "gas",
+                    "SSV": "ssv-network"
+                    // Add more mappings as needed for other symbols in your JSON
+                };
+
+                const symbolsToFetch = new Set();
+                Object.values(mergedData).forEach(signal => {
+                    const baseSymbol = signal.symbol.split('/')[0];
+                    if (coinGeckoIdMap[baseSymbol]) {
+                        symbolsToFetch.add(coinGeckoIdMap[baseSymbol]);
+                    }
+                });
+
+                if (symbolsToFetch.size > 0) {
+                    const ids = Array.from(symbolsToFetch).join(',');
+                    const vsCurrencies = 'usdt'; // Assuming all are against USDT
+                    const livePriceUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${vsCurrencies}`;
+                    console.log("Attempting to fetch live prices from:", livePriceUrl);
+
+                    try {
+                        const priceResponse = await fetch(livePriceUrl);
+                        console.log("Live price fetch response status:", priceResponse.status);
+                        if (priceResponse.ok) {
+                            const livePrices = await priceResponse.json();
+                            console.log("Fetched live prices:", livePrices);
+
+                            Object.values(mergedData).forEach(signal => {
+                                const baseSymbol = signal.symbol.split('/')[0];
+                                const coinGeckoId = coinGeckoIdMap[baseSymbol];
+                                if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
+                                    const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
+                                    signal.current_price = newCurrentPrice;
+
+                                    // Recalculate profit_loss_percentage and unrealized_pnl ONLY for OPEN signals
+                                    if (signal.monitoring_status === 'OPEN' && signal.entry_price !== null && signal.entry_price !== undefined && signal.entry_price !== 0) {
+                                        if (signal.signal_type === 'BUY') {
+                                            signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
+                                            signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
+                                        } else if (signal.signal_type === 'SELL') {
+                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
+                                            signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
+                                        }
+                                    } else if (signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
+                                        // For closed signals, ensure unrealized_pnl is 0 and profit_loss_percentage reflects realized PnL
+                                        signal.unrealized_pnl = 0;
+                                        if (signal.realized_pnl !== null && signal.initial_investment !== null && signal.initial_investment !== 0) {
+                                            signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.warn(`Could not fetch live prices from CoinGecko (status: ${priceResponse.status}).`);
+                        }
+                    } catch (priceError) {
+                        console.error("Error fetching live prices from CoinGecko:", priceError);
+                    }
+                } else {
+                    console.log("No symbols found in the data to fetch live prices for.");
+                }
+
+                currentSignalsData = Object.values(mergedData); // Update global data with merged and live prices
                 return currentSignalsData;
+
             } catch (error) {
-                console.error("Error fetching JSON data from GitHub:", error);
-                return currentSignalsData;
+                console.error("General error in fetchSignals:", error);
+                return currentSignalsData; // Return existing data on general error
             } finally {
                 hideLoading();
             }
@@ -273,7 +346,8 @@
                 }
 
                 // Unsuccessful if closed by SL and profit/loss percentage is significantly negative (e.g., < -2.5%)
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && signal.profit_loss_percentage < -2.5) {
+                // Adjusted condition to check for actual negative percentage from monitoring_status
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && signal.profit_loss_percentage < 0) {
                     closedUnsuccessfulSignals++;
                 }
 
@@ -406,7 +480,7 @@
 
             // Group signals by date
             const signalsByDate = sortedSignals.reduce((acc, signal) => {
-                const date = new Date(signal.entry_time).toISOString().split('T')[0]; // YYYY-MM-DD
+                const date = signal.entry_time ? new Date(signal.entry_time).toISOString().split('T')[0] : 'Unknown Date'; // Handle null entry_time
                 if (!acc[date]) {
                     acc[date] = [];
                 }
@@ -462,12 +536,13 @@
 
                         // Helper function to safely format numbers
                         const formatNumber = (value, decimals) => {
-                            return (value !== null && value !== undefined) ? value.toFixed(decimals) : 'N/A';
+                            // Ensure value is a number before calling toFixed, otherwise return 'N/A'
+                            return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(decimals) : 'N/A';
                         };
 
                         signalCard.innerHTML = `
                             <div class="signal-card-header">
-                                <h2 class="text-2xl font-bold text-gray-900">${signal.symbol} <span class="${signalTypeClass}">(${signal.signal_type})</span></h2>
+                                <h2 class="text-2xl font-bold text-gray-900">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
                                 <button class="toggle-chart-btn px-4 py-2 bg-purple-600 text-white rounded-md shadow-sm hover:bg-purple-700 transition duration-200" data-signal-id="${signal.signal_id}">
                                     Show Chart
                                 </button>
@@ -478,14 +553,19 @@
                                 <div class="signal-card-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(signal.profit_loss_percentage !== null && signal.profit_loss_percentage !== undefined) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
+                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
                                 <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${formatNumber(signal.realized_pnl, 2)}</span></div>
                                 <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)}</span></div>
                                 <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
+                                <div class="signal-card-item"><strong>Take Profit Target:</strong> <span>${formatNumber(signal.take_profit_target, 4)}</span></div>
+                                <div class="signal-card-item"><strong>Closed Percentage:</strong> <span>${formatNumber(signal.closed_percentage, 2)}%</span></div>
                                 <div class="signal-card-item"><strong>Exit Price:</strong> <span>${formatNumber(signal.exit_price, 4)}</span></div>
                                 <div class="signal-card-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes || 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Strategy Name:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)}</span></div>
+                                <div class="signal-card-item"><strong>Achieved 25% TP:</strong> <span>${signal.achieved_25_percent_tp ? 'Yes' : 'No'}</span></div>
+                                <div class="signal-card-item"><strong>Achieved 50% TP:</strong> <span>${signal.achieved_50_percent_tp ? 'Yes' : 'No'}</span></div>
                                 <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${(signal.activated_tp_levels && signal.activated_tp_levels.length > 0) ? signal.activated_tp_levels.join(', ') : 'None'}</span></div>
                             </div>
                             <div id="chart-container-${signal.signal_id}" class="chart-container hidden">
