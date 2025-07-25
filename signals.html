@@ -214,12 +214,17 @@
             showLoading();
             try {
                 // Changed the JSON file name to the raw GitHub URL
-                const response = await fetch('https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json');
+                const url = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
+                console.log("Attempting to fetch from:", url); // Dodany log
+                const response = await fetch(url);
+                console.log("Fetch response status:", response.status); // Dodany log
                 if (!response.ok) {
+                    console.error(`HTTP error! status: ${response.status}`); // Bardziej szczegółowy błąd
                     console.warn(`Could not fetch live data from GitHub (status: ${response.status}). Using current in-memory data.`);
                     return currentSignalsData;
                 }
                 const data = await response.json();
+                console.log("Fetched data:", data); // Dodany log
                 const mergedData = {};
                 // Merge fetched data with existing in-memory data (if any)
                 currentSignalsData.forEach(signal => mergedData[signal.signal_id] = signal);
@@ -438,7 +443,7 @@
                 if (isToday) {
                     // Filter signals for today to include only those from the last hour
                     signalsForDate = signalsByDate[date].filter(signal => {
-                        return new Date(signal.entry_time).getTime() >= oneHourAgo.getTime();
+                        return signal.entry_time && new Date(signal.entry_time).getTime() >= oneHourAgo.getTime();
                     });
                 } else {
                     // For previous days, show all signals
@@ -455,6 +460,11 @@
 
                         const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
 
+                        // Helper function to safely format numbers
+                        const formatNumber = (value, decimals) => {
+                            return (value !== null && value !== undefined) ? value.toFixed(decimals) : 'N/A';
+                        };
+
                         signalCard.innerHTML = `
                             <div class="signal-card-header">
                                 <h2 class="text-2xl font-bold text-gray-900">${signal.symbol} <span class="${signalTypeClass}">(${signal.signal_type})</span></h2>
@@ -463,20 +473,20 @@
                                 </button>
                             </div>
                             <div class="signal-card-body">
-                                <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe}</span></div>
-                                <div class="signal-card-item"><strong>Entry Price:</strong> <span>${signal.entry_price.toFixed(4)}</span></div>
-                                <div class="signal-card-item"><strong>Entry Time:</strong> <span>${new Date(signal.entry_time).toLocaleString()}</span></div>
-                                <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status}</span></div>
-                                <div class="signal-card-item"><strong>Current Price:</strong> <span>${signal.current_price.toFixed(4)}</span></div>
-                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600'}">${signal.profit_loss_percentage.toFixed(2)}%</span></div>
-                                <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${signal.realized_pnl.toFixed(2)}</span></div>
-                                <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${signal.unrealized_pnl.toFixed(2)}</span></div>
-                                <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${signal.stop_loss_price.toFixed(4)}</span></div>
-                                <div class="signal-card-item"><strong>Exit Price:</strong> <span>${signal.exit_price.toFixed(4)}</span></div>
+                                <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
+                                <div class="signal-card-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
+                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(signal.profit_loss_percentage !== null && signal.profit_loss_percentage !== undefined) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
+                                <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${formatNumber(signal.realized_pnl, 2)}</span></div>
+                                <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)}</span></div>
+                                <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
+                                <div class="signal-card-item"><strong>Exit Price:</strong> <span>${formatNumber(signal.exit_price, 4)}</span></div>
                                 <div class="signal-card-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes}</span></div>
-                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${signal.initial_investment.toFixed(2)}</span></div>
-                                <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${signal.activated_tp_levels.join(', ')}</span></div>
+                                <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes || 'N/A'}</span></div>
+                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)}</span></div>
+                                <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${(signal.activated_tp_levels && signal.activated_tp_levels.length > 0) ? signal.activated_tp_levels.join(', ') : 'None'}</span></div>
                             </div>
                             <div id="chart-container-${signal.signal_id}" class="chart-container hidden">
                                 <!-- TradingView chart will be loaded here -->
