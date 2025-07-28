@@ -467,13 +467,24 @@
             const latestSignalsContainer = document.getElementById('latestSignalsContainer');
             latestSignalsContainer.innerHTML = ''; // Clear previous content
 
-            const oneHourAgo = new Date();
-            oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+            const now = new Date(); // Get current time
+            // Calculate time one hour ago
+            const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); // Subtract 60 minutes * 60 seconds * 1000 milliseconds
 
+            // Filter signals:
+            // 1. Ensure signal.entry_time exists and is a valid date
+            // 2. Check if the entry_time is more recent than oneHourAgo
             const latestSignals = signals.filter(signal => {
-                const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
-                return entryTime && entryTime > oneHourAgo;
-            }).sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time)) // Sort newest first
+                try {
+                    const entryTime = new Date(signal.entry_time);
+                    // Check if entryTime is a valid date object and if it's within the last hour
+                    return !isNaN(entryTime.getTime()) && entryTime > oneHourAgo;
+                } catch (e) {
+                    console.warn("Invalid entry_time for signal:", signal.signal_id, signal.entry_time, e);
+                    return false; // Exclude signals with invalid entry_time
+                }
+            })
+            .sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time)) // Sort newest first
             .slice(0, 5); // Take top 5
 
             if (latestSignals.length === 0) {
