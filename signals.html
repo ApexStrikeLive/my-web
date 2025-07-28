@@ -358,31 +358,45 @@
         function updateSummaryStatistics(signals) {
             const totalSignals = signals.length;
             let successfulSignals = 0; 
-            let closedUnsuccessfulSignals = 0; 
+            let closedUnsuccessfulSignals = 0; // This will now count "CLOSED_SL" regardless of P&L for "Unsuccessful Signals" overall.
             let openSignals = 0; 
-            let totalClosed100Percent = 0; // New metric: Signals where closed_percentage is 100%
-            let closedSLLossGreaterThan3 = 0; // New metric: Signals closed by SL with profit_loss_percentage < -3%
+            let totalClosed100Percent = 0; 
+            let closedSLLossGreaterThan3 = 0; 
 
             signals.forEach(signal => {
-                if (signal.realized_pnl > 0) {
-                    successfulSignals++;
-                }
+                // Total Signals: already handled by signals.length
 
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && signal.profit_loss_percentage < 0) {
-                    closedUnsuccessfulSignals++;
-                }
-
+                // Open Signals
                 if (signal.monitoring_status === "OPEN") {
                     openSignals++;
                 }
 
-                // Check for "Total Closed 100%"
-                if (signal.closed_percentage === 100 && signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
+                // Successful Signals: based on realized_pnl for CLOSED signals
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl > 0) {
+                    successfulSignals++;
+                }
+
+                // Unsuccessful Signals: based on being CLOSED_SL or CLOSED and P&L <= 0
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && typeof signal.realized_pnl === 'number' && signal.realized_pnl <= 0) {
+                    closedUnsuccessfulSignals++;
+                }
+                // Alternative interpretation for Unsuccessful: if monitoring_status contains "CLOSED" and realized_pnl is 0 or negative
+                // if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl <= 0) {
+                //     // Ensure it's not already counted as successful
+                //     if (signal.realized_pnl <= 0) {
+                //         closedUnsuccessfulSignals++;
+                //     }
+                // }
+
+
+                // Total Closed 100%
+                if (typeof signal.closed_percentage === 'number' && signal.closed_percentage === 100 && signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
                     totalClosed100Percent++;
                 }
 
-                // Check for "Closed SL (Loss > -3%)"
-                if (signal.monitoring_status === "CLOSED_SL" && typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
+                // Closed SL (Loss > -3%)
+                // This will count signals that were closed by SL and had a profit_loss_percentage less than -3 (e.g., -3.1%, -5%, meaning a larger loss)
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                     closedSLLossGreaterThan3++;
                 }
             });
@@ -409,9 +423,9 @@
             const innerWidgetId = `tradingview_widget_${signal.signal_id}`;
 
             let tvInterval = "D"; 
-            if (signal.timeframe.includes('m')) {
+            if (signal.timeframe && signal.timeframe.includes('m')) {
                 tvInterval = signal.timeframe.replace('m', ''); 
-            } else if (signal.timeframe.includes('h')) {
+            } else if (signal.timeframe && signal.timeframe.includes('h')) {
                 tvInterval = signal.timeframe.replace('h', 'H'); 
             } else if (signal.timeframe === 'DAILY') {
                 tvInterval = "D";
@@ -488,6 +502,7 @@
             const latestSignals = signals.filter(signal => {
                 try {
                     const entryTime = new Date(signal.entry_time);
+                    // Check if entryTime is a valid date AND if it's after oneHourAgo
                     return !isNaN(entryTime.getTime()) && entryTime > oneHourAgo;
                 } catch (e) {
                     console.warn("Invalid entry_time for signal:", signal.signal_id, signal.entry_time, e);
@@ -541,10 +556,16 @@
 
                 if (signal.monitoring_status === "OPEN") {
                     strategyStats[strategyName].openSignals++;
-                } else if (signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
-                    if (signal.realized_pnl > 0) {
-                        strategyStats[strategyName].successfulSignals++;
-                    } else if (signal.realized_pnl <= 0) { // Consider any non-positive realized_pnl as unsuccessful for strategy stats
+                } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { // Check if it's a closed signal
+                    // Ensure realized_pnl is a number before comparison
+                    if (typeof signal.realized_pnl === 'number') {
+                        if (signal.realized_pnl > 0) {
+                            strategyStats[strategyName].successfulSignals++;
+                        } else { // Consider any non-positive realized_pnl as unsuccessful for strategy stats
+                            strategyStats[strategyName].unsuccessfulSignals++;
+                        }
+                    } else {
+                        // If realized_pnl is missing or invalid for a closed signal, default to unsuccessful
                         strategyStats[strategyName].unsuccessfulSignals++;
                     }
                 }
@@ -699,14 +720,14 @@
             const signals = await fetchSignals();
             updateSummaryStatistics(signals); 
             renderLatestSignals(signals); 
-            renderStrategyStatistics(signals); // NEW: Render strategy statistics
+            renderStrategyStatistics(signals); 
             renderSignals(signals); 
 
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals); 
                 renderLatestSignals(updatedSignals); 
-                renderStrategyStatistics(updatedSignals); // NEW: Re-render strategy statistics on refresh
+                renderStrategyStatistics(updatedSignals); 
                 renderSignals(updatedSignals); 
             }, 60000); 
         });
