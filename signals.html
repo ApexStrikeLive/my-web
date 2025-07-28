@@ -106,43 +106,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Styles for Strategy Statistics */
-        .strategy-statistics-section {
-            background-color: #e6fffa; /* Light teal */
-            border: 1px solid #81e6d9; /* Medium teal border */
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .strategy-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .strategy-card {
-            background-color: #ffffff;
-            border: 1px solid #a7d9d5; /* Light teal border */
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-        }
-        .strategy-card h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #008080; /* Dark teal */
-            margin-bottom: 1rem;
-        }
-        .strategy-card p {
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-        .strategy-card p strong {
-            color: #2c3e50; /* Darker text */
-        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -180,21 +143,15 @@
             </div>
         </div>
 
-        <div class="strategy-statistics-section">
-            <h2 class="text-2xl font-bold text-teal-700 mb-4">Statistics by Strategy</h2>
-            <div id="strategyStatisticsContainer" class="strategy-grid">
-                <p class="text-gray-600 col-span-full">Loading strategy statistics...</p>
-            </div>
-        </div>
-
         <div id="signalsContainer" class="mt-8">
             </div>
     </div>
 
     <script>
         let currentSignalsData = [];
+        let charts = {}; // To manage TradingView widgets
 
-        // Definition for Take Profit levels - Re-added for individual signal display
+        // Definition for Take Profit levels
         const tpLevelsDefinition = [
             { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
             { level: 0.8, close_percentage: 0, sl_profit_net: 0.2 },
@@ -208,8 +165,6 @@
             { level: 3.0, close_percentage: 0, sl_profit_net: 2.5 },
             { level: 3.3, close_percentage: 100, sl_profit_net: null }
         ];
-
-        let charts = {}; // To manage TradingView widgets
 
         function showLoading() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
@@ -234,7 +189,7 @@
                 let fetchedData = [];
                 if (response.ok) {
                     fetchedData = await response.json();
-                    console.log("Fetched historical data. Number of signals:", fetchedData.length);
+                    console.log("Fetched historical data: Array(", fetchedData.length, ")");
                 } else {
                     console.error(`HTTP error fetching historical data! status: ${response.status}`);
                     console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
@@ -244,7 +199,7 @@
                 const mergedData = {};
                 fetchedData.forEach(signal => mergedData[signal.signal_id] = signal);
 
-                // CoinGecko API for live prices - Re-added for individual signal display
+                // CoinGecko API for live prices
                 const coinGeckoIdMap = {
                     "BTC": "bitcoin", "ETH": "ethereum", "ADA": "cardano", "CVX": "convex-finance",
                     "APT": "aptos", "METIS": "metisdao", "GAS": "gas", "SSV": "ssv-network",
@@ -287,7 +242,7 @@
                                             signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
                                             signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
                                         } else if (signal.signal_type === 'SELL') {
-                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
+                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / newCurrentPrice) * 100; // Corrected for SELL
                                             signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
                                         }
                                     } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
@@ -322,7 +277,7 @@
         }
 
         /**
-         * Updates the summary statistics at the top of the page, including new detailed metrics.
+         * Updates the summary statistics at the top of the page.
          * @param {Array<Object>} signals - The array of all signal objects.
          */
         function updateSummaryStatistics(signals) {
@@ -331,7 +286,7 @@
             let closedUnsuccessfulSignals = 0;
             let openSignals = 0;
             let totalClosed100Percent = 0;
-            let closedSLLossGreaterThan3 = 0;
+            let closedSLLossGreaterThan3 = 0; // New metric for signals closed by SL with loss > 3%
 
             signals.forEach(signal => {
                 if (signal.monitoring_status === "OPEN") {
@@ -369,9 +324,7 @@
             document.getElementById('openSignals').textContent = openSignals;
             document.getElementById('totalClosed100Percent').textContent = totalClosed100Percent;
             document.getElementById('closedSLLossGreaterThan3').textContent = closedSLLossGreaterThan3;
-            console.log("Summary Statistics Updated:", { totalSignals, successfulSignals, closedUnsuccessfulSignals, openSignals, totalClosed100Percent, closedSLLossGreaterThan3 });
         }
-
 
         /**
          * Creates and renders a TradingView chart for a given signal.
@@ -452,99 +405,6 @@
         }
 
         /**
-         * Renders detailed statistics grouped by strategy name,
-         * including Total, Successful, Unsuccessful, Open, Closed 100%, and Closed SL (Loss > -3%).
-         * @param {Array<Object>} signals - The array of all signal objects.
-         */
-        function renderStrategyStatistics(signals) {
-            const strategyContainer = document.getElementById('strategyStatisticsContainer');
-            strategyContainer.innerHTML = ''; // Clear previous content
-
-            const strategyStats = {};
-
-            console.log("renderStrategyStatistics called with", signals.length, "signals.");
-            
-            signals.forEach(signal => {
-                // Ensure strategy_name is correctly accessed; default to 'Uncategorized' if missing
-                const strategyName = signal.strategy_name || 'Uncategorized';
-
-                // console.log("Processing signal:", signal.signal_id, "Strategy:", strategyName); // Uncomment for detailed debugging
-                
-                if (!strategyStats[strategyName]) {
-                    strategyStats[strategyName] = {
-                        totalSignals: 0,
-                        successfulSignals: 0,
-                        unsuccessfulSignals: 0,
-                        openSignals: 0,
-                        totalClosed100Percent: 0,
-                        closedSLLossGreaterThan3: 0
-                    };
-                }
-
-                strategyStats[strategyName].totalSignals++;
-
-                if (signal.monitoring_status === "OPEN") {
-                    strategyStats[strategyName].openSignals++;
-                } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
-                    if (typeof signal.realized_pnl === 'number') {
-                        if (signal.realized_pnl > 0) {
-                            strategyStats[strategyName].successfulSignals++;
-                        } else {
-                            strategyStats[strategyName].unsuccessfulSignals++;
-                        }
-                    } else {
-                        // If realized_pnl is missing or invalid for a closed signal, count as unsuccessful
-                        strategyStats[strategyName].unsuccessfulSignals++;
-                    }
-
-                    // Calculate Total Closed 100% for the strategy
-                    if (typeof signal.closed_percentage === 'number' && signal.closed_percentage === 100) {
-                        strategyStats[strategyName].totalClosed100Percent++;
-                    }
-
-                    // Calculate Closed SL (Loss > -3%) for the strategy
-                    // Note: profit_loss_percentage is expected to be negative for losses
-                    if (signal.monitoring_status.includes("CLOSED_SL") &&
-                        typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
-                        strategyStats[strategyName].closedSLLossGreaterThan3++;
-                    }
-                }
-            });
-
-            console.log("Aggregated strategyStats:", strategyStats);
-
-            // Sort strategies by totalSignals in descending order
-            const sortedStrategyNames = Object.keys(strategyStats).sort((a, b) => {
-                return strategyStats[b].totalSignals - strategyStats[a].totalSignals;
-            });
-
-            console.log("Sorted strategy names:", sortedStrategyNames);
-
-            if (sortedStrategyNames.length === 0) {
-                strategyContainer.innerHTML = '<p class="text-gray-600 col-span-full">No strategy statistics available.</p>';
-                console.log("No strategy statistics to render.");
-            } else {
-                sortedStrategyNames.forEach(name => {
-                    const stats = strategyStats[name];
-                    const strategyCard = document.createElement('div');
-                    strategyCard.className = 'strategy-card';
-                    strategyCard.innerHTML = `
-                        <h3 class="mb-2">${name}</h3>
-                        <p><strong>Total Signals:</strong> ${stats.totalSignals}</p>
-                        <p><strong>Successful:</strong> <span class="text-green-600 font-semibold">${stats.successfulSignals}</span></p>
-                        <p><strong>Unsuccessful:</strong> <span class="text-red-600 font-semibold">${stats.unsuccessfulSignals}</span></p>
-                        <p><strong>Open:</strong> <span class="text-blue-600 font-semibold">${stats.openSignals}</span></p>
-                        <p><strong>Closed 100%:</strong> <span class="text-purple-600 font-semibold">${stats.totalClosed100Percent}</span></p>
-                        <p><strong>Closed SL (Loss &lt; -3%):</strong> <span class="text-orange-600 font-semibold">${stats.closedSLLossGreaterThan3}</span></p>
-                    `;
-                    strategyContainer.appendChild(strategyCard);
-                });
-                console.log("Attempting to append strategy cards.");
-            }
-        }
-
-
-        /**
          * Renders the signals data into the HTML, grouped by date.
          */
         function renderSignals(signals) {
@@ -555,8 +415,6 @@
             for (const id in charts) {
                 if (charts[id]) {
                     charts[id].innerHTML = '';
-                    // No need to set to null if we re-create the charts object on each render
-                    // However, ensure this is handled if charts are not entirely re-rendered
                 }
             }
             charts = {}; // Reset charts object for fresh rendering
@@ -575,9 +433,8 @@
             }, {});
 
             const now = new Date();
-            // Use the correct current year for comparison (2025) - adjust if actual year differs
+            // Using the actual current year (2025) for "Today" comparison
             const today = now.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-
 
             for (const date in signalsByDate) {
                 const isToday = date === today;
@@ -641,7 +498,7 @@
                                 </div>
                                 <div class="signal-card-item">
                                     <strong>Closed Time:</strong>
-                                    <span>${signal.closed_time ? new Date(signal.closed_time).toLocaleString() : 'N/A'}</span>
+                                    <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span>
                                 </div>
                                 <div class="signal-card-item">
                                     <strong>Timeframe:</strong>
@@ -691,17 +548,17 @@
                                             const tpPrice = signal.signal_type === 'BUY'
                                                 ? signal.entry_price * (1 + tp.level / 100)
                                                 : signal.entry_price * (1 - tp.level / 100);
-                                            const isTPReached = signal.activated_tp_levels && signal.activated_tp_levels.includes(`tp_${tp.level.toFixed(1).replace('.', '')}`); // Adjusted to match "tp_07", "tp_12" format
+                                            // Ensure this matches the format in your JSON, e.g., "tp_07" for 0.7, "tp_12" for 1.2
+                                            const activatedTpLevelKey = `tp_${String(tp.level).replace('.', '')}`;
+                                            const isTPReached = signal.activated_tp_levels && signal.activated_tp_levels.includes(activatedTpLevelKey);
                                             
-                                            // Handle cases where profit_loss_percentage is string (e.g. "0.00%")
-                                            const tpLevelProfit = typeof tp.level === 'string' ? parseFloat(tp.level) : tp.level;
-                                            const displayTpLevel = formatNumber(tpLevelProfit, 1);
+                                            const displayTpLevel = formatNumber(tp.level, 1);
 
                                             return `
                                                 <tr class="${isTPReached ? 'bg-green-50' : ''}">
                                                     <td class="py-2 px-4 border-b border-gray-200">${displayTpLevel}</td>
                                                     <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpPrice, 4)}</td>
-                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpLevelProfit, 2)}%</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tp.level, 2)}%</td>
                                                     <td class="py-2 px-4 border-b border-gray-200">${isTPReached ? '<span class="text-green-600 font-bold">Yes</span>' : 'No'}</td>
                                                     <td class="py-2 px-4 border-b border-gray-200">${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
                                                 </tr>
@@ -726,22 +583,19 @@
                 detailsElement.appendChild(dateSignalsDiv);
                 signalsContainer.appendChild(detailsElement);
             }
-            console.log("Signals Rendered by Date.");
         }
 
         // Initial fetch and render
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
             updateSummaryStatistics(signals);
-            renderStrategyStatistics(signals); // Call the strategy stats function
-            renderSignals(signals); // Call the individual signals render function
+            renderSignals(signals);
 
             // Set up interval for refreshing data every 5 minutes (300000 milliseconds)
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals);
-                renderStrategyStatistics(updatedSignals); // Refresh strategy stats
-                renderSignals(updatedSignals); // Refresh individual signals
+                renderSignals(updatedSignals);
             }, 300000);
         });
     </script>
