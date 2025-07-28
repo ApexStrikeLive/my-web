@@ -670,62 +670,119 @@
                         signalCard.innerHTML = `
                             <div class="signal-card-header">
                                 <h2 class="text-2xl font-bold text-gray-900">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
-                                <button class="toggle-chart-btn px-4 py-2 bg-purple-600 text-white rounded-md shadow-sm hover:bg-purple-700 transition duration-200" data-signal-id="${signal.signal_id}">
-                                    Show Chart
-                                </button>
+                                <span class="px-3 py-1 text-sm font-semibold rounded-full ${signal.monitoring_status === 'OPEN' ? 'bg-blue-200 text-blue-800' : 'bg-gray-200 text-gray-800'}">
+                                    ${signal.monitoring_status || 'N/A'}
+                                </span>
                             </div>
                             <div class="signal-card-body">
-                                <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
-                                <div class="signal-card-item"><strong>Unrealized PNL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)} USDT</span></div>
-                                <div class="signal-card-item"><strong>Realized PNL:</strong> <span>${formatNumber(signal.realized_pnl, 2)} USDT</span></div>
-                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)} USDT</span></div>
-                                <div class="signal-card-item"><strong>Closed %:</strong> <span>${formatNumber(signal.closed_percentage, 2)}%</span></div>
-                                <div class="signal-card-item"><strong>Strategy:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
-                                ${signal.stop_loss ? `<div class="signal-card-item"><strong>Stop Loss:</strong> <span>${formatNumber(signal.stop_loss, 4)}</span></div>` : ''}
-                                ${signal.take_profits && signal.take_profits.length > 0 ?
-                                    `<div class="signal-card-item col-span-full"><strong>Take Profits:</strong>
-                                        <ul class="list-disc list-inside mt-1">
-                                            ${signal.take_profits.map(tp => `<li>TP: ${formatNumber(tp.price, 4)} (Closed: ${formatNumber(tp.closed_percentage, 2)}%, PNL: ${formatNumber(tp.realized_pnl, 2)} USDT)</li>`).join('')}
-                                        </ul>
-                                    </div>` : ''}
+                                <div class="signal-card-item">
+                                    <strong>Strategy:</strong>
+                                    <span>${signal.strategy_name || 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Entry Price:</strong>
+                                    <span>${formatNumber(signal.entry_price, 4)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Current Price:</strong>
+                                    <span>${formatNumber(signal.current_price, 4)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Stop Loss:</strong>
+                                    <span>${formatNumber(signal.stop_loss, 4)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Entry Time:</strong>
+                                    <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Closed Time:</strong>
+                                    <span>${signal.closed_time ? new Date(signal.closed_time).toLocaleString() : 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Timeframe:</strong>
+                                    <span>${signal.timeframe || 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Initial Investment:</strong>
+                                    <span>$${formatNumber(signal.initial_investment, 2)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Profit/Loss (%):</strong>
+                                    <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
+                                        ${formatNumber(signal.profit_loss_percentage, 2)}%
+                                    </span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Unrealized PnL:</strong>
+                                    <span class="${(typeof signal.unrealized_pnl === 'number' && !isNaN(signal.unrealized_pnl)) ? (signal.unrealized_pnl >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
+                                        $${formatNumber(signal.unrealized_pnl, 2)}
+                                    </span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Realized PnL:</strong>
+                                    <span class="${(typeof signal.realized_pnl === 'number' && !isNaN(signal.realized_pnl)) ? (signal.realized_pnl >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
+                                        $${formatNumber(signal.realized_pnl, 2)}
+                                    </span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Closed %:</strong>
+                                    <span>${formatNumber(signal.closed_percentage, 0)}%</span>
+                                </div>
                             </div>
-                            <div id="chart-container-${signal.signal_id}" class="chart-container hidden"></div>
+                            <h4 class="text-xl font-semibold mt-4 mb-2 text-gray-800">Take Profit Levels:</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white rounded-lg shadow overflow-hidden">
+                                    <thead>
+                                        <tr>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Level</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Price</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Profit (%)</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Target Reached</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Closed %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${tpLevelsDefinition.map(tp => {
+                                            const tpPrice = signal.signal_type === 'BUY'
+                                                ? signal.entry_price * (1 + tp.level / 100)
+                                                : signal.entry_price * (1 - tp.level / 100);
+                                            const targetReached = (signal.signal_type === 'BUY' && signal.current_price >= tpPrice) ||
+                                                                  (signal.signal_type === 'SELL' && signal.current_price <= tpPrice);
+                                            const profitPercentageAtTP = tp.level;
+                                            const currentClosedPercentage = signal.closed_percentage || 0;
+                                            const isTPReached = signal.take_profit_levels_achieved && signal.take_profit_levels_achieved.includes(tp.level);
+
+                                            return `
+                                                <tr class="${isTPReached ? 'bg-green-50' : ''}">
+                                                    <td class="py-2 px-4 border-b border-gray-200">${tp.level}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpPrice, 4)}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(profitPercentageAtTP, 2)}%</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${isTPReached ? '<span class="text-green-600 font-bold">Yes</span>' : 'No'}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="chart-container" id="chart-${signal.signal_id}"></div>
                         `;
                         dateSignalsDiv.appendChild(signalCard);
+
+                        // Render TradingView chart
+                        if (signal.symbol) {
+                            createChart(signal, `chart-${signal.signal_id}`);
+                        } else {
+                            console.warn(`Cannot create chart for signal ${signal.signal_id}: Symbol is missing.`);
+                            document.getElementById(`chart-${signal.signal_id}`).innerHTML = '<p class="text-center text-gray-500">Chart not available (symbol missing).</p>';
+                        }
                     });
                 }
                 detailsElement.appendChild(dateSignalsDiv);
                 signalsContainer.appendChild(detailsElement);
             }
-
-            // Attach event listeners for chart toggling AFTER rendering
-            document.querySelectorAll('.toggle-chart-btn').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const signalId = event.target.dataset.signalId;
-                    const chartElem = document.getElementById(`chart-container-${signalId}`);
-                    const signal = currentSignalsData.find(s => s.signal_id === signalId);
-
-                    if (chartElem && signal) {
-                        if (chartElem.classList.contains('hidden')) {
-                            chartElem.classList.remove('hidden');
-                            event.target.textContent = 'Hide Chart';
-                            // Only create chart if it hasn't been created yet
-                            if (!charts[signalId]) {
-                                createChart(signal, `chart-container-${signalId}`);
-                            }
-                        } else {
-                            chartElem.classList.add('hidden');
-                            event.target.textContent = 'Show Chart';
-                        }
-                    }
-                });
-            });
-            console.log("Signals Rendered.");
+            console.log("Signals Rendered by Date.");
         }
 
         // Initial fetch and render
@@ -733,19 +790,18 @@
             const signals = await fetchSignals();
             updateSummaryStatistics(signals);
             renderLatestSignals(signals);
-            renderStrategyStatistics(signals); // Render strategy statistics
-            renderSignals(signals); // Render individual signals
-        });
+            renderStrategyStatistics(signals); // Call the new function here
+            renderSignals(signals);
 
-        // Optional: Refresh data periodically (e.g., every 5 minutes)
-        setInterval(async () => {
-            console.log("Refreshing data...");
-            const signals = await fetchSignals();
-            updateSummaryStatistics(signals);
-            renderLatestSignals(signals);
-            renderStrategyStatistics(signals); // Refresh strategy statistics
-            renderSignals(signals); // Refresh individual signals
-        }, 5 * 60 * 1000); // 5 minutes in milliseconds
+            // Set up interval for refreshing data every 5 minutes (300000 milliseconds)
+            setInterval(async () => {
+                const updatedSignals = await fetchSignals();
+                updateSummaryStatistics(updatedSignals);
+                renderLatestSignals(updatedSignals);
+                renderStrategyStatistics(updatedSignals); // Refresh strategy stats
+                renderSignals(updatedSignals);
+            }, 300000);
+        });
     </script>
 </body>
 </html>
