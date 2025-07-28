@@ -174,10 +174,10 @@
     </div>
 
     <script>
-        // currentSignalsData is now an empty array, it will be populated from the GitHub URL
+        // currentSignalsData is now an empty array; it will be populated from the GitHub URL.
         let currentSignalsData = []; 
 
-        // Define TP levels as provided by the user (kept for future potential use)
+        // Define TP levels (kept for potential future use or reference)
         const tpLevelsDefinition = [
             { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
             { level: 0.8, close_percentage: 0, sl_profit_net: 0.2 },
@@ -192,7 +192,7 @@
             { level: 3.3, close_percentage: 100, sl_profit_net: null }
         ];
 
-        let charts = {}; // Object to store chart instances (now TradingView widget references)
+        let charts = {}; // Object to store chart instances (TradingView widget references)
 
         /**
          * Shows the loading overlay.
@@ -238,8 +238,8 @@
                 } else {
                     console.error(`HTTP error fetching historical data! status: ${response.status}`);
                     console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
-                    // In a real application, you might want to load a cached version or display an error message
-                    return []; // Return empty array if GitHub fetch fails and no initial data
+                    // Return an empty array if GitHub fetch fails; the dashboard will show "No signals"
+                    return []; 
                 }
 
                 const mergedData = {};
@@ -251,7 +251,7 @@
                     "BTC": "bitcoin",
                     "ETH": "ethereum",
                     "ADA": "cardano",
-                    "" : "", // Empty string to handle cases where symbol might be missing
+                    "" : "", // Handle cases where symbol might be missing
                     "CVX": "convex-finance",
                     "APT": "aptos",
                     "METIS": "metisdao",
@@ -265,7 +265,7 @@
 
                 const symbolsToFetch = new Set();
                 Object.values(mergedData).forEach(signal => {
-                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
+                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; 
                     if (baseSymbol && coinGeckoIdMap[baseSymbol]) {
                         symbolsToFetch.add(coinGeckoIdMap[baseSymbol]);
                     }
@@ -285,7 +285,7 @@
                             console.log("Fetched live prices:", livePrices);
 
                             Object.values(mergedData).forEach(signal => {
-                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; // Handle null symbol
+                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; 
                                 const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
                                 if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
                                     const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
@@ -326,8 +326,8 @@
 
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
-                // If there's a general error, it's best to return an empty array or the last known data
-                return []; // Return an empty array to prevent rendering stale/incorrect data on error
+                // If there's a general error, return an empty array to prevent rendering stale/incorrect data
+                return []; 
             } finally {
                 hideLoading();
             }
@@ -349,7 +349,7 @@
                     successfulSignals++;
                 }
 
-                // Unsuccessful if closed by SL and profit/loss percentage is significantly negative (e.g., < -2.5%)
+                // Unsuccessful if closed by SL and profit/loss percentage is significantly negative
                 if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && signal.profit_loss_percentage < 0) {
                     closedUnsuccessfulSignals++;
                 }
@@ -391,7 +391,6 @@
             } else if (signal.timeframe === 'DAILY') {
                 tvInterval = "D";
             }
-
 
             // Create the main widget container div
             const widgetWrapper = document.createElement('div');
@@ -468,8 +467,7 @@
             latestSignalsContainer.innerHTML = ''; // Clear previous content
 
             const now = new Date(); // Get current time
-            // Calculate time one hour ago
-            const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); // Subtract 60 minutes * 60 seconds * 1000 milliseconds
+            const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); // Calculate time one hour ago
 
             // Filter signals:
             // 1. Ensure signal.entry_time exists and is a valid date
@@ -477,11 +475,10 @@
             const latestSignals = signals.filter(signal => {
                 try {
                     const entryTime = new Date(signal.entry_time);
-                    // Check if entryTime is a valid date object and if it's within the last hour
                     return !isNaN(entryTime.getTime()) && entryTime > oneHourAgo;
                 } catch (e) {
                     console.warn("Invalid entry_time for signal:", signal.signal_id, signal.entry_time, e);
-                    return false; // Exclude signals with invalid entry_time
+                    return false; 
                 }
             })
             .sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time)) // Sort newest first
@@ -530,7 +527,7 @@
             const signalsByDate = sortedSignals.reduce((acc, signal) => {
                 // Ensure entry_time is valid before processing
                 const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
-                const date = entryTime ? entryTime.toISOString().split('T')[0] : 'Unknown Date'; // Handle null entry_time
+                const date = entryTime ? entryTime.toISOString().split('T')[0] : 'Unknown Date'; 
                 if (!acc[date]) {
                     acc[date] = [];
                 }
@@ -631,7 +628,7 @@
                         // Clear the TradingView widget content when hidden
                         if (charts[signalId]) {
                             charts[signalId].innerHTML = '';
-                            charts[signalId] = null; // Remove reference
+                            charts[signalId] = null; 
                         }
                     }
                 });
@@ -641,16 +638,16 @@
         // Initial fetch and render when the page loads
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
-            updateSummaryStatistics(signals); // Update stats for all fetched signals
-            renderLatestSignals(signals); // Render latest signals
-            renderSignals(signals); // Render all signals with date grouping
+            updateSummaryStatistics(signals); 
+            renderLatestSignals(signals); 
+            renderSignals(signals); 
 
             // Set up interval to refresh signals every 60 seconds (60000 milliseconds)
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
-                updateSummaryStatistics(updatedSignals); // Update stats for all fetched signals
-                renderLatestSignals(updatedSignals); // Render latest signals on refresh
-                renderSignals(updatedSignals); // Re-render with updated data
+                updateSummaryStatistics(updatedSignals); 
+                renderLatestSignals(updatedSignals); 
+                renderSignals(updatedSignals); 
             }, 60000); // 1 minute refresh
         });
     </script>
