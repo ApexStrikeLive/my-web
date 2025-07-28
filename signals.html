@@ -222,11 +222,11 @@
         </div>
 
         <div id="signalsContainer" class="mt-8">
-            </div>
+        </div>
     </div>
 
     <script>
-        let currentSignalsData = []; 
+        let currentSignalsData = [];
 
         const tpLevelsDefinition = [
             { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
@@ -242,7 +242,7 @@
             { level: 3.3, close_percentage: 100, sl_profit_net: null }
         ];
 
-        let charts = {}; 
+        let charts = {};
 
         function showLoading() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
@@ -271,7 +271,7 @@
                 } else {
                     console.error(`HTTP error fetching historical data! status: ${response.status}`);
                     console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
-                    return []; 
+                    return [];
                 }
 
                 const mergedData = {};
@@ -288,7 +288,7 @@
 
                 const symbolsToFetch = new Set();
                 Object.values(mergedData).forEach(signal => {
-                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; 
+                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null;
                     if (baseSymbol && coinGeckoIdMap[baseSymbol]) {
                         symbolsToFetch.add(coinGeckoIdMap[baseSymbol]);
                     }
@@ -296,7 +296,7 @@
 
                 if (symbolsToFetch.size > 0) {
                     const ids = Array.from(symbolsToFetch).join(',');
-                    const vsCurrencies = 'usdt'; 
+                    const vsCurrencies = 'usdt';
                     const livePriceUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${vsCurrencies}`;
                     console.log("Attempting to fetch live prices from:", livePriceUrl);
 
@@ -308,7 +308,7 @@
                             console.log("Fetched live prices:", livePrices);
 
                             Object.values(mergedData).forEach(signal => {
-                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null; 
+                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null;
                                 const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
                                 if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
                                     const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
@@ -322,12 +322,12 @@
                                             signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
                                             signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
                                         }
-                                    } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { 
+                                    } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
                                         signal.unrealized_pnl = 0; // For closed signals, unrealized PnL should be 0
                                         if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
                                             signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
                                         } else {
-                                            signal.profit_loss_percentage = 0; 
+                                            signal.profit_loss_percentage = 0;
                                         }
                                     }
                                 }
@@ -342,12 +342,12 @@
                     console.log("No symbols found in the data to fetch live prices for.");
                 }
 
-                currentSignalsData = Object.values(mergedData); 
+                currentSignalsData = Object.values(mergedData);
                 return currentSignalsData;
 
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
-                return []; 
+                return [];
             } finally {
                 hideLoading();
             }
@@ -359,11 +359,11 @@
          */
         function updateSummaryStatistics(signals) {
             const totalSignals = signals.length;
-            let successfulSignals = 0; 
-            let closedUnsuccessfulSignals = 0; 
-            let openSignals = 0; 
-            let totalClosed100Percent = 0; 
-            let closedSLLossGreaterThan3 = 0; 
+            let successfulSignals = 0;
+            let closedUnsuccessfulSignals = 0;
+            let openSignals = 0;
+            let totalClosed100Percent = 0;
+            let closedSLLossGreaterThan3 = 0;
 
             signals.forEach(signal => {
                 if (signal.monitoring_status === "OPEN") {
@@ -381,7 +381,7 @@
                         closedUnsuccessfulSignals++;
                     }
                 }
-                
+
                 // Total Closed 100%
                 if (typeof signal.closed_percentage === 'number' && signal.closed_percentage === 100 && signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
                     totalClosed100Percent++;
@@ -389,7 +389,7 @@
 
                 // Closed SL (Loss > -3%)
                 // Counts signals closed by SL with a loss greater than 3% (e.g., -3.1%, -5%)
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && 
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") &&
                     typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                     closedSLLossGreaterThan3++;
                 }
@@ -409,18 +409,18 @@
          */
         function createChart(signal, containerId) {
             const chartContainer = document.getElementById(containerId);
-            chartContainer.innerHTML = ''; 
+            chartContainer.innerHTML = '';
 
             const [base, quote] = signal.symbol.split('/');
-            const tradingViewSymbol = `BINANCE:${base}${quote}`; 
+            const tradingViewSymbol = `BINANCE:${base}${quote}`;
 
             const innerWidgetId = `tradingview_widget_${signal.signal_id}`;
 
-            let tvInterval = "D"; 
+            let tvInterval = "D";
             if (signal.timeframe && signal.timeframe.includes('m')) {
-                tvInterval = signal.timeframe.replace('m', ''); 
+                tvInterval = signal.timeframe.replace('m', '');
             } else if (signal.timeframe && signal.timeframe.includes('h')) {
-                tvInterval = signal.timeframe.replace('h', 'H'); 
+                tvInterval = signal.timeframe.replace('h', 'H');
             } else if (signal.timeframe === 'DAILY') {
                 tvInterval = "D";
             }
@@ -447,17 +447,17 @@
 
             const widgetConfig = {
                 "width": "100%",
-                "height": "400", 
+                "height": "400",
                 "symbol": tradingViewSymbol,
                 "interval": tvInterval,
                 "timezone": "Etc/UTC",
-                "theme": "light", 
-                "style": "1", 
+                "theme": "light",
+                "style": "1",
                 "locale": "en",
-                "toolbar_bg": "#f1f5f9", 
+                "toolbar_bg": "#f1f5f9",
                 "enable_publishing": false,
                 "allow_symbol_change": true,
-                "container_id": innerWidgetId, 
+                "container_id": innerWidgetId,
                 "hide_side_toolbar": false,
                 "hide_top_toolbar": false,
                 "withdateranges": true,
@@ -465,7 +465,7 @@
                 "details": false,
                 "hotlist": false,
                 "calendar": false,
-                "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"], 
+                "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"],
                 "show_popup_button": true,
                 "popup_width": "1000",
                 "popup_height": "650",
@@ -475,7 +475,7 @@
 
             widgetWrapper.appendChild(innerWidgetDiv);
             widgetWrapper.appendChild(copyrightDiv);
-            widgetWrapper.appendChild(script); 
+            widgetWrapper.appendChild(script);
 
             chartContainer.appendChild(widgetWrapper);
 
@@ -487,10 +487,10 @@
          */
         function renderLatestSignals(signals) {
             const latestSignalsContainer = document.getElementById('latestSignalsContainer');
-            latestSignalsContainer.innerHTML = ''; 
+            latestSignalsContainer.innerHTML = '';
 
-            const now = new Date(); 
-            const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); 
+            const now = new Date();
+            const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
 
             const latestSignals = signals.filter(signal => {
                 try {
@@ -498,11 +498,11 @@
                     return !isNaN(entryTime.getTime()) && entryTime > oneHourAgo;
                 } catch (e) {
                     console.warn("Invalid entry_time for signal (filtered out from latest signals):", signal.signal_id, signal.entry_time, e);
-                    return false; 
+                    return false;
                 }
             })
-            .sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time)) 
-            .slice(0, 5); 
+            .sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time))
+            .slice(0, 5);
 
             if (latestSignals.length === 0) {
                 latestSignalsContainer.innerHTML = '<p class="text-gray-600 col-span-full">No new signals in the last hour.</p>';
@@ -524,7 +524,8 @@
         }
 
         /**
-         * Renders statistics grouped by strategy name.
+         * Renders detailed statistics grouped by strategy name,
+         * including Total, Successful, Unsuccessful, Open, Closed 100%, and Closed SL (Loss > -3%).
          * @param {Array<Object>} signals - The array of all signal objects.
          */
         function renderStrategyStatistics(signals) {
@@ -541,7 +542,9 @@
                         totalSignals: 0,
                         successfulSignals: 0,
                         unsuccessfulSignals: 0,
-                        openSignals: 0
+                        openSignals: 0,
+                        totalClosed100Percent: 0,
+                        closedSLLossGreaterThan3: 0
                     };
                 }
 
@@ -549,27 +552,41 @@
 
                 if (signal.monitoring_status === "OPEN") {
                     strategyStats[strategyName].openSignals++;
-                } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { 
+                } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
                     if (typeof signal.realized_pnl === 'number') {
                         if (signal.realized_pnl > 0) {
                             strategyStats[strategyName].successfulSignals++;
-                        } else { 
+                        } else {
                             strategyStats[strategyName].unsuccessfulSignals++;
                         }
                     } else {
                         // If realized_pnl is missing or invalid for a closed signal, count as unsuccessful
                         strategyStats[strategyName].unsuccessfulSignals++;
                     }
+
+                    // Calculate Total Closed 100% for the strategy
+                    if (typeof signal.closed_percentage === 'number' && signal.closed_percentage === 100) {
+                        strategyStats[strategyName].totalClosed100Percent++;
+                    }
+
+                    // Calculate Closed SL (Loss > -3%) for the strategy
+                    if (signal.monitoring_status.includes("CLOSED_SL") &&
+                        typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
+                        strategyStats[strategyName].closedSLLossGreaterThan3++;
+                    }
                 }
             });
 
-            const strategyNames = Object.keys(strategyStats).sort(); 
+            // Sort strategies by totalSignals in descending order
+            const sortedStrategyNames = Object.keys(strategyStats).sort((a, b) => {
+                return strategyStats[b].totalSignals - strategyStats[a].totalSignals;
+            });
 
-            if (strategyNames.length === 0) {
+            if (sortedStrategyNames.length === 0) {
                 strategyContainer.innerHTML = '<p class="text-gray-600 col-span-full">No strategy statistics available.</p>';
                 console.log("No strategy statistics to render.");
             } else {
-                strategyNames.forEach(name => {
+                sortedStrategyNames.forEach(name => {
                     const stats = strategyStats[name];
                     const strategyCard = document.createElement('div');
                     strategyCard.className = 'strategy-card';
@@ -579,6 +596,8 @@
                         <p><strong>Successful:</strong> <span class="text-green-600 font-semibold">${stats.successfulSignals}</span></p>
                         <p><strong>Unsuccessful:</strong> <span class="text-red-600 font-semibold">${stats.unsuccessfulSignals}</span></p>
                         <p><strong>Open:</strong> <span class="text-blue-600 font-semibold">${stats.openSignals}</span></p>
+                        <p><strong>Closed 100%:</strong> <span class="text-purple-600 font-semibold">${stats.totalClosed100Percent}</span></p>
+                        <p><strong>Closed SL (Loss &lt; -3%):</strong> <span class="text-orange-600 font-semibold">${stats.closedSLLossGreaterThan3}</span></p>
                     `;
                     strategyContainer.appendChild(strategyCard);
                 });
@@ -592,21 +611,21 @@
          */
         function renderSignals(signals) {
             const signalsContainer = document.getElementById('signalsContainer');
-            signalsContainer.innerHTML = ''; 
+            signalsContainer.innerHTML = '';
 
             for (const id in charts) {
                 if (charts[id]) {
-                    charts[id].innerHTML = ''; 
-                    charts[id] = null; 
+                    charts[id].innerHTML = '';
+                    charts[id] = null;
                 }
             }
-            charts = {}; 
+            charts = {};
 
             const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
 
             const signalsByDate = sortedSignals.reduce((acc, signal) => {
                 const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
-                const date = entryTime ? entryTime.toISOString().split('T')[0] : 'Unknown Date'; 
+                const date = entryTime ? entryTime.toISOString().split('T')[0] : 'Unknown Date';
                 if (!acc[date]) {
                     acc[date] = [];
                 }
@@ -622,7 +641,7 @@
                 const detailsElement = document.createElement('details');
                 detailsElement.className = 'mb-4';
                 if (isToday) {
-                    detailsElement.setAttribute('open', ''); 
+                    detailsElement.setAttribute('open', '');
                 }
 
                 const summaryElement = document.createElement('summary');
@@ -662,73 +681,71 @@
                                 <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
                                 <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
                                 <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
-                                <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${formatNumber(signal.realized_pnl, 2)}</span></div>
-                                <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)}</span></div>
-                                <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Take Profit Target:</strong> <span>${formatNumber(signal.take_profit_target, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Closed Percentage:</strong> <span>${formatNumber(signal.closed_percentage, 2)}%</span></div>
-                                <div class="signal-card-item"><strong>Exit Price:</strong> <span>${formatNumber(signal.exit_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Strategy Name:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)}</span></div>
-                                <div class="signal-card-item"><strong>Achieved 25% TP:</strong> <span>${signal.achieved_25_percent_tp ? 'Yes' : 'No'}</span></div>
-                                <div class="signal-card-item"><strong>Achieved 50% TP:</strong> <span>${signal.achieved_50_percent_tp ? 'Yes' : 'No'}</span></div>
-                                <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${(signal.activated_tp_levels && signal.activated_tp_levels.length > 0) ? signal.activated_tp_levels.join(', ') : 'None'}</span></div>
+                                <div class="signal-card-item"><strong>Unrealized PNL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)} USDT</span></div>
+                                <div class="signal-card-item"><strong>Realized PNL:</strong> <span>${formatNumber(signal.realized_pnl, 2)} USDT</span></div>
+                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)} USDT</span></div>
+                                <div class="signal-card-item"><strong>Closed %:</strong> <span>${formatNumber(signal.closed_percentage, 2)}%</span></div>
+                                <div class="signal-card-item"><strong>Strategy:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
+                                ${signal.stop_loss ? `<div class="signal-card-item"><strong>Stop Loss:</strong> <span>${formatNumber(signal.stop_loss, 4)}</span></div>` : ''}
+                                ${signal.take_profits && signal.take_profits.length > 0 ?
+                                    `<div class="signal-card-item col-span-full"><strong>Take Profits:</strong>
+                                        <ul class="list-disc list-inside mt-1">
+                                            ${signal.take_profits.map(tp => `<li>TP: ${formatNumber(tp.price, 4)} (Closed: ${formatNumber(tp.closed_percentage, 2)}%, PNL: ${formatNumber(tp.realized_pnl, 2)} USDT)</li>`).join('')}
+                                        </ul>
+                                    </div>` : ''}
                             </div>
-                            <div id="chart-container-${signal.signal_id}" class="chart-container hidden">
-                                </div>
+                            <div id="chart-container-${signal.signal_id}" class="chart-container hidden"></div>
                         `;
                         dateSignalsDiv.appendChild(signalCard);
                     });
                 }
                 detailsElement.appendChild(dateSignalsDiv);
                 signalsContainer.appendChild(detailsElement);
-            });
-            console.log("Detailed Signals Rendered. Number of date groups:", Object.keys(signalsByDate).length);
+            }
 
-
+            // Attach event listeners for chart toggling AFTER rendering
             document.querySelectorAll('.toggle-chart-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const signalId = event.target.dataset.signalId;
-                    const chartContainer = document.getElementById(`chart-container-${signalId}`);
+                    const chartElem = document.getElementById(`chart-container-${signalId}`);
                     const signal = currentSignalsData.find(s => s.signal_id === signalId);
 
-                    if (chartContainer.classList.contains('hidden')) {
-                        chartContainer.classList.remove('hidden');
-                        event.target.textContent = 'Hide Chart';
-                        createChart(signal, `chart-container-${signalId}`);
-                    } else {
-                        chartContainer.classList.add('hidden');
-                        event.target.textContent = 'Show Chart';
-                        if (charts[signalId]) {
-                            // Clear and remove the chart to prevent memory leaks and performance issues
-                            charts[signalId].innerHTML = '';
-                            charts[signalId] = null; 
+                    if (chartElem && signal) {
+                        if (chartElem.classList.contains('hidden')) {
+                            chartElem.classList.remove('hidden');
+                            event.target.textContent = 'Hide Chart';
+                            // Only create chart if it hasn't been created yet
+                            if (!charts[signalId]) {
+                                createChart(signal, `chart-container-${signalId}`);
+                            }
+                        } else {
+                            chartElem.classList.add('hidden');
+                            event.target.textContent = 'Show Chart';
                         }
                     }
                 });
             });
+            console.log("Signals Rendered.");
         }
 
+        // Initial fetch and render
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
-            updateSummaryStatistics(signals); 
-            renderLatestSignals(signals); 
-            renderStrategyStatistics(signals); 
-            renderSignals(signals); 
-
-            // Refresh data every minute
-            setInterval(async () => {
-                console.log("Refreshing data...");
-                const updatedSignals = await fetchSignals();
-                updateSummaryStatistics(updatedSignals); 
-                renderLatestSignals(updatedSignals); 
-                renderStrategyStatistics(updatedSignals); 
-                renderSignals(updatedSignals); 
-                console.log("Data refresh complete.");
-            }, 60000); 
+            updateSummaryStatistics(signals);
+            renderLatestSignals(signals);
+            renderStrategyStatistics(signals); // Render strategy statistics
+            renderSignals(signals); // Render individual signals
         });
+
+        // Optional: Refresh data periodically (e.g., every 5 minutes)
+        setInterval(async () => {
+            console.log("Refreshing data...");
+            const signals = await fetchSignals();
+            updateSummaryStatistics(signals);
+            renderLatestSignals(signals);
+            renderStrategyStatistics(signals); // Refresh strategy statistics
+            renderSignals(signals); // Refresh individual signals
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
     </script>
 </body>
 </html>
