@@ -174,220 +174,10 @@
     </div>
 
     <script>
-        // Sample JSON data (replace with fetch from a URL in a real application)
-        let currentSignalsData = [
-            {
-                "signal_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-                "symbol": "BTC/USDT",
-                "timeframe": "4h",
-                "signal_type": "BUY",
-                "entry_price": 60000.00,
-                "entry_time": "2025-07-28T10:30:00.000000", // Example: Last hour
-                "is_monitored": true,
-                "monitoring_status": "OPEN",
-                "current_price": 61500.00,
-                "profit_loss_percentage": 2.50,
-                "realized_pnl": 0.0,
-                "unrealized_pnl": 1500.0,
-                "stop_loss_price": 59000.00,
-                "take_profit_target": 63000.00,
-                "closed_percentage": 0.0,
-                "exit_price": 0.0,
-                "exit_time": null,
-                "partial_closes": [],
-                "notes": "New signal, monitoring",
-                "strategy_name": "LongTerm_Hold",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            },
-            {
-                "signal_id": "b2c3d4e5-f6a7-8901-2345-67890abcdef0",
-                "symbol": "ETH/USDT",
-                "timeframe": "1h",
-                "signal_type": "SELL",
-                "entry_price": 3500.00,
-                "entry_time": "2025-07-28T11:00:00.000000", // Example: Last hour (more recent)
-                "is_monitored": true,
-                "monitoring_status": "CLOSED_TP",
-                "current_price": 3400.00,
-                "profit_loss_percentage": 2.86,
-                "realized_pnl": 100.0,
-                "unrealized_pnl": 0.0,
-                "stop_loss_price": 3600.00,
-                "take_profit_target": 3400.00,
-                "closed_percentage": 100.0,
-                "exit_price": 3400.00,
-                "exit_time": "2025-07-27T12:00:00.000000",
-                "partial_closes": [],
-                "notes": "Quick scalp, hit TP",
-                "strategy_name": "Scalping_Strategy",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": true,
-                "achieved_50_percent_tp": true,
-                "activated_tp_levels": [0.7, 1.2, 3.3]
-            },
-            {
-                "signal_id": "c3d4e5f6-a7b8-9012-3456-7890abcdef12",
-                "symbol": "ADA/USDT",
-                "timeframe": "DAILY",
-                "signal_type": "BUY",
-                "entry_price": 0.45,
-                "entry_time": "2025-07-01T08:00:00.000000", // Earlier date
-                "is_monitored": true,
-                "monitoring_status": "OPEN",
-                "current_price": 0.46,
-                "profit_loss_percentage": 2.22,
-                "realized_pnl": 0.0,
-                "unrealized_pnl": 22.2,
-                "stop_loss_price": 0.40,
-                "take_profit_target": 0.55,
-                "closed_percentage": 0.0,
-                "exit_price": 0.0,
-                "exit_time": null,
-                "partial_closes": [],
-                "notes": "Long-term position",
-                "strategy_name": "Swing_Trade",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            },
-            {
-                "signal_id": "d4e5f6a7-b8c9-0123-4567-890abcdef234",
-                "symbol": "GAS/USDT",
-                "timeframe": "15m",
-                "signal_type": "BUY",
-                "entry_price": 4.00,
-                "entry_time": "2025-07-28T11:20:00.000000", // Example: Last hour (most recent)
-                "is_monitored": true,
-                "monitoring_status": "OPEN",
-                "current_price": 3.90,
-                "profit_loss_percentage": -2.50,
-                "realized_pnl": 0.0,
-                "unrealized_pnl": -25.0,
-                "stop_loss_price": 3.80,
-                "take_profit_target": 4.20,
-                "closed_percentage": 0.0,
-                "exit_price": 0.0,
-                "exit_time": null,
-                "partial_closes": [],
-                "notes": "Watching for bounce",
-                "strategy_name": "Intraday_Bounce",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            },
-            {
-                "signal_id": "e5f6a7b8-c9d0-1234-5678-90abcdef3456",
-                "symbol": "CVX/USDT",
-                "timeframe": "4h",
-                "signal_type": "BUY",
-                "entry_price": 3.00,
-                "entry_time": "2025-07-26T15:00:00.000000", // Earlier date
-                "is_monitored": true,
-                "monitoring_status": "CLOSED_SL",
-                "current_price": 2.80,
-                "profit_loss_percentage": -6.67,
-                "realized_pnl": -66.70,
-                "unrealized_pnl": 0.0,
-                "stop_loss_price": 2.90,
-                "take_profit_target": 3.20,
-                "closed_percentage": 100.0,
-                "exit_price": 2.80,
-                "exit_time": "2025-07-27T08:00:00.000000",
-                "partial_closes": [],
-                "notes": "Stopped out",
-                "strategy_name": "Trend_Follow",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            },
-            {
-                "signal_id": "f6a7b8c9-d0e1-2345-6789-0abcdef45678",
-                "symbol": "AAVE/USDT",
-                "timeframe": "1h",
-                "signal_type": "BUY",
-                "entry_price": 80.00,
-                "entry_time": "2025-07-28T10:50:00.000000", // Example: Last hour
-                "is_monitored": true,
-                "monitoring_status": "OPEN",
-                "current_price": 81.50,
-                "profit_loss_percentage": 1.875,
-                "realized_pnl": 0.0,
-                "unrealized_pnl": 18.75,
-                "stop_loss_price": 78.00,
-                "take_profit_target": 85.00,
-                "closed_percentage": 0.0,
-                "exit_price": 0.0,
-                "exit_time": null,
-                "partial_closes": [],
-                "notes": "Monitoring AAVE",
-                "strategy_name": "Momentum_Play",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            },
-            {
-                "signal_id": "12345678-90ab-cdef-1234-567890abcdef",
-                "symbol": "LINK/USDT",
-                "timeframe": "30m",
-                "signal_type": "SELL",
-                "entry_price": 15.00,
-                "entry_time": "2025-07-28T10:45:00.000000", // Example: Last hour
-                "is_monitored": true,
-                "monitoring_status": "OPEN",
-                "current_price": 15.10,
-                "profit_loss_percentage": -0.67,
-                "realized_pnl": 0.0,
-                "unrealized_pnl": -6.70,
-                "stop_loss_price": 15.20,
-                "take_profit_target": 14.80,
-                "closed_percentage": 0.0,
-                "exit_price": 0.0,
-                "exit_time": null,
-                "partial_closes": [],
-                "notes": "Shorting LINK",
-                "strategy_name": "Scalping_Strategy",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            },
-            {
-                "signal_id": "fedcba98-7654-3210-fedc-ba9876543210",
-                "symbol": "SOL/USDT",
-                "timeframe": "2h",
-                "signal_type": "BUY",
-                "entry_price": 150.00,
-                "entry_time": "2025-07-28T09:30:00.000000", // Example: Just outside last hour (for testing limit)
-                "is_monitored": true,
-                "monitoring_status": "OPEN",
-                "current_price": 152.00,
-                "profit_loss_percentage": 1.33,
-                "realized_pnl": 0.0,
-                "unrealized_pnl": 20.0,
-                "stop_loss_price": 148.00,
-                "take_profit_target": 155.00,
-                "closed_percentage": 0.0,
-                "exit_price": 0.0,
-                "exit_time": null,
-                "partial_closes": [],
-                "notes": "Long SOL",
-                "strategy_name": "Swing_Trade",
-                "initial_investment": 1000.0,
-                "achieved_25_percent_tp": false,
-                "achieved_50_percent_tp": false,
-                "activated_tp_levels": []
-            }
-        ];
+        // currentSignalsData is now an empty array, it will be populated from the GitHub URL
+        let currentSignalsData = []; 
 
-
-        // Define TP levels as provided by the user
+        // Define TP levels as provided by the user (kept for future potential use)
         const tpLevelsDefinition = [
             { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
             { level: 0.8, close_percentage: 0, sl_profit_net: 0.2 },
@@ -447,12 +237,13 @@
                     console.log("Fetched historical data:", fetchedData);
                 } else {
                     console.error(`HTTP error fetching historical data! status: ${response.status}`);
-                    console.warn(`Could not fetch historical data from GitHub. Using current in-memory data.`);
-                    fetchedData = currentSignalsData; // Fallback to in-memory if GitHub fetch fails
+                    console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
+                    // In a real application, you might want to load a cached version or display an error message
+                    return []; // Return empty array if GitHub fetch fails and no initial data
                 }
 
                 const mergedData = {};
-                // Start with fetched data (or in-memory fallback)
+                // Start with fetched data
                 fetchedData.forEach(signal => mergedData[signal.signal_id] = signal);
 
                 // Define a mapping for coin symbols to CoinGecko IDs
@@ -466,9 +257,9 @@
                     "METIS": "metisdao",
                     "GAS": "gas",
                     "SSV": "ssv-network",
-                    "AAVE": "aave", // Added for new sample data
-                    "LINK": "chainlink", // Added for new sample data
-                    "SOL": "solana" // Added for new sample data
+                    "AAVE": "aave",
+                    "LINK": "chainlink",
+                    "SOL": "solana"
                     // Add more mappings as needed for other symbols in your JSON
                 };
 
@@ -535,7 +326,8 @@
 
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
-                return currentSignalsData; // Return existing data on general error
+                // If there's a general error, it's best to return an empty array or the last known data
+                return []; // Return an empty array to prevent rendering stale/incorrect data on error
             } finally {
                 hideLoading();
             }
@@ -558,7 +350,6 @@
                 }
 
                 // Unsuccessful if closed by SL and profit/loss percentage is significantly negative (e.g., < -2.5%)
-                // Adjusted condition to check for actual negative percentage from monitoring_status
                 if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && signal.profit_loss_percentage < 0) {
                     closedUnsuccessfulSignals++;
                 }
@@ -840,14 +631,14 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
             updateSummaryStatistics(signals); // Update stats for all fetched signals
-            renderLatestSignals(signals); // NEW: Render latest signals
+            renderLatestSignals(signals); // Render latest signals
             renderSignals(signals); // Render all signals with date grouping
 
             // Set up interval to refresh signals every 60 seconds (60000 milliseconds)
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals); // Update stats for all fetched signals
-                renderLatestSignals(updatedSignals); // NEW: Render latest signals on refresh
+                renderLatestSignals(updatedSignals); // Render latest signals on refresh
                 renderSignals(updatedSignals); // Re-render with updated data
             }, 60000); // 1 minute refresh
         });
