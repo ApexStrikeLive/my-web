@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Signals Dashboard - Strategy Analysis</title>
+    <title>Trade Signals Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for better aesthetics */
@@ -19,6 +19,68 @@
             background-color: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Light gray border */
+        }
+        th {
+            background-color: #f8fafc; /* Lighter header background */
+            font-weight: 600;
+            color: #475569; /* Slightly darker header text */
+        }
+        tr:hover {
+            background-color: #f1f5f9; /* Lighter hover effect */
+        }
+        .signal-card {
+            border: 1px solid #cbd5e1; /* Gray border */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .signal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .signal-card-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .signal-card-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .signal-card-item strong {
+            color: #1e293b; /* Darker label */
+        }
+        .chart-container {
+            margin-top: 1.5rem;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            /* Ensure the container has a defined height for TradingView widget */
+            height: 400px; /* Set a default height */
+            overflow: hidden; /* Hide overflow if widget is larger */
+        }
+        .buy-signal {
+            color: #10b981; /* Green for BUY */
+            font-weight: bold;
+        }
+        .sell-signal {
+            color: #ef4444; /* Red for SELL */
+            font-weight: bold;
         }
         .loading-overlay {
             position: fixed;
@@ -125,10 +187,29 @@
             </div>
         </div>
 
-        </div>
+        <div id="signalsContainer" class="mt-8">
+            </div>
+    </div>
 
     <script>
         let currentSignalsData = [];
+
+        // Definition for Take Profit levels - Re-added for individual signal display
+        const tpLevelsDefinition = [
+            { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
+            { level: 0.8, close_percentage: 0, sl_profit_net: 0.2 },
+            { level: 1.2, close_percentage: 25, sl_profit_net: 0.6 },
+            { level: 1.5, close_percentage: 0, sl_profit_net: 0.8 },
+            { level: 1.8, close_percentage: 0, sl_profit_net: 1.0 },
+            { level: 2.0, close_percentage: 25, sl_profit_net: 1.4 },
+            { level: 2.4, close_percentage: 0, sl_profit_net: 1.6 },
+            { level: 2.6, close_percentage: 0, sl_profit_net: 1.8 },
+            { level: 2.8, close_percentage: 0, sl_profit_net: 2.0 },
+            { level: 3.0, close_percentage: 0, sl_profit_net: 2.5 },
+            { level: 3.3, close_percentage: 100, sl_profit_net: null }
+        ];
+
+        let charts = {}; // To manage TradingView widgets
 
         function showLoading() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
@@ -146,27 +227,90 @@
             showLoading();
             try {
                 const githubUrl = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
-                console.log("Attempting to fetch data from:", githubUrl);
+                console.log("Attempting to fetch historical data from:", githubUrl);
                 const response = await fetch(githubUrl);
-                console.log("Fetch response status:", response.status);
+                console.log("Historical data fetch response status:", response.status);
 
                 let fetchedData = [];
                 if (response.ok) {
                     fetchedData = await response.json();
-                    console.log("Fetched data. Number of signals:", fetchedData.length);
+                    console.log("Fetched historical data. Number of signals:", fetchedData.length);
                 } else {
-                    console.error(`HTTP error fetching data! status: ${response.status}`);
-                    console.warn(`Could not fetch data from GitHub. The dashboard might appear empty until a successful fetch.`);
+                    console.error(`HTTP error fetching historical data! status: ${response.status}`);
+                    console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
                     return [];
                 }
 
-                // We no longer fetch live prices or calculate PnL for individual signals
-                // as those details are removed from the display.
-                // However, we need 'profit_loss_percentage' and 'realized_pnl' for closed signals
-                // to correctly calculate successful/unsuccessful counts.
-                // Assuming these are present in your traced_signals.json for closed signals.
+                const mergedData = {};
+                fetchedData.forEach(signal => mergedData[signal.signal_id] = signal);
 
-                currentSignalsData = fetchedData; // Use fetched data directly
+                // CoinGecko API for live prices - Re-added for individual signal display
+                const coinGeckoIdMap = {
+                    "BTC": "bitcoin", "ETH": "ethereum", "ADA": "cardano", "CVX": "convex-finance",
+                    "APT": "aptos", "METIS": "metisdao", "GAS": "gas", "SSV": "ssv-network",
+                    "AAVE": "aave", "LINK": "chainlink", "SOL": "solana", "BNB": "binancecoin",
+                    "ORDI": "ordi", "CYBER": "cyberconnect", "MOVR": "moonriver", "GNO": "gnosis",
+                    "LPT": "livepeer", "ATM": "atletico-madrid-fan-token", "DCR": "decred", "PSG": "paris-saint-germain-fan-token",
+                    // Add more mappings as needed from your signals
+                };
+
+                const symbolsToFetch = new Set();
+                Object.values(mergedData).forEach(signal => {
+                    const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null;
+                    if (baseSymbol && coinGeckoIdMap[baseSymbol]) {
+                        symbolsToFetch.add(coinGeckoIdMap[baseSymbol]);
+                    }
+                });
+
+                if (symbolsToFetch.size > 0) {
+                    const ids = Array.from(symbolsToFetch).join(',');
+                    const vsCurrencies = 'usdt';
+                    const livePriceUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${vsCurrencies}`;
+                    console.log("Attempting to fetch live prices from:", livePriceUrl);
+
+                    try {
+                        const priceResponse = await fetch(livePriceUrl);
+                        console.log("Live price fetch response status:", priceResponse.status);
+                        if (priceResponse.ok) {
+                            const livePrices = await priceResponse.json();
+                            console.log("Fetched live prices:", livePrices);
+
+                            Object.values(mergedData).forEach(signal => {
+                                const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null;
+                                const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
+                                if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
+                                    const newCurrentPrice = livePrices[coinGeckoId][vsCurrencies];
+                                    signal.current_price = newCurrentPrice;
+
+                                    if (signal.monitoring_status === 'OPEN' && typeof signal.entry_price === 'number' && signal.entry_price !== 0) {
+                                        if (signal.signal_type === 'BUY') {
+                                            signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
+                                            signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
+                                        } else if (signal.signal_type === 'SELL') {
+                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
+                                            signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
+                                        }
+                                    } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
+                                        signal.unrealized_pnl = 0; // For closed signals, unrealized PnL should be 0
+                                        if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
+                                            signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
+                                        } else {
+                                            signal.profit_loss_percentage = 0;
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.warn(`Could not fetch live prices from CoinGecko (status: ${priceResponse.status}).`);
+                        }
+                    } catch (priceError) {
+                        console.error("Error fetching live prices from CoinGecko:", priceError);
+                    }
+                } else {
+                    console.log("No symbols found in the data to fetch live prices for.");
+                }
+
+                currentSignalsData = Object.values(mergedData);
                 return currentSignalsData;
 
             } catch (error) {
@@ -228,6 +372,83 @@
             console.log("Summary Statistics Updated:", { totalSignals, successfulSignals, closedUnsuccessfulSignals, openSignals, totalClosed100Percent, closedSLLossGreaterThan3 });
         }
 
+        /**
+         * Creates and renders a TradingView chart for a given signal.
+         */
+        function createChart(signal, containerId) {
+            const chartContainer = document.getElementById(containerId);
+            chartContainer.innerHTML = ''; // Clear previous chart (if any)
+
+            const [base, quote] = signal.symbol.split('/');
+            const tradingViewSymbol = `BINANCE:${base}${quote}`;
+
+            const innerWidgetId = `tradingview_widget_${signal.signal_id}`;
+
+            let tvInterval = "D";
+            if (signal.timeframe && signal.timeframe.includes('m')) {
+                tvInterval = signal.timeframe.replace('m', '');
+            } else if (signal.timeframe && signal.timeframe.includes('h')) {
+                tvInterval = signal.timeframe.replace('h', 'H');
+            } else if (signal.timeframe === 'DAILY') {
+                tvInterval = "D";
+            }
+
+            const widgetWrapper = document.createElement('div');
+            widgetWrapper.className = 'tradingview-widget-container';
+            widgetWrapper.style.height = '100%';
+            widgetWrapper.style.width = '100%';
+
+            const innerWidgetDiv = document.createElement('div');
+            innerWidgetDiv.id = innerWidgetId;
+            innerWidgetDiv.className = 'tradingview-widget-container__widget';
+            innerWidgetDiv.style.height = 'calc(100% - 32px)'; // Adjust height for copyright
+            innerWidgetDiv.style.width = '100%';
+
+            const copyrightDiv = document.createElement('div');
+            copyrightDiv.className = 'tradingview-widget-copyright';
+            copyrightDiv.innerHTML = `<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>`;
+
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+            script.async = true;
+
+            const widgetConfig = {
+                "width": "100%",
+                "height": "400",
+                "symbol": tradingViewSymbol,
+                "interval": tvInterval,
+                "timezone": "Etc/UTC",
+                "theme": "light",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#f1f5f9",
+                "enable_publishing": false,
+                "allow_symbol_change": true,
+                "container_id": innerWidgetId,
+                "hide_side_toolbar": false,
+                "hide_top_toolbar": false,
+                "withdateranges": true,
+                "save_image": false,
+                "details": false,
+                "hotlist": false,
+                "calendar": false,
+                "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"],
+                "show_popup_button": true,
+                "popup_width": "1000",
+                "popup_height": "650",
+            };
+
+            script.textContent = JSON.stringify(widgetConfig);
+
+            widgetWrapper.appendChild(innerWidgetDiv);
+            widgetWrapper.appendChild(copyrightDiv);
+            widgetWrapper.appendChild(script);
+
+            chartContainer.appendChild(widgetWrapper);
+
+            charts[signal.signal_id] = chartContainer;
+        }
 
         /**
          * Renders detailed statistics grouped by strategy name,
@@ -312,17 +533,200 @@
             }
         }
 
+
+        /**
+         * Renders the signals data into the HTML, grouped by date.
+         */
+        function renderSignals(signals) {
+            const signalsContainer = document.getElementById('signalsContainer');
+            signalsContainer.innerHTML = '';
+
+            // Clear existing charts to prevent multiple instances
+            for (const id in charts) {
+                if (charts[id]) {
+                    charts[id].innerHTML = '';
+                    charts[id] = null;
+                }
+            }
+            charts = {};
+
+            const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
+
+            const signalsByDate = sortedSignals.reduce((acc, signal) => {
+                const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
+                // Use the correct current year for comparison (2025)
+                const date = entryTime ? entryTime.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-') : 'Unknown Date'; // YYYY-MM-DD format
+                if (!acc[date]) {
+                    acc[date] = [];
+                }
+                acc[date].push(signal);
+                return acc;
+            }, {});
+
+            const now = new Date();
+            // Use the correct current year for comparison (2025)
+            const today = now.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+
+
+            for (const date in signalsByDate) {
+                const isToday = date === today;
+                const detailsElement = document.createElement('details');
+                detailsElement.className = 'mb-4';
+                if (isToday) {
+                    detailsElement.setAttribute('open', '');
+                }
+
+                const summaryElement = document.createElement('summary');
+                summaryElement.className = 'bg-blue-200 p-4 rounded-t-lg cursor-pointer font-semibold text-xl text-blue-800 hover:bg-blue-300 transition duration-200';
+                summaryElement.textContent = `Signals for ${date}`;
+                if (isToday) {
+                    summaryElement.textContent += ' (Today)';
+                }
+                detailsElement.appendChild(summaryElement);
+
+                const dateSignalsDiv = document.createElement('div');
+                dateSignalsDiv.className = 'p-4 border border-t-0 border-blue-200 rounded-b-lg bg-white';
+
+                const signalsForDate = signalsByDate[date];
+
+                if (signalsForDate.length === 0) {
+                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">No signals for this date.</p>';
+                } else {
+                    signalsForDate.forEach(signal => {
+                        const signalCard = document.createElement('div');
+                        signalCard.className = 'signal-card';
+                        signalCard.id = `signal-${signal.signal_id}`;
+
+                        const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
+
+                        signalCard.innerHTML = `
+                            <div class="signal-card-header">
+                                <h2 class="text-2xl font-bold text-gray-900">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
+                                <span class="px-3 py-1 text-sm font-semibold rounded-full ${signal.monitoring_status === 'OPEN' ? 'bg-blue-200 text-blue-800' : 'bg-gray-200 text-gray-800'}">
+                                    ${signal.monitoring_status || 'N/A'}
+                                </span>
+                            </div>
+                            <div class="signal-card-body">
+                                <div class="signal-card-item">
+                                    <strong>Strategy:</strong>
+                                    <span>${signal.strategy_name || 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Entry Price:</strong>
+                                    <span>${formatNumber(signal.entry_price, 4)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Current Price:</strong>
+                                    <span>${formatNumber(signal.current_price, 4)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Stop Loss:</strong>
+                                    <span>${formatNumber(signal.stop_loss, 4)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Entry Time:</strong>
+                                    <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Closed Time:</strong>
+                                    <span>${signal.closed_time ? new Date(signal.closed_time).toLocaleString() : 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Timeframe:</strong>
+                                    <span>${signal.timeframe || 'N/A'}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Initial Investment:</strong>
+                                    <span>$${formatNumber(signal.initial_investment, 2)}</span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Profit/Loss (%):</strong>
+                                    <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
+                                        ${formatNumber(signal.profit_loss_percentage, 2)}%
+                                    </span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Unrealized PnL:</strong>
+                                    <span class="${(typeof signal.unrealized_pnl === 'number' && !isNaN(signal.unrealized_pnl)) ? (signal.unrealized_pnl >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
+                                        $${formatNumber(signal.unrealized_pnl, 2)}
+                                    </span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Realized PnL:</strong>
+                                    <span class="${(typeof signal.realized_pnl === 'number' && !isNaN(signal.realized_pnl)) ? (signal.realized_pnl >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
+                                        $${formatNumber(signal.realized_pnl, 2)}
+                                    </span>
+                                </div>
+                                <div class="signal-card-item">
+                                    <strong>Closed %:</strong>
+                                    <span>${formatNumber(signal.closed_percentage, 0)}%</span>
+                                </div>
+                            </div>
+                            <h4 class="text-xl font-semibold mt-4 mb-2 text-gray-800">Take Profit Levels:</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white rounded-lg shadow overflow-hidden">
+                                    <thead>
+                                        <tr>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Level</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Price</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Profit (%)</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Target Reached</th>
+                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Closed %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${tpLevelsDefinition.map(tp => {
+                                            const tpPrice = signal.signal_type === 'BUY'
+                                                ? signal.entry_price * (1 + tp.level / 100)
+                                                : signal.entry_price * (1 - tp.level / 100);
+                                            // The `targetReached` logic is primarily for display; actual achieved status comes from signal.take_profit_levels_achieved
+                                            const isTPReached = signal.take_profit_levels_achieved && signal.take_profit_levels_achieved.includes(tp.level);
+
+                                            return `
+                                                <tr class="${isTPReached ? 'bg-green-50' : ''}">
+                                                    <td class="py-2 px-4 border-b border-gray-200">${tp.level}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpPrice, 4)}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tp.level, 2)}%</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${isTPReached ? '<span class="text-green-600 font-bold">Yes</span>' : 'No'}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="chart-container" id="chart-${signal.signal_id}"></div>
+                        `;
+                        dateSignalsDiv.appendChild(signalCard);
+
+                        // Render TradingView chart
+                        if (signal.symbol) {
+                            createChart(signal, `chart-${signal.signal_id}`);
+                        } else {
+                            console.warn(`Cannot create chart for signal ${signal.signal_id}: Symbol is missing.`);
+                            document.getElementById(`chart-${signal.signal_id}`).innerHTML = '<p class="text-center text-gray-500">Chart not available (symbol missing).</p>';
+                        }
+                    });
+                }
+                detailsElement.appendChild(dateSignalsDiv);
+                signalsContainer.appendChild(detailsElement);
+            }
+            console.log("Signals Rendered by Date.");
+        }
+
         // Initial fetch and render
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
             updateSummaryStatistics(signals);
-            renderStrategyStatistics(signals); // Call the new function here
+            renderStrategyStatistics(signals); // Call the strategy stats function
+            renderSignals(signals); // Call the individual signals render function
 
             // Set up interval for refreshing data every 5 minutes (300000 milliseconds)
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals);
                 renderStrategyStatistics(updatedSignals); // Refresh strategy stats
+                renderSignals(updatedSignals); // Refresh individual signals
             }, 300000);
         });
     </script>
