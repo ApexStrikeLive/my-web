@@ -372,6 +372,7 @@
             console.log("Summary Statistics Updated:", { totalSignals, successfulSignals, closedUnsuccessfulSignals, openSignals, totalClosed100Percent, closedSLLossGreaterThan3 });
         }
 
+
         /**
          * Creates and renders a TradingView chart for a given signal.
          */
@@ -461,10 +462,14 @@
 
             const strategyStats = {};
 
+            console.log("renderStrategyStatistics called with", signals.length, "signals.");
+            
             signals.forEach(signal => {
                 // Ensure strategy_name is correctly accessed; default to 'Uncategorized' if missing
                 const strategyName = signal.strategy_name || 'Uncategorized';
 
+                // console.log("Processing signal:", signal.signal_id, "Strategy:", strategyName); // Uncomment for detailed debugging
+                
                 if (!strategyStats[strategyName]) {
                     strategyStats[strategyName] = {
                         totalSignals: 0,
@@ -498,6 +503,7 @@
                     }
 
                     // Calculate Closed SL (Loss > -3%) for the strategy
+                    // Note: profit_loss_percentage is expected to be negative for losses
                     if (signal.monitoring_status.includes("CLOSED_SL") &&
                         typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                         strategyStats[strategyName].closedSLLossGreaterThan3++;
@@ -505,10 +511,14 @@
                 }
             });
 
+            console.log("Aggregated strategyStats:", strategyStats);
+
             // Sort strategies by totalSignals in descending order
             const sortedStrategyNames = Object.keys(strategyStats).sort((a, b) => {
                 return strategyStats[b].totalSignals - strategyStats[a].totalSignals;
             });
+
+            console.log("Sorted strategy names:", sortedStrategyNames);
 
             if (sortedStrategyNames.length === 0) {
                 strategyContainer.innerHTML = '<p class="text-gray-600 col-span-full">No strategy statistics available.</p>';
@@ -529,7 +539,7 @@
                     `;
                     strategyContainer.appendChild(strategyCard);
                 });
-                console.log("Strategy Statistics Rendered:", strategyStats);
+                console.log("Attempting to append strategy cards.");
             }
         }
 
@@ -545,10 +555,11 @@
             for (const id in charts) {
                 if (charts[id]) {
                     charts[id].innerHTML = '';
-                    charts[id] = null;
+                    // No need to set to null if we re-create the charts object on each render
+                    // However, ensure this is handled if charts are not entirely re-rendered
                 }
             }
-            charts = {};
+            charts = {}; // Reset charts object for fresh rendering
 
             const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
 
@@ -564,7 +575,7 @@
             }, {});
 
             const now = new Date();
-            // Use the correct current year for comparison (2025)
+            // Use the correct current year for comparison (2025) - adjust if actual year differs
             const today = now.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 
 
@@ -572,7 +583,8 @@
                 const isToday = date === today;
                 const detailsElement = document.createElement('details');
                 detailsElement.className = 'mb-4';
-                if (isToday) {
+                // Automatically open today's signals, or all if there's only one date
+                if (isToday || Object.keys(signalsByDate).length === 1) {
                     detailsElement.setAttribute('open', '');
                 }
 
@@ -679,14 +691,17 @@
                                             const tpPrice = signal.signal_type === 'BUY'
                                                 ? signal.entry_price * (1 + tp.level / 100)
                                                 : signal.entry_price * (1 - tp.level / 100);
-                                            // The `targetReached` logic is primarily for display; actual achieved status comes from signal.take_profit_levels_achieved
-                                            const isTPReached = signal.take_profit_levels_achieved && signal.take_profit_levels_achieved.includes(tp.level);
+                                            const isTPReached = signal.activated_tp_levels && signal.activated_tp_levels.includes(`tp_${tp.level.toFixed(1).replace('.', '')}`); // Adjusted to match "tp_07", "tp_12" format
+                                            
+                                            // Handle cases where profit_loss_percentage is string (e.g. "0.00%")
+                                            const tpLevelProfit = typeof tp.level === 'string' ? parseFloat(tp.level) : tp.level;
+                                            const displayTpLevel = formatNumber(tpLevelProfit, 1);
 
                                             return `
                                                 <tr class="${isTPReached ? 'bg-green-50' : ''}">
-                                                    <td class="py-2 px-4 border-b border-gray-200">${tp.level}</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${displayTpLevel}</td>
                                                     <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpPrice, 4)}</td>
-                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tp.level, 2)}%</td>
+                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpLevelProfit, 2)}%</td>
                                                     <td class="py-2 px-4 border-b border-gray-200">${isTPReached ? '<span class="text-green-600 font-bold">Yes</span>' : 'No'}</td>
                                                     <td class="py-2 px-4 border-b border-gray-200">${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
                                                 </tr>
