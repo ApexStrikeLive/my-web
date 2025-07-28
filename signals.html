@@ -6,207 +6,265 @@
     <title>Trade Signals Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles for better aesthetics */
+        /* Minimalist Global Styles */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f4f8; /* Light blue-gray background */
             color: #334155; /* Darker text color */
+            padding: 1rem;
         }
         .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
+            max-width: 1200px; /* Wider for TradingView */
+            margin: 1rem auto;
             background-color: #ffffff;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-        }
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0; /* Light gray border */
-        }
-        th {
-            background-color: #f8fafc; /* Lighter header background */
-            font-weight: 600;
-            color: #475569; /* Slightly darker header text */
-        }
-        tr:hover {
-            background-color: #f1f5f9; /* Lighter hover effect */
-        }
-        .signal-card {
-            border: 1px solid #cbd5e1; /* Gray border */
-            border-radius: 0.75rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background-color: #ffffff;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        .signal-card-header {
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            color: #1e40af;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Summary Statistics Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            background-color: #e0f2fe;
+            border-radius: 0.25rem;
+        }
+        .stat-item {
+            background-color: #ffffff;
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            text-align: center;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .stat-item p {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+        }
+        .stat-item span {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .green-text { color: #16a34a; }
+        .red-text { color: #dc2626; }
+        .blue-text { color: #2563eb; }
+        .purple-text { color: #9333ea; }
+        .orange-text { color: #ea580c; }
+
+        /* Date Section Styles */
+        .date-section {
+            margin-bottom: 1rem;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+        }
+        .date-summary {
+            background-color: #dbeafe;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1e40af;
+            display: block;
+        }
+        details[open] .date-summary {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        
+        /* Signal Card Styles (minimalist) */
+        .signal-card {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0; /* Separator between signals */
+            margin-bottom: 1rem;
+        }
+        .signal-card:last-child {
+            border-bottom: none; /* No border for the last card */
+            margin-bottom: 0;
+        }
+        .signal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
-        .signal-card-body {
+        .signal-header h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .signal-info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust for info density */
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
         }
-        .signal-card-item {
-            display: flex;
+        .signal-info-item strong {
+            color: #475569;
+            margin-right: 0.25rem;
+        }
+        .buy-signal-text { color: #10b981; font-weight: bold; }
+        .sell-signal-text { color: #ef4444; font-weight: bold; }
+        .status-open { background-color: #bfdbfe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; }
+        .status-closed { background-color: #e2e8f0; color: #475569; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; }
+        
+        /* TradingView Chart Styles */
+        .chart-container {
+            margin-top: 1rem;
+            background-color: #f8fafc;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #e2e8f0;
+            height: 350px; /* Fixed height for consistency and lightness */
+            overflow: hidden;
+            display: flex; /* Use flex to manage inner widget */
             flex-direction: column;
         }
-        .signal-card-item strong {
-            color: #1e293b; /* Darker label */
+        .tradingview-widget-container__widget {
+            flex-grow: 1; /* Allow widget to take available space */
+            height: 100%; /* Important for widget to fill container */
         }
-        .chart-container {
-            margin-top: 1.5rem;
-            background-color: #f8fafc;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid #e2e8f0;
-            /* Ensure the container has a defined height for TradingView widget */
-            height: 400px; /* Set a default height */
-            overflow: hidden; /* Hide overflow if widget is larger */
+        .tradingview-widget-copyright {
+            font-size: 0.7rem;
+            color: #787b86;
+            text-align: right;
+            padding-top: 0.25rem;
         }
-        .buy-signal {
-            color: #10b981; /* Green for BUY */
-            font-weight: bold;
+        .tradingview-widget-copyright a {
+            color: #787b86;
+            text-decoration: none;
         }
-        .sell-signal {
-            color: #ef4444; /* Red for SELL */
-            font-weight: bold;
+        .tradingview-widget-copyright a:hover {
+            text-decoration: underline;
         }
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        /* Take Profit Table Styles */
+        .tp-table-wrapper {
+            overflow-x: auto;
+            margin-top: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .tp-table {
             width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            border-collapse: collapse;
+            font-size: 0.8rem; /* Very small font for TP table */
         }
-        .spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #3498db;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
+        .tp-table th, .tp-table td {
+            padding: 0.4rem 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap; /* Prevent wrapping in TP table cells */
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .tp-table th {
+            background-color: #f0f4f8;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .tp-table tr:hover {
+            background-color: #f8fafc;
+        }
+        .tp-achieved {
+            background-color: #dcfce7; /* Light green background for achieved TP */
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="spinner"></div>
-    </div>
-
+<body>
     <div class="container">
-        <h1 class="text-4xl font-extrabold text-center text-blue-700 mb-8">Trade Signals Dashboard</h1>
+        <h1>Trade Signals Overview</h1>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6 p-4 bg-blue-50 rounded-lg shadow-sm text-center">
-            <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Total Signals:</p>
-                <p id="totalSignals" class="text-2xl font-bold text-gray-900">0</p>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <p>Total Signals:</p>
+                <span id="totalSignals">0</span>
             </div>
-            <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Successful Signals:</p>
-                <p id="successfulSignals" class="text-2xl font-bold text-green-600">0</p>
+            <div class="stat-item">
+                <p>Successful:</p>
+                <span id="successfulSignals" class="green-text">0</span>
             </div>
-            <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Unsuccessful Signals:</p>
-                <p id="closedUnsuccessfulSignals" class="text-2xl font-bold text-red-600">0</p>
+            <div class="stat-item">
+                <p>Unsuccessful:</p>
+                <span id="closedUnsuccessfulSignals" class="red-text">0</span>
             </div>
-            <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Open Signals:</p>
-                <p id="openSignals" class="text-2xl font-bold text-blue-600">0</p>
+            <div class="stat-item">
+                <p>Open Signals:</p>
+                <span id="openSignals" class="blue-text">0</span>
             </div>
-            <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Total Closed 100%:</p>
-                <p id="totalClosed100Percent" class="text-2xl font-bold text-purple-600">0</p>
+            <div class="stat-item">
+                <p>Closed 100%:</p>
+                <span id="totalClosed100Percent" class="purple-text">0</span>
             </div>
-            <div class="p-3 bg-white rounded-md shadow-sm">
-                <p class="text-lg font-medium text-blue-700">Closed SL (Loss > -3%):</p>
-                <p id="closedSLLossGreaterThan3" class="text-2xl font-bold text-orange-600">0</p>
+            <div class="stat-item">
+                <p>SL (Loss > -3%):</p>
+                <span id="closedSLLossGreaterThan3" class="orange-text">0</span>
             </div>
         </div>
 
-        <div id="signalsContainer" class="mt-8">
-            </div>
+        <div id="signalsContainer">
+            <p class="text-center text-gray-500 py-4">Loading trade signals...</p>
+        </div>
     </div>
 
     <script>
-        let currentSignalsData = [];
         let charts = {}; // To manage TradingView widgets
 
         // Definition for Take Profit levels
         const tpLevelsDefinition = [
-            { level: 0.7, close_percentage: 25, sl_profit_net: 0.0 },
-            { level: 0.8, close_percentage: 0, sl_profit_net: 0.2 },
-            { level: 1.2, close_percentage: 25, sl_profit_net: 0.6 },
-            { level: 1.5, close_percentage: 0, sl_profit_net: 0.8 },
-            { level: 1.8, close_percentage: 0, sl_profit_net: 1.0 },
-            { level: 2.0, close_percentage: 25, sl_profit_net: 1.4 },
-            { level: 2.4, close_percentage: 0, sl_profit_net: 1.6 },
-            { level: 2.6, close_percentage: 0, sl_profit_net: 1.8 },
-            { level: 2.8, close_percentage: 0, sl_profit_net: 2.0 },
-            { level: 3.0, close_percentage: 0, sl_profit_net: 2.5 },
-            { level: 3.3, close_percentage: 100, sl_profit_net: null }
+            { level: 0.7, close_percentage: 25 },
+            { level: 0.8, close_percentage: 0 },
+            { level: 1.2, close_percentage: 25 },
+            { level: 1.5, close_percentage: 0 },
+            { level: 1.8, close_percentage: 0 },
+            { level: 2.0, close_percentage: 25 },
+            { level: 2.4, close_percentage: 0 },
+            { level: 2.6, close_percentage: 0 },
+            { level: 2.8, close_percentage: 0 },
+            { level: 3.0, close_percentage: 0 },
+            { level: 3.3, close_percentage: 100 }
         ];
-
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }
 
         const formatNumber = (value, decimals) => {
             return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(decimals) : 'N/A';
         };
 
+        const formatPercentage = (value) => {
+            return (typeof value === 'number' && !isNaN(value)) ? `${value.toFixed(2)}%` : 'N/A';
+        };
+
         async function fetchSignals() {
-            showLoading();
             try {
                 const githubUrl = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
-                console.log("Attempting to fetch historical data from:", githubUrl);
+                console.log("Fetching historical data...");
                 const response = await fetch(githubUrl);
-                console.log("Historical data fetch response status:", response.status);
-
+                
                 let fetchedData = [];
                 if (response.ok) {
                     fetchedData = await response.json();
-                    console.log("Fetched historical data: Array(", fetchedData.length, ")");
+                    console.log("Historical data fetched:", fetchedData.length, "signals.");
                 } else {
-                    console.error(`HTTP error fetching historical data! status: ${response.status}`);
-                    console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
+                    console.error(`Error fetching historical data! Status: ${response.status}`);
                     return [];
                 }
 
                 const mergedData = {};
                 fetchedData.forEach(signal => mergedData[signal.signal_id] = signal);
 
-                // CoinGecko API for live prices
+                // --- Live price fetching ---
                 const coinGeckoIdMap = {
                     "BTC": "bitcoin", "ETH": "ethereum", "ADA": "cardano", "CVX": "convex-finance",
                     "APT": "aptos", "METIS": "metisdao", "GAS": "gas", "SSV": "ssv-network",
                     "AAVE": "aave", "LINK": "chainlink", "SOL": "solana", "BNB": "binancecoin",
                     "ORDI": "ordi", "CYBER": "cyberconnect", "MOVR": "moonriver", "GNO": "gnosis",
                     "LPT": "livepeer", "ATM": "atletico-madrid-fan-token", "DCR": "decred", "PSG": "paris-saint-germain-fan-token",
-                    // Add more mappings as needed from your signals
                 };
 
                 const symbolsToFetch = new Set();
@@ -221,15 +279,11 @@
                     const ids = Array.from(symbolsToFetch).join(',');
                     const vsCurrencies = 'usdt';
                     const livePriceUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${vsCurrencies}`;
-                    console.log("Attempting to fetch live prices from:", livePriceUrl);
-
+                    console.log("Fetching live prices...");
                     try {
                         const priceResponse = await fetch(livePriceUrl);
-                        console.log("Live price fetch response status:", priceResponse.status);
                         if (priceResponse.ok) {
                             const livePrices = await priceResponse.json();
-                            console.log("Fetched live prices:", livePrices);
-
                             Object.values(mergedData).forEach(signal => {
                                 const baseSymbol = signal.symbol ? signal.symbol.split('/')[0] : null;
                                 const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
@@ -242,11 +296,11 @@
                                             signal.profit_loss_percentage = ((newCurrentPrice - signal.entry_price) / signal.entry_price) * 100;
                                             signal.unrealized_pnl = (newCurrentPrice - signal.entry_price) * (signal.initial_investment / signal.entry_price);
                                         } else if (signal.signal_type === 'SELL') {
-                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / newCurrentPrice) * 100; // Corrected for SELL
+                                            signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / newCurrentPrice) * 100;
                                             signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
                                         }
                                     } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
-                                        signal.unrealized_pnl = 0; // For closed signals, unrealized PnL should be 0
+                                        signal.unrealized_pnl = 0;
                                         if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
                                             signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
                                         } else {
@@ -256,29 +310,25 @@
                                 }
                             });
                         } else {
-                            console.warn(`Could not fetch live prices from CoinGecko (status: ${priceResponse.status}).`);
+                            console.warn(`Could not fetch live prices (status: ${priceResponse.status}).`);
                         }
                     } catch (priceError) {
-                        console.error("Error fetching live prices from CoinGecko:", priceError);
+                        console.error("Error fetching live prices:", priceError);
                     }
                 } else {
-                    console.log("No symbols found in the data to fetch live prices for.");
+                    console.log("No symbols for live price fetching.");
                 }
 
-                currentSignalsData = Object.values(mergedData);
-                return currentSignalsData;
+                return Object.values(mergedData);
 
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
                 return [];
-            } finally {
-                hideLoading();
             }
         }
 
         /**
          * Updates the summary statistics at the top of the page.
-         * @param {Array<Object>} signals - The array of all signal objects.
          */
         function updateSummaryStatistics(signals) {
             const totalSignals = signals.length;
@@ -286,32 +336,27 @@
             let closedUnsuccessfulSignals = 0;
             let openSignals = 0;
             let totalClosed100Percent = 0;
-            let closedSLLossGreaterThan3 = 0; // New metric for signals closed by SL with loss > 3%
+            let closedSLLossGreaterThan3 = 0;
 
             signals.forEach(signal => {
                 if (signal.monitoring_status === "OPEN") {
                     openSignals++;
                 } else if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED")) {
-                    // Check if realized_pnl is a number before comparison
                     if (typeof signal.realized_pnl === 'number') {
                         if (signal.realized_pnl > 0) {
                             successfulSignals++;
-                        } else { // realized_pnl is 0 or negative
+                        } else {
                             closedUnsuccessfulSignals++;
                         }
                     } else {
-                        // If realized_pnl is not a valid number for a closed signal, count as unsuccessful
                         closedUnsuccessfulSignals++;
                     }
                 }
 
-                // Total Closed 100%
                 if (typeof signal.closed_percentage === 'number' && signal.closed_percentage === 100 && signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
                     totalClosed100Percent++;
                 }
 
-                // Closed SL (Loss > -3%)
-                // Counts signals closed by SL with a loss greater than 3% (e.g., -3.1%, -5%)
                 if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") &&
                     typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                     closedSLLossGreaterThan3++;
@@ -331,14 +376,19 @@
          */
         function createChart(signal, containerId) {
             const chartContainer = document.getElementById(containerId);
+            if (!chartContainer) {
+                console.error(`Chart container with ID ${containerId} not found.`);
+                return;
+            }
             chartContainer.innerHTML = ''; // Clear previous chart (if any)
 
             const [base, quote] = signal.symbol.split('/');
             const tradingViewSymbol = `BINANCE:${base}${quote}`;
 
+            // Unique ID for the inner TradingView widget div
             const innerWidgetId = `tradingview_widget_${signal.signal_id}`;
 
-            let tvInterval = "D";
+            let tvInterval = "D"; // Default to Daily
             if (signal.timeframe && signal.timeframe.includes('m')) {
                 tvInterval = signal.timeframe.replace('m', '');
             } else if (signal.timeframe && signal.timeframe.includes('h')) {
@@ -347,21 +397,6 @@
                 tvInterval = "D";
             }
 
-            const widgetWrapper = document.createElement('div');
-            widgetWrapper.className = 'tradingview-widget-container';
-            widgetWrapper.style.height = '100%';
-            widgetWrapper.style.width = '100%';
-
-            const innerWidgetDiv = document.createElement('div');
-            innerWidgetDiv.id = innerWidgetId;
-            innerWidgetDiv.className = 'tradingview-widget-container__widget';
-            innerWidgetDiv.style.height = 'calc(100% - 32px)'; // Adjust height for copyright
-            innerWidgetDiv.style.width = '100%';
-
-            const copyrightDiv = document.createElement('div');
-            copyrightDiv.className = 'tradingview-widget-copyright';
-            copyrightDiv.innerHTML = `<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>`;
-
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
@@ -369,7 +404,7 @@
 
             const widgetConfig = {
                 "width": "100%",
-                "height": "400",
+                "height": "350", // Keep height consistent
                 "symbol": tradingViewSymbol,
                 "interval": tvInterval,
                 "timezone": "Etc/UTC",
@@ -379,7 +414,7 @@
                 "toolbar_bg": "#f1f5f9",
                 "enable_publishing": false,
                 "allow_symbol_change": true,
-                "container_id": innerWidgetId,
+                "container_id": innerWidgetId, // Link to the specific container ID
                 "hide_side_toolbar": false,
                 "hide_top_toolbar": false,
                 "withdateranges": true,
@@ -393,28 +428,44 @@
                 "popup_height": "650",
             };
 
+            // TradingView requires a specific div structure
+            const tradingViewHtml = `
+                <div class="tradingview-widget-container" style="height:100%; width:100%;">
+                    <div id="${innerWidgetId}" class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                    <div class="tradingview-widget-copyright">
+                        <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                            <span class="blue-text">Track all markets on TradingView</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            chartContainer.innerHTML = tradingViewHtml; // Set the HTML structure
+
+            // Append the script for the widget
+            chartContainer.querySelector(`#${innerWidgetId}`).closest('.tradingview-widget-container').appendChild(script);
+
+            // Set the script's textContent (config) after it's appended to ensure it's loaded properly
+            // This needs to be done *after* the script element is added to the DOM and the TradingView library
+            // is available, or use a callback mechanism if the script loads asynchronously.
+            // For simplicity, we'll assign textContent directly, assuming TradingView handles it.
             script.textContent = JSON.stringify(widgetConfig);
 
-            widgetWrapper.appendChild(innerWidgetDiv);
-            widgetWrapper.appendChild(copyrightDiv);
-            widgetWrapper.appendChild(script);
-
-            chartContainer.appendChild(widgetWrapper);
-
+            // Store chart reference (though directly manipulating DOM is more robust for TV)
             charts[signal.signal_id] = chartContainer;
         }
+
 
         /**
          * Renders the signals data into the HTML, grouped by date.
          */
         function renderSignals(signals) {
             const signalsContainer = document.getElementById('signalsContainer');
-            signalsContainer.innerHTML = '';
+            signalsContainer.innerHTML = ''; // Clear previous content
 
-            // Clear existing charts to prevent multiple instances
+            // Clear existing charts to prevent multiple instances from previous renders
             for (const id in charts) {
                 if (charts[id]) {
-                    charts[id].innerHTML = '';
+                    charts[id].innerHTML = ''; // Clear the content of the chart container
                 }
             }
             charts = {}; // Reset charts object for fresh rendering
@@ -423,8 +474,7 @@
 
             const signalsByDate = sortedSignals.reduce((acc, signal) => {
                 const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
-                // Use the correct current year for comparison (2025)
-                const date = entryTime ? entryTime.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-') : 'Unknown Date'; // YYYY-MM-DD format
+                const date = entryTime ? entryTime.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-') : 'Unknown Date';
                 if (!acc[date]) {
                     acc[date] = [];
                 }
@@ -433,20 +483,29 @@
             }, {});
 
             const now = new Date();
-            // Using the actual current year (2025) for "Today" comparison
-            const today = now.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+            // Important: Use the specific year from your data (2025) for 'Today' check
+            // If the current actual year is different, 'Today' will not match unless you
+            // adjust your system clock or the data's year to the current year.
+            const todayDateString = "2025-07-28"; // Manually set to match your data for consistency
+
+            // If you want "Today" to match the actual current date your machine sees:
+            // const todayDateString = now.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+
 
             for (const date in signalsByDate) {
-                const isToday = date === today;
+                const isToday = date === todayDateString;
                 const detailsElement = document.createElement('details');
-                detailsElement.className = 'mb-4';
-                // Automatically open today's signals, or all if there's only one date
-                if (isToday || Object.keys(signalsByDate).length === 1) {
+                detailsElement.className = 'date-section';
+
+                // Open today's signals by default, or the latest date if not today
+                if (isToday || (Object.keys(signalsByDate).indexOf(date) === 0 && Object.keys(signalsByDate).length > 1)) {
+                     detailsElement.setAttribute('open', '');
+                } else if (Object.keys(signalsByDate).length === 1) { // If only one date, open it
                     detailsElement.setAttribute('open', '');
                 }
 
                 const summaryElement = document.createElement('summary');
-                summaryElement.className = 'bg-blue-200 p-4 rounded-t-lg cursor-pointer font-semibold text-xl text-blue-800 hover:bg-blue-300 transition duration-200';
+                summaryElement.className = 'date-summary';
                 summaryElement.textContent = `Signals for ${date}`;
                 if (isToday) {
                     summaryElement.textContent += ' (Today)';
@@ -454,7 +513,7 @@
                 detailsElement.appendChild(summaryElement);
 
                 const dateSignalsDiv = document.createElement('div');
-                dateSignalsDiv.className = 'p-4 border border-t-0 border-blue-200 rounded-b-lg bg-white';
+                dateSignalsDiv.className = 'p-4'; // Simple padding for content
 
                 const signalsForDate = signalsByDate[date];
 
@@ -466,81 +525,43 @@
                         signalCard.className = 'signal-card';
                         signalCard.id = `signal-${signal.signal_id}`;
 
-                        const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
+                        const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal-text' : 'sell-signal-text';
+                        const pnlClass = (typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ?
+                            (signal.profit_loss_percentage >= 0 ? 'green-text' : 'red-text') : '';
+                        const realizedPnlClass = (typeof signal.realized_pnl === 'number' && !isNaN(signal.realized_pnl)) ?
+                            (signal.realized_pnl >= 0 ? 'green-text' : 'red-text') : '';
+                        const statusClass = signal.monitoring_status === 'OPEN' ? 'status-open' : 'status-closed';
 
                         signalCard.innerHTML = `
-                            <div class="signal-card-header">
-                                <h2 class="text-2xl font-bold text-gray-900">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
-                                <span class="px-3 py-1 text-sm font-semibold rounded-full ${signal.monitoring_status === 'OPEN' ? 'bg-blue-200 text-blue-800' : 'bg-gray-200 text-gray-800'}">
-                                    ${signal.monitoring_status || 'N/A'}
-                                </span>
+                            <div class="signal-header">
+                                <h2>${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
+                                <span class="${statusClass}">${signal.monitoring_status || 'N/A'}</span>
                             </div>
-                            <div class="signal-card-body">
-                                <div class="signal-card-item">
-                                    <strong>Strategy:</strong>
-                                    <span>${signal.strategy_name || 'N/A'}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Entry Price:</strong>
-                                    <span>${formatNumber(signal.entry_price, 4)}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Current Price:</strong>
-                                    <span>${formatNumber(signal.current_price, 4)}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Stop Loss:</strong>
-                                    <span>${formatNumber(signal.stop_loss, 4)}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Entry Time:</strong>
-                                    <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Closed Time:</strong>
-                                    <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Timeframe:</strong>
-                                    <span>${signal.timeframe || 'N/A'}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Initial Investment:</strong>
-                                    <span>$${formatNumber(signal.initial_investment, 2)}</span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Profit/Loss (%):</strong>
-                                    <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
-                                        ${formatNumber(signal.profit_loss_percentage, 2)}%
-                                    </span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Unrealized PnL:</strong>
-                                    <span class="${(typeof signal.unrealized_pnl === 'number' && !isNaN(signal.unrealized_pnl)) ? (signal.unrealized_pnl >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
-                                        $${formatNumber(signal.unrealized_pnl, 2)}
-                                    </span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Realized PnL:</strong>
-                                    <span class="${(typeof signal.realized_pnl === 'number' && !isNaN(signal.realized_pnl)) ? (signal.realized_pnl >= 0 ? 'text-green-600' : 'text-red-600') : ''}">
-                                        $${formatNumber(signal.realized_pnl, 2)}
-                                    </span>
-                                </div>
-                                <div class="signal-card-item">
-                                    <strong>Closed %:</strong>
-                                    <span>${formatNumber(signal.closed_percentage, 0)}%</span>
-                                </div>
+                            <div class="signal-info-grid">
+                                <div class="signal-info-item"><strong>Strategy:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
+                                <div class="signal-info-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
+                                <div class="signal-info-item"><strong>Stop Loss:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
+                                <div class="signal-info-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Initial Inv.:</strong> <span>$${formatNumber(signal.initial_investment, 2)}</span></div>
+                                <div class="signal-info-item"><strong>P&L (%):</strong> <span class="${pnlClass}">${formatPercentage(signal.profit_loss_percentage)}</span></div>
+                                <div class="signal-info-item"><strong>Unrealized PnL:</strong> <span class="${pnlClass}">$${formatNumber(signal.unrealized_pnl, 2)}</span></div>
+                                <div class="signal-info-item"><strong>Realized PnL:</strong> <span class="${realizedPnlClass}">$${formatNumber(signal.realized_pnl, 2)}</span></div>
+                                <div class="signal-info-item"><strong>Closed %:</strong> <span>${formatNumber(signal.closed_percentage, 0)}%</span></div>
                             </div>
-                            <h4 class="text-xl font-semibold mt-4 mb-2 text-gray-800">Take Profit Levels:</h4>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full bg-white rounded-lg shadow overflow-hidden">
+
+                            <h4 class="text-sm font-semibold mt-4 mb-2 text-gray-700">Take Profit Levels:</h4>
+                            <div class="tp-table-wrapper">
+                                <table class="tp-table">
                                     <thead>
                                         <tr>
-                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Level</th>
-                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Price</th>
-                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Profit (%)</th>
-                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Target Reached</th>
-                                            <th class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold text-sm">Closed %</th>
+                                            <th>Level</th>
+                                            <th>Price</th>
+                                            <th>Profit (%)</th>
+                                            <th>Reached</th>
+                                            <th>Closed %</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -552,15 +573,13 @@
                                             const activatedTpLevelKey = `tp_${String(tp.level).replace('.', '')}`;
                                             const isTPReached = signal.activated_tp_levels && signal.activated_tp_levels.includes(activatedTpLevelKey);
                                             
-                                            const displayTpLevel = formatNumber(tp.level, 1);
-
                                             return `
-                                                <tr class="${isTPReached ? 'bg-green-50' : ''}">
-                                                    <td class="py-2 px-4 border-b border-gray-200">${displayTpLevel}</td>
-                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tpPrice, 4)}</td>
-                                                    <td class="py-2 px-4 border-b border-gray-200">${formatNumber(tp.level, 2)}%</td>
-                                                    <td class="py-2 px-4 border-b border-gray-200">${isTPReached ? '<span class="text-green-600 font-bold">Yes</span>' : 'No'}</td>
-                                                    <td class="py-2 px-4 border-b border-gray-200">${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
+                                                <tr class="${isTPReached ? 'tp-achieved' : ''}">
+                                                    <td>${formatNumber(tp.level, 1)}</td>
+                                                    <td>${formatNumber(tpPrice, 4)}</td>
+                                                    <td>${formatPercentage(tp.level)}</td>
+                                                    <td>${isTPReached ? 'Yes' : 'No'}</td>
+                                                    <td>${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
                                                 </tr>
                                             `;
                                         }).join('')}
