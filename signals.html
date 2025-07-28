@@ -267,7 +267,7 @@
                 let fetchedData = [];
                 if (response.ok) {
                     fetchedData = await response.json();
-                    console.log("Fetched historical data:", fetchedData);
+                    console.log("Fetched historical data. Number of signals:", fetchedData.length);
                 } else {
                     console.error(`HTTP error fetching historical data! status: ${response.status}`);
                     console.warn(`Could not fetch historical data from GitHub. The dashboard might appear empty until a successful fetch.`);
@@ -282,8 +282,8 @@
                     "APT": "aptos", "METIS": "metisdao", "GAS": "gas", "SSV": "ssv-network",
                     "AAVE": "aave", "LINK": "chainlink", "SOL": "solana", "BNB": "binancecoin",
                     "ORDI": "ordi", "CYBER": "cyberconnect", "MOVR": "moonriver", "GNO": "gnosis",
-                    "LPT": "livepeer", "ATM": "atletico-madrid-fan-token", "DCR": "decred", "PSG": "paris-saint-germain-fan-token"
-                    // Add more mappings as needed
+                    "LPT": "livepeer", "ATM": "atletico-madrid-fan-token", "DCR": "decred", "PSG": "paris-saint-germain-fan-token",
+                    // Add more mappings as needed from your signals
                 };
 
                 const symbolsToFetch = new Set();
@@ -322,8 +322,8 @@
                                             signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
                                             signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
                                         }
-                                    } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { // Use .includes for flexibility
-                                        signal.unrealized_pnl = 0;
+                                    } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { 
+                                        signal.unrealized_pnl = 0; // For closed signals, unrealized PnL should be 0
                                         if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
                                             signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
                                         } else {
@@ -366,23 +366,20 @@
             let closedSLLossGreaterThan3 = 0; 
 
             signals.forEach(signal => {
-                // Total Signals: already handled by signals.length
-
-                // Open Signals
                 if (signal.monitoring_status === "OPEN") {
                     openSignals++;
-                }
-
-                // Successful Signals: based on realized_pnl for CLOSED signals
-                // A signal is successful if it's closed and realized_pnl is positive.
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl > 0) {
-                    successfulSignals++;
-                }
-
-                // Unsuccessful Signals: based on realized_pnl for CLOSED signals
-                // A signal is unsuccessful if it's closed and realized_pnl is zero or negative.
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl <= 0) {
-                    closedUnsuccessfulSignals++;
+                } else if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED")) {
+                    // Check if realized_pnl is a number before comparison
+                    if (typeof signal.realized_pnl === 'number') {
+                        if (signal.realized_pnl > 0) {
+                            successfulSignals++;
+                        } else { // realized_pnl is 0 or negative
+                            closedUnsuccessfulSignals++;
+                        }
+                    } else {
+                        // If realized_pnl is not a valid number for a closed signal, count as unsuccessful
+                        closedUnsuccessfulSignals++;
+                    }
                 }
                 
                 // Total Closed 100%
@@ -391,9 +388,9 @@
                 }
 
                 // Closed SL (Loss > -3%)
-                // This counts signals that were closed by SL *and* had a profit_loss_percentage less than -3 (meaning a larger loss than 3%).
-                // The .includes("CLOSED_SL") ensures we only count signals explicitly marked as SL.
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
+                // Counts signals closed by SL with a loss greater than 3% (e.g., -3.1%, -5%)
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && 
+                    typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                     closedSLLossGreaterThan3++;
                 }
             });
@@ -404,6 +401,7 @@
             document.getElementById('openSignals').textContent = openSignals;
             document.getElementById('totalClosed100Percent').textContent = totalClosed100Percent;
             document.getElementById('closedSLLossGreaterThan3').textContent = closedSLLossGreaterThan3;
+            console.log("Summary Statistics Updated:", { totalSignals, successfulSignals, closedUnsuccessfulSignals, openSignals, totalClosed100Percent, closedSLLossGreaterThan3 });
         }
 
         /**
@@ -492,16 +490,14 @@
             latestSignalsContainer.innerHTML = ''; 
 
             const now = new Date(); 
-            // Correctly calculate one hour ago, ensuring it's relative to the current time.
             const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); 
 
             const latestSignals = signals.filter(signal => {
                 try {
                     const entryTime = new Date(signal.entry_time);
-                    // Ensure entryTime is a valid date AND is more recent than oneHourAgo
                     return !isNaN(entryTime.getTime()) && entryTime > oneHourAgo;
                 } catch (e) {
-                    console.warn("Invalid entry_time for signal:", signal.signal_id, signal.entry_time, e);
+                    console.warn("Invalid entry_time for signal (filtered out from latest signals):", signal.signal_id, signal.entry_time, e);
                     return false; 
                 }
             })
@@ -524,6 +520,7 @@
                     latestSignalsContainer.appendChild(signalItem);
                 });
             }
+            console.log("Latest Signals Rendered. Count:", latestSignals.length);
         }
 
         /**
@@ -556,11 +553,11 @@
                     if (typeof signal.realized_pnl === 'number') {
                         if (signal.realized_pnl > 0) {
                             strategyStats[strategyName].successfulSignals++;
-                        } else { // If realized_pnl is 0 or negative
+                        } else { 
                             strategyStats[strategyName].unsuccessfulSignals++;
                         }
                     } else {
-                        // If realized_pnl is missing or invalid for a closed signal, count as unsuccessful by default
+                        // If realized_pnl is missing or invalid for a closed signal, count as unsuccessful
                         strategyStats[strategyName].unsuccessfulSignals++;
                     }
                 }
@@ -570,6 +567,7 @@
 
             if (strategyNames.length === 0) {
                 strategyContainer.innerHTML = '<p class="text-gray-600 col-span-full">No strategy statistics available.</p>';
+                console.log("No strategy statistics to render.");
             } else {
                 strategyNames.forEach(name => {
                     const stats = strategyStats[name];
@@ -584,6 +582,7 @@
                     `;
                     strategyContainer.appendChild(strategyCard);
                 });
+                console.log("Strategy Statistics Rendered:", strategyStats);
             }
         }
 
@@ -686,6 +685,8 @@
                 detailsElement.appendChild(dateSignalsDiv);
                 signalsContainer.appendChild(detailsElement);
             });
+            console.log("Detailed Signals Rendered. Number of date groups:", Object.keys(signalsByDate).length);
+
 
             document.querySelectorAll('.toggle-chart-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
@@ -701,6 +702,7 @@
                         chartContainer.classList.add('hidden');
                         event.target.textContent = 'Show Chart';
                         if (charts[signalId]) {
+                            // Clear and remove the chart to prevent memory leaks and performance issues
                             charts[signalId].innerHTML = '';
                             charts[signalId] = null; 
                         }
@@ -718,11 +720,13 @@
 
             // Refresh data every minute
             setInterval(async () => {
+                console.log("Refreshing data...");
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals); 
                 renderLatestSignals(updatedSignals); 
                 renderStrategyStatistics(updatedSignals); 
                 renderSignals(updatedSignals); 
+                console.log("Data refresh complete.");
             }, 60000); 
         });
     </script>
