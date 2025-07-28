@@ -106,6 +106,33 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Styles for the new "Latest Signals" section */
+        .latest-signals-section {
+            background-color: #e0f2fe; /* Light blue */
+            border: 1px solid #90cdf4; /* Medium blue border */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .latest-signals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .latest-signal-item {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 0.95rem;
+        }
+        .latest-signal-item strong {
+            color: #334155;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -135,6 +162,13 @@
             </div>
         </div>
 
+        <div class="latest-signals-section">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">Latest Signals (Last Hour)</h2>
+            <div id="latestSignalsContainer" class="latest-signals-grid">
+                <p class="text-gray-600 col-span-full">No new signals in the last hour.</p>
+            </div>
+        </div>
+
         <div id="signalsContainer" class="mt-8">
             </div>
     </div>
@@ -148,7 +182,7 @@
                 "timeframe": "4h",
                 "signal_type": "BUY",
                 "entry_price": 60000.00,
-                "entry_time": "2025-07-28T00:00:00.000000", // Changed to today's date for testing
+                "entry_time": "2025-07-28T10:30:00.000000", // Example: Last hour
                 "is_monitored": true,
                 "monitoring_status": "OPEN",
                 "current_price": 61500.00,
@@ -174,7 +208,7 @@
                 "timeframe": "1h",
                 "signal_type": "SELL",
                 "entry_price": 3500.00,
-                "entry_time": "2025-07-27T10:30:00.000000", // Yesterday's date
+                "entry_time": "2025-07-28T11:00:00.000000", // Example: Last hour (more recent)
                 "is_monitored": true,
                 "monitoring_status": "CLOSED_TP",
                 "current_price": 3400.00,
@@ -226,7 +260,7 @@
                 "timeframe": "15m",
                 "signal_type": "BUY",
                 "entry_price": 4.00,
-                "entry_time": "2025-07-28T10:00:00.000000", // Changed to today's date for testing
+                "entry_time": "2025-07-28T11:20:00.000000", // Example: Last hour (most recent)
                 "is_monitored": true,
                 "monitoring_status": "OPEN",
                 "current_price": 3.90,
@@ -271,8 +305,87 @@
                 "achieved_25_percent_tp": false,
                 "achieved_50_percent_tp": false,
                 "activated_tp_levels": []
+            },
+            {
+                "signal_id": "f6a7b8c9-d0e1-2345-6789-0abcdef45678",
+                "symbol": "AAVE/USDT",
+                "timeframe": "1h",
+                "signal_type": "BUY",
+                "entry_price": 80.00,
+                "entry_time": "2025-07-28T10:50:00.000000", // Example: Last hour
+                "is_monitored": true,
+                "monitoring_status": "OPEN",
+                "current_price": 81.50,
+                "profit_loss_percentage": 1.875,
+                "realized_pnl": 0.0,
+                "unrealized_pnl": 18.75,
+                "stop_loss_price": 78.00,
+                "take_profit_target": 85.00,
+                "closed_percentage": 0.0,
+                "exit_price": 0.0,
+                "exit_time": null,
+                "partial_closes": [],
+                "notes": "Monitoring AAVE",
+                "strategy_name": "Momentum_Play",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            },
+            {
+                "signal_id": "12345678-90ab-cdef-1234-567890abcdef",
+                "symbol": "LINK/USDT",
+                "timeframe": "30m",
+                "signal_type": "SELL",
+                "entry_price": 15.00,
+                "entry_time": "2025-07-28T10:45:00.000000", // Example: Last hour
+                "is_monitored": true,
+                "monitoring_status": "OPEN",
+                "current_price": 15.10,
+                "profit_loss_percentage": -0.67,
+                "realized_pnl": 0.0,
+                "unrealized_pnl": -6.70,
+                "stop_loss_price": 15.20,
+                "take_profit_target": 14.80,
+                "closed_percentage": 0.0,
+                "exit_price": 0.0,
+                "exit_time": null,
+                "partial_closes": [],
+                "notes": "Shorting LINK",
+                "strategy_name": "Scalping_Strategy",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            },
+            {
+                "signal_id": "fedcba98-7654-3210-fedc-ba9876543210",
+                "symbol": "SOL/USDT",
+                "timeframe": "2h",
+                "signal_type": "BUY",
+                "entry_price": 150.00,
+                "entry_time": "2025-07-28T09:30:00.000000", // Example: Just outside last hour (for testing limit)
+                "is_monitored": true,
+                "monitoring_status": "OPEN",
+                "current_price": 152.00,
+                "profit_loss_percentage": 1.33,
+                "realized_pnl": 0.0,
+                "unrealized_pnl": 20.0,
+                "stop_loss_price": 148.00,
+                "take_profit_target": 155.00,
+                "closed_percentage": 0.0,
+                "exit_price": 0.0,
+                "exit_time": null,
+                "partial_closes": [],
+                "notes": "Long SOL",
+                "strategy_name": "Swing_Trade",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
             }
         ];
+
 
         // Define TP levels as provided by the user
         const tpLevelsDefinition = [
@@ -306,6 +419,16 @@
         }
 
         /**
+         * Helper function to safely format numbers.
+         * @param {number} value - The number to format.
+         * @param {number} decimals - The number of decimal places.
+         * @returns {string} The formatted number or 'N/A'.
+         */
+        const formatNumber = (value, decimals) => {
+            return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(decimals) : 'N/A';
+        };
+
+        /**
          * Fetches signals data from a JSON URL and live prices from CoinGecko.
          * @returns {Promise<Array<Object>>} A promise that resolves with the updated signals data.
          */
@@ -337,11 +460,15 @@
                     "BTC": "bitcoin",
                     "ETH": "ethereum",
                     "ADA": "cardano",
+                    "" : "", // Empty string to handle cases where symbol might be missing
                     "CVX": "convex-finance",
                     "APT": "aptos",
                     "METIS": "metisdao",
                     "GAS": "gas",
-                    "SSV": "ssv-network"
+                    "SSV": "ssv-network",
+                    "AAVE": "aave", // Added for new sample data
+                    "LINK": "chainlink", // Added for new sample data
+                    "SOL": "solana" // Added for new sample data
                     // Add more mappings as needed for other symbols in your JSON
                 };
 
@@ -412,23 +539,6 @@
             } finally {
                 hideLoading();
             }
-        }
-
-        /**
-         * Calculates the price for a given TP level based on entry price and signal type.
-         * This function is now primarily for internal logic, not directly for chart rendering in TradingView.
-         * @param {number} entryPrice - The entry price of the signal.
-         * @param {string} signalType - The type of signal ('BUY' or 'SELL').
-         * @param {number} tpPercentage - The TP percentage (e.g., 0.7 for 0.7%).
-         * @returns {number} The calculated TP price.
-         */
-        function calculateTpPrice(entryPrice, signalType, tpPercentage) {
-            if (signalType === 'BUY') {
-                return entryPrice * (1 + tpPercentage / 100);
-            } else if (signalType === 'SELL') {
-                return entryPrice * (1 - tpPercentage / 100);
-            }
-            return 0; // Should not happen
         }
 
         /**
@@ -558,6 +668,41 @@
             charts[signal.signal_id] = chartContainer;
         }
 
+        /**
+         * Renders the top 5 latest signals added within the last hour.
+         * @param {Array<Object>} signals - The array of all signal objects.
+         */
+        function renderLatestSignals(signals) {
+            const latestSignalsContainer = document.getElementById('latestSignalsContainer');
+            latestSignalsContainer.innerHTML = ''; // Clear previous content
+
+            const oneHourAgo = new Date();
+            oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+
+            const latestSignals = signals.filter(signal => {
+                const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
+                return entryTime && entryTime > oneHourAgo;
+            }).sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time)) // Sort newest first
+            .slice(0, 5); // Take top 5
+
+            if (latestSignals.length === 0) {
+                latestSignalsContainer.innerHTML = '<p class="text-gray-600 col-span-full">No new signals in the last hour.</p>';
+            } else {
+                latestSignals.forEach(signal => {
+                    const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
+                    const signalItem = document.createElement('div');
+                    signalItem.className = 'latest-signal-item';
+                    signalItem.innerHTML = `
+                        <p class="font-bold text-lg">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></p>
+                        <p><strong>Entry:</strong> ${formatNumber(signal.entry_price, 4)}</p>
+                        <p><strong>Time:</strong> ${signal.entry_time ? new Date(signal.entry_time).toLocaleTimeString() : 'N/A'}</p>
+                        <p><strong>P/L%:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></p>
+                    `;
+                    latestSignalsContainer.appendChild(signalItem);
+                });
+            }
+        }
+
 
         /**
          * Renders the signals data into the HTML, grouped by date.
@@ -615,8 +760,6 @@
                 const dateSignalsDiv = document.createElement('div');
                 dateSignalsDiv.className = 'p-4 border border-t-0 border-blue-200 rounded-b-lg bg-white';
 
-                // IMPORTANT: Removed the time-based filter for "today's" signals.
-                // Now, `signalsForDate` will contain ALL signals for that specific `date`.
                 const signalsForDate = signalsByDate[date];
 
                 if (signalsForDate.length === 0) {
@@ -628,12 +771,6 @@
                         signalCard.id = `signal-${signal.signal_id}`;
 
                         const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
-
-                        // Helper function to safely format numbers
-                        const formatNumber = (value, decimals) => {
-                            // Ensure value is a number before calling toFixed, otherwise return 'N/A'
-                            return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(decimals) : 'N/A';
-                        };
 
                         signalCard.innerHTML = `
                             <div class="signal-card-header">
@@ -703,12 +840,14 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
             updateSummaryStatistics(signals); // Update stats for all fetched signals
+            renderLatestSignals(signals); // NEW: Render latest signals
             renderSignals(signals); // Render all signals with date grouping
 
             // Set up interval to refresh signals every 60 seconds (60000 milliseconds)
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals); // Update stats for all fetched signals
+                renderLatestSignals(updatedSignals); // NEW: Render latest signals on refresh
                 renderSignals(updatedSignals); // Re-render with updated data
             }, 60000); // 1 minute refresh
         });
