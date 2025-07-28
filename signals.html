@@ -280,7 +280,9 @@
                 const coinGeckoIdMap = {
                     "BTC": "bitcoin", "ETH": "ethereum", "ADA": "cardano", "CVX": "convex-finance",
                     "APT": "aptos", "METIS": "metisdao", "GAS": "gas", "SSV": "ssv-network",
-                    "AAVE": "aave", "LINK": "chainlink", "SOL": "solana", "BNB": "binancecoin"
+                    "AAVE": "aave", "LINK": "chainlink", "SOL": "solana", "BNB": "binancecoin",
+                    "ORDI": "ordi", "CYBER": "cyberconnect", "MOVR": "moonriver", "GNO": "gnosis",
+                    "LPT": "livepeer", "ATM": "atletico-madrid-fan-token", "DCR": "decred", "PSG": "paris-saint-germain-fan-token"
                     // Add more mappings as needed
                 };
 
@@ -320,7 +322,7 @@
                                             signal.profit_loss_percentage = ((signal.entry_price - newCurrentPrice) / signal.entry_price) * 100;
                                             signal.unrealized_pnl = (signal.entry_price - newCurrentPrice) * (signal.initial_investment / signal.entry_price);
                                         }
-                                    } else if (signal.monitoring_status && signal.monitoring_status.startsWith('CLOSED')) {
+                                    } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { // Use .includes for flexibility
                                         signal.unrealized_pnl = 0;
                                         if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
                                             signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
@@ -358,7 +360,7 @@
         function updateSummaryStatistics(signals) {
             const totalSignals = signals.length;
             let successfulSignals = 0; 
-            let closedUnsuccessfulSignals = 0; // This will now count "CLOSED_SL" regardless of P&L for "Unsuccessful Signals" overall.
+            let closedUnsuccessfulSignals = 0; 
             let openSignals = 0; 
             let totalClosed100Percent = 0; 
             let closedSLLossGreaterThan3 = 0; 
@@ -372,30 +374,25 @@
                 }
 
                 // Successful Signals: based on realized_pnl for CLOSED signals
+                // A signal is successful if it's closed and realized_pnl is positive.
                 if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl > 0) {
                     successfulSignals++;
                 }
 
-                // Unsuccessful Signals: based on being CLOSED_SL or CLOSED and P&L <= 0
-                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && typeof signal.realized_pnl === 'number' && signal.realized_pnl <= 0) {
+                // Unsuccessful Signals: based on realized_pnl for CLOSED signals
+                // A signal is unsuccessful if it's closed and realized_pnl is zero or negative.
+                if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl <= 0) {
                     closedUnsuccessfulSignals++;
                 }
-                // Alternative interpretation for Unsuccessful: if monitoring_status contains "CLOSED" and realized_pnl is 0 or negative
-                // if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED") && typeof signal.realized_pnl === 'number' && signal.realized_pnl <= 0) {
-                //     // Ensure it's not already counted as successful
-                //     if (signal.realized_pnl <= 0) {
-                //         closedUnsuccessfulSignals++;
-                //     }
-                // }
-
-
+                
                 // Total Closed 100%
                 if (typeof signal.closed_percentage === 'number' && signal.closed_percentage === 100 && signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) {
                     totalClosed100Percent++;
                 }
 
                 // Closed SL (Loss > -3%)
-                // This will count signals that were closed by SL and had a profit_loss_percentage less than -3 (e.g., -3.1%, -5%, meaning a larger loss)
+                // This counts signals that were closed by SL *and* had a profit_loss_percentage less than -3 (meaning a larger loss than 3%).
+                // The .includes("CLOSED_SL") ensures we only count signals explicitly marked as SL.
                 if (signal.monitoring_status && signal.monitoring_status.includes("CLOSED_SL") && typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                     closedSLLossGreaterThan3++;
                 }
@@ -411,7 +408,6 @@
 
         /**
          * Creates and renders a TradingView chart for a given signal.
-         * (This function remains unchanged from previous versions.)
          */
         function createChart(signal, containerId) {
             const chartContainer = document.getElementById(containerId);
@@ -490,19 +486,19 @@
 
         /**
          * Renders the top 5 latest signals added within the last hour.
-         * (This function remains unchanged from previous versions.)
          */
         function renderLatestSignals(signals) {
             const latestSignalsContainer = document.getElementById('latestSignalsContainer');
             latestSignalsContainer.innerHTML = ''; 
 
             const now = new Date(); 
+            // Correctly calculate one hour ago, ensuring it's relative to the current time.
             const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); 
 
             const latestSignals = signals.filter(signal => {
                 try {
                     const entryTime = new Date(signal.entry_time);
-                    // Check if entryTime is a valid date AND if it's after oneHourAgo
+                    // Ensure entryTime is a valid date AND is more recent than oneHourAgo
                     return !isNaN(entryTime.getTime()) && entryTime > oneHourAgo;
                 } catch (e) {
                     console.warn("Invalid entry_time for signal:", signal.signal_id, signal.entry_time, e);
@@ -556,22 +552,21 @@
 
                 if (signal.monitoring_status === "OPEN") {
                     strategyStats[strategyName].openSignals++;
-                } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { // Check if it's a closed signal
-                    // Ensure realized_pnl is a number before comparison
+                } else if (signal.monitoring_status && signal.monitoring_status.includes('CLOSED')) { 
                     if (typeof signal.realized_pnl === 'number') {
                         if (signal.realized_pnl > 0) {
                             strategyStats[strategyName].successfulSignals++;
-                        } else { // Consider any non-positive realized_pnl as unsuccessful for strategy stats
+                        } else { // If realized_pnl is 0 or negative
                             strategyStats[strategyName].unsuccessfulSignals++;
                         }
                     } else {
-                        // If realized_pnl is missing or invalid for a closed signal, default to unsuccessful
+                        // If realized_pnl is missing or invalid for a closed signal, count as unsuccessful by default
                         strategyStats[strategyName].unsuccessfulSignals++;
                     }
                 }
             });
 
-            const strategyNames = Object.keys(strategyStats).sort(); // Sort strategy names alphabetically
+            const strategyNames = Object.keys(strategyStats).sort(); 
 
             if (strategyNames.length === 0) {
                 strategyContainer.innerHTML = '<p class="text-gray-600 col-span-full">No strategy statistics available.</p>';
@@ -595,8 +590,6 @@
 
         /**
          * Renders the signals data into the HTML, grouped by date.
-         * (This function remains largely unchanged, but now renders after new stats sections.)
-         * @param {Array<Object>} signals - The array of signal objects.
          */
         function renderSignals(signals) {
             const signalsContainer = document.getElementById('signalsContainer');
@@ -723,6 +716,7 @@
             renderStrategyStatistics(signals); 
             renderSignals(signals); 
 
+            // Refresh data every minute
             setInterval(async () => {
                 const updatedSignals = await fetchSignals();
                 updateSummaryStatistics(updatedSignals); 
