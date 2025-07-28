@@ -182,7 +182,7 @@
     <div class="container">
         <h1>Trade Signals Overview</h1>
 
-        <div class="stats-grid">
+        <div id="statsSection" class="stats-grid">
             <div class="stat-item">
                 <p>Total Signals:</p>
                 <span id="totalSignals">0</span>
@@ -210,7 +210,7 @@
         </div>
 
         <div id="signalsContainer">
-            <p class="text-center text-gray-500 py-4">Loading trade signals...</p>
+            <p class="text-center text-gray-500 py-4">Ładowanie sygnałów...</p>
         </div>
     </div>
 
@@ -252,6 +252,14 @@
                     console.log("Historical data fetched:", fetchedData.length, "signals.");
                 } else {
                     console.error(`Error fetching historical data! Status: ${response.status}`);
+                    // Return empty array to signify no data could be fetched
+                    return []; 
+                }
+
+                // If fetchedData is an empty array, it means no signals are available.
+                // Or if it's an object with no keys if your JSON format changes.
+                if (!Array.isArray(fetchedData) || fetchedData.length === 0) {
+                    console.log("No signals found in the JSON data.");
                     return [];
                 }
 
@@ -323,7 +331,7 @@
 
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
-                return [];
+                return []; // Return empty array on any error
             }
         }
 
@@ -331,6 +339,14 @@
          * Updates the summary statistics at the top of the page.
          */
         function updateSummaryStatistics(signals) {
+            const statsSection = document.getElementById('statsSection');
+            if (signals.length === 0) {
+                statsSection.style.display = 'none'; // Hide stats if no signals
+                return;
+            } else {
+                statsSection.style.display = 'grid'; // Show stats if there are signals
+            }
+
             const totalSignals = signals.length;
             let successfulSignals = 0;
             let closedUnsuccessfulSignals = 0;
@@ -349,6 +365,7 @@
                             closedUnsuccessfulSignals++;
                         }
                     } else {
+                        // If realized_pnl is not a number, consider it unsuccessful
                         closedUnsuccessfulSignals++;
                     }
                 }
@@ -445,9 +462,6 @@
             chartContainer.querySelector(`#${innerWidgetId}`).closest('.tradingview-widget-container').appendChild(script);
 
             // Set the script's textContent (config) after it's appended to ensure it's loaded properly
-            // This needs to be done *after* the script element is added to the DOM and the TradingView library
-            // is available, or use a callback mechanism if the script loads asynchronously.
-            // For simplicity, we'll assign textContent directly, assuming TradingView handles it.
             script.textContent = JSON.stringify(widgetConfig);
 
             // Store chart reference (though directly manipulating DOM is more robust for TV)
@@ -470,6 +484,11 @@
             }
             charts = {}; // Reset charts object for fresh rendering
 
+            if (signals.length === 0) {
+                signalsContainer.innerHTML = '<p class="text-center text-gray-600 py-8 text-lg">Brak sygnałów do wyświetlenia.</p>';
+                return; // Stop rendering if no signals
+            }
+
             const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
 
             const signalsByDate = sortedSignals.reduce((acc, signal) => {
@@ -483,14 +502,7 @@
             }, {});
 
             const now = new Date();
-            // Important: Use the specific year from your data (2025) for 'Today' check
-            // If the current actual year is different, 'Today' will not match unless you
-            // adjust your system clock or the data's year to the current year.
             const todayDateString = "2025-07-28"; // Manually set to match your data for consistency
-
-            // If you want "Today" to match the actual current date your machine sees:
-            // const todayDateString = now.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-
 
             for (const date in signalsByDate) {
                 const isToday = date === todayDateString;
@@ -498,17 +510,18 @@
                 detailsElement.className = 'date-section';
 
                 // Open today's signals by default, or the latest date if not today
+                // (Only if there's more than one date group)
                 if (isToday || (Object.keys(signalsByDate).indexOf(date) === 0 && Object.keys(signalsByDate).length > 1)) {
-                     detailsElement.setAttribute('open', '');
+                    detailsElement.setAttribute('open', '');
                 } else if (Object.keys(signalsByDate).length === 1) { // If only one date, open it
                     detailsElement.setAttribute('open', '');
                 }
 
                 const summaryElement = document.createElement('summary');
                 summaryElement.className = 'date-summary';
-                summaryElement.textContent = `Signals for ${date}`;
+                summaryElement.textContent = `Sygnały z dnia ${date}`;
                 if (isToday) {
-                    summaryElement.textContent += ' (Today)';
+                    summaryElement.textContent += ' (Dziś)';
                 }
                 detailsElement.appendChild(summaryElement);
 
@@ -517,8 +530,12 @@
 
                 const signalsForDate = signalsByDate[date];
 
+                // Note: The outer check `if (signals.length === 0)` handles the case
+                // where there are no signals at all. This inner check is redundant
+                // if `signalsByDate[date]` always contains signals for a given date.
+                // However, leaving it as a safeguard.
                 if (signalsForDate.length === 0) {
-                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">No signals for this date.</p>';
+                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">Brak sygnałów dla tej daty.</p>';
                 } else {
                     signalsForDate.forEach(signal => {
                         const signalCard = document.createElement('div');
@@ -538,30 +555,30 @@
                                 <span class="${statusClass}">${signal.monitoring_status || 'N/A'}</span>
                             </div>
                             <div class="signal-info-grid">
-                                <div class="signal-info-item"><strong>Strategy:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
-                                <div class="signal-info-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
-                                <div class="signal-info-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
+                                <div class="signal-info-item"><strong>Strategia:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Cena wejścia:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
+                                <div class="signal-info-item"><strong>Aktualna cena:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
                                 <div class="signal-info-item"><strong>Stop Loss:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
-                                <div class="signal-info-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-info-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-info-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
-                                <div class="signal-info-item"><strong>Initial Inv.:</strong> <span>$${formatNumber(signal.initial_investment, 2)}</span></div>
-                                <div class="signal-info-item"><strong>P&L (%):</strong> <span class="${pnlClass}">${formatPercentage(signal.profit_loss_percentage)}</span></div>
-                                <div class="signal-info-item"><strong>Unrealized PnL:</strong> <span class="${pnlClass}">$${formatNumber(signal.unrealized_pnl, 2)}</span></div>
-                                <div class="signal-info-item"><strong>Realized PnL:</strong> <span class="${realizedPnlClass}">$${formatNumber(signal.realized_pnl, 2)}</span></div>
-                                <div class="signal-info-item"><strong>Closed %:</strong> <span>${formatNumber(signal.closed_percentage, 0)}%</span></div>
+                                <div class="signal-info-item"><strong>Czas wejścia:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Czas wyjścia:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Interwał:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
+                                <div class="signal-info-item"><strong>Początkowa inv.:</strong> <span>$${formatNumber(signal.initial_investment, 2)}</span></div>
+                                <div class="signal-info-item"><strong>Z/S (%):</strong> <span class="${pnlClass}">${formatPercentage(signal.profit_loss_percentage)}</span></div>
+                                <div class="signal-info-item"><strong>Niezrealizowany Z/S:</strong> <span class="${pnlClass}">$${formatNumber(signal.unrealized_pnl, 2)}</span></div>
+                                <div class="signal-info-item"><strong>Zrealizowany Z/S:</strong> <span class="${realizedPnlClass}">$${formatNumber(signal.realized_pnl, 2)}</span></div>
+                                <div class="signal-info-item"><strong>Zamknięto %:</strong> <span>${formatNumber(signal.closed_percentage, 0)}%</span></div>
                             </div>
 
-                            <h4 class="text-sm font-semibold mt-4 mb-2 text-gray-700">Take Profit Levels:</h4>
+                            <h4 class="text-sm font-semibold mt-4 mb-2 text-gray-700">Poziomy Take Profit:</h4>
                             <div class="tp-table-wrapper">
                                 <table class="tp-table">
                                     <thead>
                                         <tr>
-                                            <th>Level</th>
-                                            <th>Price</th>
-                                            <th>Profit (%)</th>
-                                            <th>Reached</th>
-                                            <th>Closed %</th>
+                                            <th>Poziom</th>
+                                            <th>Cena</th>
+                                            <th>Zysk (%)</th>
+                                            <th>Osiągnięto</th>
+                                            <th>Zamknięto %</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -578,10 +595,10 @@
                                                     <td>${formatNumber(tp.level, 1)}</td>
                                                     <td>${formatNumber(tpPrice, 4)}</td>
                                                     <td>${formatPercentage(tp.level)}</td>
-                                                    <td>${isTPReached ? 'Yes' : 'No'}</td>
+                                                    <td>${isTPReached ? 'Tak' : 'Nie'}</td>
                                                     <td>${tp.close_percentage > 0 ? tp.close_percentage + '%' : '0%'}</td>
                                                 </tr>
-                                            `;
+                                                `;
                                         }).join('')}
                                     </tbody>
                                 </table>
@@ -595,7 +612,7 @@
                             createChart(signal, `chart-${signal.signal_id}`);
                         } else {
                             console.warn(`Cannot create chart for signal ${signal.signal_id}: Symbol is missing.`);
-                            document.getElementById(`chart-${signal.signal_id}`).innerHTML = '<p class="text-center text-gray-500">Chart not available (symbol missing).</p>';
+                            document.getElementById(`chart-${signal.signal_id}`).innerHTML = '<p class="text-center text-gray-500">Wykres niedostępny (brak symbolu).</p>';
                         }
                     });
                 }
@@ -607,8 +624,8 @@
         // Initial fetch and render
         document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
-            updateSummaryStatistics(signals);
-            renderSignals(signals);
+            updateSummaryStatistics(signals); // This will now hide stats if signals are empty
+            renderSignals(signals); // This will show "Brak sygnałów" if signals are empty
 
             // Set up interval for refreshing data every 5 minutes (300000 milliseconds)
             setInterval(async () => {
