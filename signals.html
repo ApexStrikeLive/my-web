@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trade Signals</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for better aesthetics */
@@ -117,7 +116,6 @@
     <div class="container">
         <h1 class="text-4xl font-extrabold text-center text-blue-700 mb-8">Trade Signals Dashboard</h1>
 
-        <!-- Summary Statistics Section -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6 p-4 bg-blue-50 rounded-lg shadow-sm text-center">
             <div class="p-3 bg-white rounded-md shadow-sm">
                 <p class="text-lg font-medium text-blue-700">Total Signals:</p>
@@ -138,13 +136,11 @@
         </div>
 
         <div id="signalsContainer" class="mt-8">
-            <!-- Signals will be rendered here, grouped by date -->
-        </div>
+            </div>
     </div>
 
     <script>
         // Sample JSON data (replace with fetch from a URL in a real application)
-        // This data will be updated by the fetchSignals function
         let currentSignalsData = [
             {
                 "signal_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
@@ -167,6 +163,110 @@
                 "partial_closes": [],
                 "notes": "New signal, monitoring",
                 "strategy_name": "LongTerm_Hold",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            },
+            {
+                "signal_id": "b2c3d4e5-f6a7-8901-2345-67890abcdef0",
+                "symbol": "ETH/USDT",
+                "timeframe": "1h",
+                "signal_type": "SELL",
+                "entry_price": 3500.00,
+                "entry_time": "2025-07-27T10:30:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_TP",
+                "current_price": 3400.00,
+                "profit_loss_percentage": 2.86,
+                "realized_pnl": 100.0,
+                "unrealized_pnl": 0.0,
+                "stop_loss_price": 3600.00,
+                "take_profit_target": 3400.00,
+                "closed_percentage": 100.0,
+                "exit_price": 3400.00,
+                "exit_time": "2025-07-27T12:00:00.000000",
+                "partial_closes": [],
+                "notes": "Quick scalp, hit TP",
+                "strategy_name": "Scalping_Strategy",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": true,
+                "achieved_50_percent_tp": true,
+                "activated_tp_levels": [0.7, 1.2, 3.3]
+            },
+            {
+                "signal_id": "c3d4e5f6-a7b8-9012-3456-7890abcdef12",
+                "symbol": "ADA/USDT",
+                "timeframe": "DAILY",
+                "signal_type": "BUY",
+                "entry_price": 0.45,
+                "entry_time": "2025-07-01T08:00:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "OPEN",
+                "current_price": 0.46,
+                "profit_loss_percentage": 2.22,
+                "realized_pnl": 0.0,
+                "unrealized_pnl": 22.2,
+                "stop_loss_price": 0.40,
+                "take_profit_target": 0.55,
+                "closed_percentage": 0.0,
+                "exit_price": 0.0,
+                "exit_time": null,
+                "partial_closes": [],
+                "notes": "Long-term position",
+                "strategy_name": "Swing_Trade",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            },
+            {
+                "signal_id": "d4e5f6a7-b8c9-0123-4567-890abcdef234",
+                "symbol": "GAS/USDT",
+                "timeframe": "15m",
+                "signal_type": "BUY",
+                "entry_price": 4.00,
+                "entry_time": "2025-07-28T10:00:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "OPEN",
+                "current_price": 3.90,
+                "profit_loss_percentage": -2.50,
+                "realized_pnl": 0.0,
+                "unrealized_pnl": -25.0,
+                "stop_loss_price": 3.80,
+                "take_profit_target": 4.20,
+                "closed_percentage": 0.0,
+                "exit_price": 0.0,
+                "exit_time": null,
+                "partial_closes": [],
+                "notes": "Watching for bounce",
+                "strategy_name": "Intraday_Bounce",
+                "initial_investment": 1000.0,
+                "achieved_25_percent_tp": false,
+                "achieved_50_percent_tp": false,
+                "activated_tp_levels": []
+            },
+            {
+                "signal_id": "e5f6a7b8-c9d0-1234-5678-90abcdef3456",
+                "symbol": "CVX/USDT",
+                "timeframe": "4h",
+                "signal_type": "BUY",
+                "entry_price": 3.00,
+                "entry_time": "2025-07-26T15:00:00.000000",
+                "is_monitored": true,
+                "monitoring_status": "CLOSED_SL",
+                "current_price": 2.80,
+                "profit_loss_percentage": -6.67,
+                "realized_pnl": -66.70,
+                "unrealized_pnl": 0.0,
+                "stop_loss_price": 2.90,
+                "take_profit_target": 3.20,
+                "closed_percentage": 100.0,
+                "exit_price": 2.80,
+                "exit_time": "2025-07-27T08:00:00.000000",
+                "partial_closes": [],
+                "notes": "Stopped out",
+                "strategy_name": "Trend_Follow",
                 "initial_investment": 1000.0,
                 "achieved_25_percent_tp": false,
                 "achieved_50_percent_tp": false,
@@ -375,9 +475,6 @@
             chartContainer.innerHTML = ''; // Clear any previous content in the container
 
             // Construct the TradingView symbol string (e.g., "BINANCE:BTCUSDT")
-            // Assuming symbols are in "PAIR/BASE" format, convert to "EXCHANGE:PAIRBASE"
-            // You might need to adjust the exchange prefix (e.g., "BINANCE:", "BYBIT:", etc.)
-            // based on where TradingView gets its data for the specific symbol.
             const [base, quote] = signal.symbol.split('/');
             const tradingViewSymbol = `BINANCE:${base}${quote}`; // Defaulting to BINANCE
 
@@ -390,7 +487,10 @@
                 tvInterval = signal.timeframe.replace('m', ''); // e.g., "30m" -> "30"
             } else if (signal.timeframe.includes('h')) {
                 tvInterval = signal.timeframe.replace('h', 'H'); // e.g., "1h" -> "1H"
+            } else if (signal.timeframe === 'DAILY') {
+                tvInterval = "D";
             }
+
 
             // Create the main widget container div
             const widgetWrapper = document.createElement('div');
@@ -460,11 +560,10 @@
 
 
         /**
-         * Renders the signals data into the HTML, grouped by date.
+         * Renders all signals data into the HTML without grouping by date.
          * @param {Array<Object>} signals - The array of signal objects.
-         * @param {number} maxAgeHoursForTodaySignals - Max age in hours for signals to be displayed for the current day.
          */
-        function renderSignals(signals, maxAgeHoursForTodaySignals) {
+        function renderSignals(signals) {
             const signalsContainer = document.getElementById('signalsContainer');
             signalsContainer.innerHTML = ''; // Clear previous content
 
@@ -477,108 +576,57 @@
             }
             charts = {}; // Reset charts object
 
-            // Sort signals by entry_time in descending order
+            // Sort signals by entry_time in descending order (newest first)
             const sortedSignals = [...signals].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
 
-            // Group signals by date
-            const signalsByDate = sortedSignals.reduce((acc, signal) => {
-                const date = signal.entry_time ? new Date(signal.entry_time).toISOString().split('T')[0] : 'Unknown Date'; // Handle null entry_time
-                if (!acc[date]) {
-                    acc[date] = [];
-                }
-                acc[date].push(signal);
-                return acc;
-            }, {});
+            if (sortedSignals.length === 0) {
+                signalsContainer.innerHTML = '<p class="text-center text-gray-600">No signals to display.</p>';
+            } else {
+                sortedSignals.forEach(signal => {
+                    const signalCard = document.createElement('div');
+                    signalCard.className = 'signal-card';
+                    signalCard.id = `signal-${signal.signal_id}`;
 
-            // Get today's date for default open section
-            const now = new Date();
-            const today = now.toISOString().split('T')[0];
-            const oneHourAgo = new Date(now.getTime() - maxAgeHoursForTodaySignals * 60 * 60 * 1000);
+                    const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
 
-            // Render each date group
-            for (const date in signalsByDate) {
-                const isToday = date === today;
-                const detailsElement = document.createElement('details');
-                detailsElement.className = 'mb-4';
-                if (isToday) {
-                    detailsElement.setAttribute('open', ''); // Open today's section by default
-                }
+                    // Helper function to safely format numbers
+                    const formatNumber = (value, decimals) => {
+                        return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(decimals) : 'N/A';
+                    };
 
-                const summaryElement = document.createElement('summary');
-                summaryElement.className = 'bg-blue-200 p-4 rounded-t-lg cursor-pointer font-semibold text-xl text-blue-800 hover:bg-blue-300 transition duration-200';
-                summaryElement.textContent = `Signals for ${date}`;
-                if (isToday) {
-                    summaryElement.textContent += ' (Today)';
-                }
-                detailsElement.appendChild(summaryElement);
-
-                const dateSignalsDiv = document.createElement('div');
-                dateSignalsDiv.className = 'p-4 border border-t-0 border-blue-200 rounded-b-lg bg-white';
-
-                let signalsForDate;
-                if (isToday) {
-                    // Filter signals for today to include only those from the last hour
-                    signalsForDate = signalsByDate[date].filter(signal => {
-                        return signal.entry_time && new Date(signal.entry_time).getTime() >= oneHourAgo.getTime();
-                    });
-                } else {
-                    // For previous days, show all signals
-                    signalsForDate = signalsByDate[date];
-                }
-
-                if (signalsForDate.length === 0) {
-                    dateSignalsDiv.innerHTML = '<p class="text-center text-gray-600">No signals for this date within the last hour (or no signals for previous dates).</p>';
-                } else {
-                    signalsForDate.forEach(signal => {
-                        const signalCard = document.createElement('div');
-                        signalCard.className = 'signal-card';
-                        signalCard.id = `signal-${signal.signal_id}`;
-
-                        const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal' : 'sell-signal';
-
-                        // Helper function to safely format numbers
-                        const formatNumber = (value, decimals) => {
-                            // Ensure value is a number before calling toFixed, otherwise return 'N/A'
-                            return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(decimals) : 'N/A';
-                        };
-
-                        signalCard.innerHTML = `
-                            <div class="signal-card-header">
-                                <h2 class="text-2xl font-bold text-gray-900">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
-                                <button class="toggle-chart-btn px-4 py-2 bg-purple-600 text-white rounded-md shadow-sm hover:bg-purple-700 transition duration-200" data-signal-id="${signal.signal_id}">
-                                    Show Chart
-                                </button>
+                    signalCard.innerHTML = `
+                        <div class="signal-card-header">
+                            <h2 class="text-2xl font-bold text-gray-900">${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
+                            <button class="toggle-chart-btn px-4 py-2 bg-purple-600 text-white rounded-md shadow-sm hover:bg-purple-700 transition duration-200" data-signal-id="${signal.signal_id}">
+                                Show Chart
+                            </button>
+                        </div>
+                        <div class="signal-card-body">
+                            <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
+                            <div class="signal-card-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
+                            <div class="signal-card-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
+                            <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
+                            <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
+                            <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
+                            <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${formatNumber(signal.realized_pnl, 2)}</span></div>
+                            <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)}</span></div>
+                            <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
+                            <div class="signal-card-item"><strong>Take Profit Target:</strong> <span>${formatNumber(signal.take_profit_target, 4)}</span></div>
+                            <div class="signal-card-item"><strong>Closed Percentage:</strong> <span>${formatNumber(signal.closed_percentage, 2)}%</span></div>
+                            <div class="signal-card-item"><strong>Exit Price:</strong> <span>${formatNumber(signal.exit_price, 4)}</span></div>
+                            <div class="signal-card-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
+                            <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes || 'N/A'}</span></div>
+                            <div class="signal-card-item"><strong>Strategy Name:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
+                            <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)}</span></div>
+                            <div class="signal-card-item"><strong>Achieved 25% TP:</strong> <span>${signal.achieved_25_percent_tp ? 'Yes' : 'No'}</span></div>
+                            <div class="signal-card-item"><strong>Achieved 50% TP:</strong> <span>${signal.achieved_50_percent_tp ? 'Yes' : 'No'}</span></div>
+                            <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${(signal.activated_tp_levels && signal.activated_tp_levels.length > 0) ? signal.activated_tp_levels.join(', ') : 'None'}</span></div>
+                        </div>
+                        <div id="chart-container-${signal.signal_id}" class="chart-container hidden">
                             </div>
-                            <div class="signal-card-body">
-                                <div class="signal-card-item"><strong>Timeframe:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Entry Price:</strong> <span>${formatNumber(signal.entry_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Monitoring Status:</strong> <span>${signal.monitoring_status || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Current Price:</strong> <span>${formatNumber(signal.current_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Profit/Loss %:</strong> <span class="${(typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) ? (signal.profit_loss_percentage >= 0 ? 'text-green-600' : 'text-red-600') : ''}">${formatNumber(signal.profit_loss_percentage, 2)}%</span></div>
-                                <div class="signal-card-item"><strong>Realized PnL:</strong> <span>${formatNumber(signal.realized_pnl, 2)}</span></div>
-                                <div class="signal-card-item"><strong>Unrealized PnL:</strong> <span>${formatNumber(signal.unrealized_pnl, 2)}</span></div>
-                                <div class="signal-card-item"><strong>Stop Loss Price:</strong> <span>${formatNumber(signal.stop_loss_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Take Profit Target:</strong> <span>${formatNumber(signal.take_profit_target, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Closed Percentage:</strong> <span>${formatNumber(signal.closed_percentage, 2)}%</span></div>
-                                <div class="signal-card-item"><strong>Exit Price:</strong> <span>${formatNumber(signal.exit_price, 4)}</span></div>
-                                <div class="signal-card-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Notes:</strong> <span>${signal.notes || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Strategy Name:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
-                                <div class="signal-card-item"><strong>Initial Investment:</strong> <span>${formatNumber(signal.initial_investment, 2)}</span></div>
-                                <div class="signal-card-item"><strong>Achieved 25% TP:</strong> <span>${signal.achieved_25_percent_tp ? 'Yes' : 'No'}</span></div>
-                                <div class="signal-card-item"><strong>Achieved 50% TP:</strong> <span>${signal.achieved_50_percent_tp ? 'Yes' : 'No'}</span></div>
-                                <div class="signal-card-item"><strong>TP Levels Activated:</strong> <span>${(signal.activated_tp_levels && signal.activated_tp_levels.length > 0) ? signal.activated_tp_levels.join(', ') : 'None'}</span></div>
-                            </div>
-                            <div id="chart-container-${signal.signal_id}" class="chart-container hidden">
-                                <!-- TradingView chart will be loaded here -->
-                            </div>
-                        `;
-                        dateSignalsDiv.appendChild(signalCard);
-                    });
-                }
-                detailsElement.appendChild(dateSignalsDiv);
-                signalsContainer.appendChild(detailsElement);
+                    `;
+                    signalsContainer.appendChild(signalCard);
+                });
             }
 
             // Add event listeners for toggle chart buttons
@@ -606,59 +654,19 @@
             });
         }
 
-        /**
-         * Main function to load and render signals.
-         */
-        async function loadAndRenderSignals() {
-            // Define the maximum age in hours for signals to be displayed on the current day.
-            // Only signals with entry_time within the last 'maxAgeHoursForTodaySignals' hours will be shown for today.
-            const maxAgeHoursForTodaySignals = 1; // <--- This value is now 1 hour
-
+        // Initial fetch and render when the page loads
+        document.addEventListener('DOMContentLoaded', async () => {
             const signals = await fetchSignals();
-            updateSummaryStatistics(signals);
-            renderSignals(signals, maxAgeHoursForTodaySignals);
-        }
+            updateSummaryStatistics(signals); // Update stats for all fetched signals
+            renderSignals(signals); // Render all signals without any date filter
 
-        // Schedule updates three times a day
-        const updateHours = [9, 15, 21]; // Example: 9 AM, 3 PM, 9 PM (local time)
-
-        function scheduleDailyUpdates() {
-            const now = new Date();
-            const currentHour = now.getHours();
-
-            let nextUpdateHour = updateHours.find(hour => hour > currentHour);
-            if (!nextUpdateHour) {
-                // If all update hours for today have passed, schedule for the first hour tomorrow
-                nextUpdateHour = updateHours[0];
-                now.setDate(now.getDate() + 1); // Move to next day
-            }
-
-            const nextUpdateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextUpdateHour, 0, 0, 0);
-            const timeToNextUpdate = nextUpdateTime.getTime() - new Date().getTime();
-
-            console.log(`Next data refresh scheduled for: ${nextUpdateTime.toLocaleString()}`);
-
-            // Clear any existing timeout to prevent multiple schedules
-            if (window._updateTimeout) {
-                clearTimeout(window._updateTimeout);
-            }
-
-            window._updateTimeout = setTimeout(async () => {
-                console.log("Performing scheduled data refresh...");
-                await loadAndRenderSignals();
-                // After refresh, schedule the next update for the next cycle
-                scheduleDailyUpdates();
-            }, timeToNextUpdate);
-        }
-
-
-        // Initial load and event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAndRenderSignals(); // Initial load
-
-            // Start scheduling daily updates
-            scheduleDailyUpdates();
+            // Set up interval to refresh signals every 60 seconds (60000 milliseconds)
+            setInterval(async () => {
+                const updatedSignals = await fetchSignals();
+                updateSummaryStatistics(updatedSignals); // Update stats for all fetched signals
+                renderSignals(updatedSignals);
+            }, 60000); // 1 minute refresh
         });
     </script>
 </body>
-</html> 
+</html>
