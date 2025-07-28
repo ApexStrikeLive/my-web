@@ -60,6 +60,50 @@
         .purple-text { color: #9333ea; }
         .orange-text { color: #ea580c; }
 
+        /* Strategy Stats Styles */
+        .strategy-stats-section {
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f0f9ff; /* Lighter blue background */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+        }
+        .strategy-stats-section h2 {
+            font-size: 1.5rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Larger cards for strategies */
+            gap: 1rem;
+        }
+        .strategy-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid #bfdbfe;
+        }
+        .strategy-card h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            text-align: center;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        .strategy-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        .strategy-card p strong {
+            color: #475569;
+        }
+
         /* Date Section Styles */
         .date-section {
             margin-bottom: 1rem;
@@ -209,6 +253,12 @@
             </div>
         </div>
 
+        <div id="strategyStatsSection" class="strategy-stats-section hidden">
+            <h2>Statystyki według Strategii</h2>
+            <div id="strategyStatsGrid" class="strategy-grid">
+                </div>
+        </div>
+
         <div id="signalsContainer">
             <p class="text-center text-gray-500 py-4">Ładowanie sygnałów...</p>
         </div>
@@ -326,11 +376,16 @@
          */
         function updateSummaryStatistics(signals) {
             const statsSection = document.getElementById('statsSection');
+            const strategyStatsSection = document.getElementById('strategyStatsSection');
+            const strategyStatsGrid = document.getElementById('strategyStatsGrid');
+
             if (signals.length === 0) {
                 statsSection.style.display = 'none';
+                strategyStatsSection.classList.add('hidden'); // Ukryj sekcję strategii
                 return;
             }
             statsSection.style.display = 'grid';
+            strategyStatsSection.classList.remove('hidden'); // Pokaż sekcję strategii
 
             const stats = {
                 totalSignals: signals.length,
@@ -338,33 +393,104 @@
                 closedUnsuccessfulSignals: 0,
                 openSignals: 0,
                 totalClosed100Percent: 0,
-                closedSLLossGreaterThan3: 0
+                closedSLLossGreaterThan3: 0,
+                strategies: {} // Nowy obiekt do przechowywania statystyk strategii
             };
 
             signals.forEach(signal => {
+                const strategyName = signal.strategy_name || 'Nieznana strategia';
+                if (!stats.strategies[strategyName]) {
+                    stats.strategies[strategyName] = {
+                        total: 0,
+                        successful: 0,
+                        unsuccessful: 0,
+                        open: 0,
+                        closed100Percent: 0,
+                        closedSLLossGreaterThan3: 0,
+                        totalPnl: 0, // Suma PnL dla strategii
+                        totalProfitPercentage: 0 // Suma % zysku dla strategii
+                    };
+                }
+
+                stats.strategies[strategyName].total++;
+                stats.totalSignals++; // Globalny licznik, choć już jest signals.length
+
                 if (signal.monitoring_status === "OPEN") {
                     stats.openSignals++;
+                    stats.strategies[strategyName].open++;
+                    // Dodaj niezrealizowany PnL do sumy dla strategii
+                    if (typeof signal.unrealized_pnl === 'number' && !isNaN(signal.unrealized_pnl)) {
+                        stats.strategies[strategyName].totalPnl += signal.unrealized_pnl;
+                    }
+                    if (typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) {
+                        stats.strategies[strategyName].totalProfitPercentage += signal.profit_loss_percentage;
+                    }
                 } else if (signal.monitoring_status?.includes("CLOSED")) {
-                    if (typeof signal.realized_pnl === 'number' && signal.realized_pnl > 0) {
-                        stats.successfulSignals++;
+                    if (typeof signal.realized_pnl === 'number') {
+                        if (signal.realized_pnl > 0) {
+                            stats.successfulSignals++;
+                            stats.strategies[strategyName].successful++;
+                        } else {
+                            stats.closedUnsuccessfulSignals++;
+                            stats.strategies[strategyName].unsuccessful++;
+                        }
+                        // Dodaj zrealizowany PnL do sumy dla strategii
+                        if (!isNaN(signal.realized_pnl)) {
+                            stats.strategies[strategyName].totalPnl += signal.realized_pnl;
+                        }
                     } else {
                         stats.closedUnsuccessfulSignals++;
+                        stats.strategies[strategyName].unsuccessful++;
                     }
+
+                    if (typeof signal.profit_loss_percentage === 'number' && !isNaN(signal.profit_loss_percentage)) {
+                        stats.strategies[strategyName].totalProfitPercentage += signal.profit_loss_percentage;
+                    }
+                    
                     if (signal.closed_percentage === 100) {
                         stats.totalClosed100Percent++;
+                        stats.strategies[strategyName].closed100Percent++;
                     }
                     if (signal.monitoring_status.includes("CLOSED_SL") && typeof signal.profit_loss_percentage === 'number' && signal.profit_loss_percentage < -3) {
                         stats.closedSLLossGreaterThan3++;
+                        stats.strategies[strategyName].closedSLLossGreaterThan3++;
                     }
                 }
             });
 
+            // Aktualizacja ogólnych statystyk
             document.getElementById('totalSignals').textContent = stats.totalSignals;
             document.getElementById('successfulSignals').textContent = stats.successfulSignals;
             document.getElementById('closedUnsuccessfulSignals').textContent = stats.closedUnsuccessfulSignals;
             document.getElementById('openSignals').textContent = stats.openSignals;
             document.getElementById('totalClosed100Percent').textContent = stats.totalClosed100Percent;
             document.getElementById('closedSLLossGreaterThan3').textContent = stats.closedSLLossGreaterThan3;
+
+            // Renderowanie statystyk strategii
+            strategyStatsGrid.innerHTML = ''; // Wyczyść poprzednie statystyki strategii
+            for (const strategyName in stats.strategies) {
+                const strategy = stats.strategies[strategyName];
+                const winRate = strategy.total > 0 ? (strategy.successful / strategy.total) * 100 : 0;
+                const avgProfit = strategy.total > 0 ? strategy.totalPnl / strategy.total : 0;
+                const avgProfitPercentage = strategy.total > 0 ? strategy.totalProfitPercentage / strategy.total : 0;
+
+
+                const strategyCardHtml = `
+                    <div class="strategy-card">
+                        <h3>${strategyName}</h3>
+                        <p><strong>Łącznie sygnałów:</strong> ${strategy.total}</p>
+                        <p><strong>Udanych:</strong> <span class="green-text">${strategy.successful}</span></p>
+                        <p><strong>Nieudanych:</strong> <span class="red-text">${strategy.unsuccessful}</span></p>
+                        <p><strong>Otwartych:</strong> <span class="blue-text">${strategy.open}</span></p>
+                        <p><strong>Zamkniętych 100%:</strong> <span class="purple-text">${strategy.closed100Percent}</span></p>
+                        <p><strong>SL (> -3%):</strong> <span class="orange-text">${strategy.closedSLLossGreaterThan3}</span></p>
+                        <p><strong>Win Rate:</strong> <span class="${winRate >= 50 ? 'green-text' : 'red-text'}">${formatValue(winRate, 'percentage', 2)}</span></p>
+                        <p><strong>Średni PnL/sygnał:</strong> <span class="${avgProfit >= 0 ? 'green-text' : 'red-text'}">$${formatValue(avgProfit, 'number', 2)}</span></p>
+                         <p><strong>Średni % Zysku/sygnał:</strong> <span class="${avgProfitPercentage >= 0 ? 'green-text' : 'red-text'}">${formatValue(avgProfitPercentage, 'percentage', 2)}</span></p>
+                    </div>
+                `;
+                strategyStatsGrid.insertAdjacentHTML('beforeend', strategyCardHtml);
+            }
         }
 
         /**
