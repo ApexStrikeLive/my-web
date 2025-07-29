@@ -1727,10 +1727,10 @@
     "entry_time": "2025-07-28T20:46:48.734402",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 4126.16,
-    "profit_loss_percentage": -2.373390881019416,
+    "current_price": 4133.68,
+    "profit_loss_percentage": -2.559603703456091,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -2.173390881019416,
+    "unrealized_pnl": -2.3596037034560906,
     "stop_loss_price": 4159.5417,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -2037,24 +2037,34 @@
     "entry_price": 0.01722,
     "entry_time": "2025-07-29T00:56:56.117121",
     "is_monitored": true,
-    "monitoring_status": "OPEN",
-    "current_price": 0.01733,
-    "profit_loss_percentage": 0.43879210220675063,
-    "realized_pnl": 0.0,
-    "unrealized_pnl": 0.6387921022067506,
-    "stop_loss_price": 0.0167034,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 0.01738,
+    "profit_loss_percentage": 0.7291521486643462,
+    "realized_pnl": 0.18228803716608655,
+    "unrealized_pnl": 0.6968641114982597,
+    "stop_loss_price": 0.01725444,
     "take_profit_target": 0.0,
-    "closed_percentage": 0.0,
+    "closed_percentage": 25.0,
     "exit_price": null,
     "exit_time": null,
     "exit_time_obj": null,
-    "partial_closes": [],
-    "notes": "",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.01738,
+        "time": "2025-07-29T09:18:36.407122",
+        "realized_pnl_usd": 0.18228803716608655
+      }
+    ],
+    "notes": "SL moved to 0.0% profit (net)",
     "strategy_name": "RSI_OPT_PROD",
     "initial_investment": 100.0,
-    "achieved_25_percent_tp": false,
+    "achieved_25_percent_tp": true,
     "achieved_50_percent_tp": false,
-    "activated_tp_levels": []
+    "activated_tp_levels": [
+      "tp_0.7"
+    ]
   },
   {
     "signal_id": "e21bf733-fd35-4bca-a4f2-cd61363ab9b0",
@@ -2346,11 +2356,11 @@
     "entry_time": "2025-07-29T04:26:45.397335",
     "is_monitored": true,
     "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 0.3705,
-    "profit_loss_percentage": 2.403157020216012,
+    "current_price": 0.3716,
+    "profit_loss_percentage": 2.7077817779008613,
     "realized_pnl": 1.0684990307394155,
-    "unrealized_pnl": 0.6507892550540031,
-    "stop_loss_price": 0.3675998,
+    "unrealized_pnl": 0.7269454444752154,
+    "stop_loss_price": 0.3690442,
     "take_profit_target": 0.0,
     "closed_percentage": 75.0,
     "exit_price": null,
@@ -2379,7 +2389,7 @@
         "realized_pnl_usd": 0.5246330656327908
       }
     ],
-    "notes": "SL moved to 1.6% profit (net)",
+    "notes": "SL moved to 2.0% profit (net)",
     "strategy_name": "RSI_OPT_PROD",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
@@ -2391,7 +2401,9 @@
       "tp_1.5",
       "tp_1.8",
       "tp_2.0",
-      "tp_2.4"
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8"
     ]
   },
   {
@@ -2440,10 +2452,10 @@
     "entry_time": "2025-07-29T06:17:21.344899",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 10.536,
-    "profit_loss_percentage": -2.870044825570056,
+    "current_price": 10.517,
+    "profit_loss_percentage": -2.684895731826145,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -2.6700448255700557,
+    "unrealized_pnl": -2.484895731826145,
     "stop_loss_price": 10.56986,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -2692,17 +2704,16 @@
     "entry_price": 0.3585,
     "entry_time": "2025-07-29T07:03:40.187993",
     "is_monitored": true,
-    "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 0.3705,
-    "profit_loss_percentage": 3.1472803347280367,
-    "realized_pnl": 1.0145746164574652,
-    "unrealized_pnl": 0.8368200836820092,
+    "monitoring_status": "CLOSED_TP (1.84%)",
+    "current_price": 0.3711,
+    "profit_loss_percentage": 3.3146443514644353,
+    "realized_pnl": 1.843235704323574,
+    "unrealized_pnl": 0.8786610878661089,
     "stop_loss_price": 0.36817949999999994,
     "take_profit_target": 0.0,
-    "closed_percentage": 75.0,
-    "exit_price": null,
-    "exit_time": null,
-    "exit_time_obj": null,
+    "closed_percentage": 100.0,
+    "exit_price": 0.3711,
+    "exit_time": "2025-07-29T09:17:14.232810",
     "partial_closes": [
       {
         "level": "tp_0.7",
@@ -2724,9 +2735,16 @@
         "price": 0.3664,
         "time": "2025-07-29T08:23:02.869483",
         "realized_pnl_usd": 0.5009065550906567
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.3711,
+        "time": "2025-07-29T09:17:14.232700",
+        "realized_pnl_usd": 0.8286610878661088
       }
     ],
-    "notes": "SL moved to 2.5% profit (net)",
+    "notes": "Fully closed by Take Profit",
     "strategy_name": "RSI_OPT_PROD",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
@@ -2741,7 +2759,8 @@
       "tp_2.4",
       "tp_2.6",
       "tp_2.8",
-      "tp_3.0"
+      "tp_3.0",
+      "tp_3.3"
     ]
   },
   {
@@ -2945,10 +2964,10 @@
     "entry_time": "2025-07-29T08:54:16.029782",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 0.08755,
-    "profit_loss_percentage": -0.5868471953578258,
+    "current_price": 0.08772,
+    "profit_loss_percentage": -0.393423597678905,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -0.3868471953578258,
+    "unrealized_pnl": -0.19342359767890502,
     "stop_loss_price": 0.08525329999999999,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
