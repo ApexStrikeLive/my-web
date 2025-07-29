@@ -2037,10 +2037,10 @@
     "entry_time": "2025-07-29T00:56:56.117121",
     "is_monitored": true,
     "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 0.01741,
-    "profit_loss_percentage": 0.9033681765389037,
+    "current_price": 0.0174,
+    "profit_loss_percentage": 0.8452961672473845,
     "realized_pnl": 0.18228803716608655,
-    "unrealized_pnl": 0.8275261324041777,
+    "unrealized_pnl": 0.7839721254355385,
     "stop_loss_price": 0.01728888,
     "take_profit_target": 0.0,
     "closed_percentage": 25.0,
@@ -2971,10 +2971,10 @@
     "entry_time": "2025-07-29T08:54:16.029782",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 0.0879,
-    "profit_loss_percentage": -0.1886221413129935,
+    "current_price": 0.08769,
+    "profit_loss_percentage": -0.4275571737398929,
     "realized_pnl": 0.0,
-    "unrealized_pnl": 0.011377858687006488,
+    "unrealized_pnl": -0.2275571737398929,
     "stop_loss_price": 0.08525329999999999,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -3181,17 +3181,16 @@
     "entry_price": 7.83,
     "entry_time": "2025-07-29T09:39:17.503306",
     "is_monitored": true,
-    "monitoring_status": "PARTIALLY_CLOSED",
+    "monitoring_status": "CLOSED_SL (1.81%)",
     "current_price": 8.04,
     "profit_loss_percentage": 2.481992337164739,
-    "realized_pnl": 1.1909961685823753,
+    "realized_pnl": 1.81149425287356,
     "unrealized_pnl": 0.6704980842911848,
-    "stop_loss_price": 7.970940000000001,
+    "stop_loss_price": 8.041409999999999,
     "take_profit_target": 0.0,
-    "closed_percentage": 75.0,
-    "exit_price": null,
-    "exit_time": null,
-    "exit_time_obj": null,
+    "closed_percentage": 100.0,
+    "exit_price": 8.04,
+    "exit_time": "2025-07-29T09:55:07.189562",
     "partial_closes": [
       {
         "level": "tp_0.7",
@@ -3215,7 +3214,7 @@
         "realized_pnl_usd": 0.52471264367816
       }
     ],
-    "notes": "SL moved to 1.6% profit (net)",
+    "notes": "Closed by Stop Loss",
     "strategy_name": "Binance_OPT_PROD",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
@@ -3227,7 +3226,10 @@
       "tp_1.5",
       "tp_1.8",
       "tp_2.0",
-      "tp_2.4"
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0"
     ]
   }
 ]
