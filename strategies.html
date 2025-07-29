@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Strike - Our Strategies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Replicated from main style for consistency */
+        :root {
+            --black: #0d0d0d;
+            --white: #fdfdfd;
+            --gray-900: #1a1a1a;
+            --gray-800: #292929;
+            --gray-700: #424242;
+            --gray-600: #6b6b6b;
+            --gray-500: #949494;
+            --gray-400: #c2c2c2;
+            --gray-300: #dcdcdc;
+            --gray-200: #ececec;
+            --gray-100: #f5f5f5;
+
+            --primary: #3b82f6;
+            --primary-light: #bfdbfe;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --accent-dark: #b45309;
+
+            --success: #10B981;
+            --failure: #EF4444;
+
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 6px 12px -3px rgba(0, 0, 0, 0.12), 0 3px 6px -3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 16px 24px -6px rgba(0, 0, 0, 0.15), 0 8px 12px -6px rgba(0, 0, 0, 0.1);
+
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles - Replicated from main style for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--gray-700);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--gray-900);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.15;
+        }
+
+        h2 {
+            font-size: 2.125rem;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+        }
+
+        p {
+            font-size: 1.05rem;
+            margin-bottom: 1.25rem;
+            color: var(--gray-700);
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--gray-800);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: var(--black);
+            border-color: var(--accent-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Header Specific Styles */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .logo i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul a {
+            color: var(--gray-700);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        nav ul a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        /* Main Content Specific Styles */
+        .strategy-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .strategy-intro h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+        }
+
+        .strategy-intro p {
+            font-size: 1.15rem;
+            color: var(--gray-700);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .strategy-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .strategy-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .strategy-card h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .strategy-card h3 i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .strategy-card p {
+            margin-bottom: 1rem;
+            flex-grow: 1; /* Allows text to fill space */
+        }
+
+        .strategy-card strong {
+            color: var(--gray-900);
+        }
+
+        .strategy-card ul {
+            margin-top: 1rem;
+            padding-left: 1.25rem;
+            list-style: disc; /* Use standard disc bullets for clarity */
+            color: var(--gray-700);
+        }
+
+        .strategy-card ul li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: var(--gray-900);
+            color: var(--gray-200);
+            border-top: 1px solid var(--gray-800);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .cta .section-title h2,
+        .cta .section-title p {
+            color: var(--white);
+        }
+
+        /* Waitlist Form */
+        .waitlist-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 40rem;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            font-size: 0.9375rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 8rem;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover {
+            background-color: var(--gray-800);
+        }
+
+        /* Social Links Box */
+        .social-links-box {
+            background: var(--gray-800);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem auto 0;
+            text-align: center;
+            border: 1px solid var(--gray-700);
+            max-width: 40rem;
+        }
+
+        .social-links-box h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .social-link-item {
+            background: var(--gray-700);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .social-link-item:hover {
+            background: var(--gray-600);
+        }
+
+        .social-link-item a {
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .social-link-item i {
+            font-size: 1.25rem;
+        }
+
+
+        /* Footer Specific Styles (Replicated for consistency) */
+        footer {
+            background: var(--gray-900);
+            color: var(--gray-500);
+            border-top: 1px solid var(--gray-800);
+            padding: 4rem 0 2rem; /* Adjusted padding */
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2rem;
+            height: 2px;
+            background: var(--gray-700);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9375rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius);
+            background: var(--gray-800);
+            color: var(--gray-400);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--gray-700);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--gray-800);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        /* Responsive Styles - Replicated from main style for consistency */
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                border-top: 1px solid var(--gray-200);
+                padding: 1rem 1.5rem;
+                box-shadow: var(--shadow-md);
+                z-index: 40;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin-bottom: 0.75rem;
+            }
+
+            nav ul li:last-child {
+                margin-bottom: 0;
+            }
+
+            nav ul a {
+                padding: 0.5rem 0;
+                display: block;
+                color: var(--gray-800);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-intro h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                margin-bottom: 2rem;
+            }
+
+            .strategy-intro h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Apex Strike</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="strategies.html">Strategies</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+            <a href="signals.html" class="btn btn-primary">Get Started</a>
+        </div>
+    </header>
+
+    <section class="section" style="background-color: var(--gray-900); color: var(--white);">
+        <div class="container strategy-intro">
+            <h1>Our Core Crypto Trading Strategies</h1>
+            <p>At Apex Strike, our signals are powered by robust, data-driven strategies designed to identify high-probability trading opportunities in the volatile crypto market. We combine classic technical analysis with modern data processing to deliver actionable insights. Here are some of the key indicators and concepts we utilize:</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="strategy-grid">
+
+                <div class="strategy-card">
+                    <h3><i class="fas fa-chart-line"></i> Relative Strength Index (RSI)</h3>
+                    <p>The **Relative Strength Index (RSI)** is a momentum oscillator that measures the speed and change of price movements. It oscillates between zero and 100.</p>
+                    <p>Traditionally, RSI is used to identify **overbought and oversold conditions** in the market:</p>
+                    <ul>
+                        <li><strong>Overbought:</strong> When RSI is above 70, it suggests the asset may be overvalued and due for a price correction.</li>
+                        <li><strong>Oversold:</strong> When RSI is below 30, it suggests the asset may be undervalued and due for a price bounce.</li>
+                    </ul>
+                    <p>We leverage RSI not just for these basic signals but also in combination with other indicators to confirm trend strength and potential reversals, particularly when divergence occurs between price and RSI movement.</p>
+                </div>
+
+                <div class="strategy-card">
+                    <h3><i class="fas fa-chart-area"></i> Moving Average Convergence Divergence (MACD)</h3>
+                    <p>The **Moving Average Convergence Divergence (MACD)** is a trend-following momentum indicator that shows the relationship between two moving averages of a security’s price. It's composed of three main components:</p>
+                    <ul>
+                        <li><strong>MACD Line:</strong> The difference between the 12-period EMA and the 26-period EMA.</li>
+                        <li><strong>Signal Line:</strong> A 9-period EMA of the MACD Line, which acts as a trigger for buy and sell signals.</li>
+                        <li><strong>Histogram:</strong> Represents the difference between the MACD Line and the Signal Line.</li>
+                    </ul>
+                    <p>MACD helps us identify **momentum shifts, potential trend changes, and entry/exit points** based on:</p>
+                    <ul>
+                        <li><strong>Crossovers:</strong> When the MACD line crosses above the Signal Line, it's often a bullish signal; below is bearish.</li>
+                        <li><strong>Divergence:</strong> When price makes a new high/low but MACD doesn't, indicating weakening momentum.</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-card">
+                    <h3><i class="fas fa-wave-square"></i> Squeeze Momentum Indicator</h3>
+                    <p>The **Squeeze Momentum Indicator** (often associated with John Carter's TTM Squeeze) is designed to identify periods when price volatility has contracted (the "squeeze") and is likely to expand, indicating a potential strong move. It combines Bollinger Bands and Keltner Channels to detect these periods.</p>
+                    <p>Key components and what we look for:</p>
+                    <ul>
+                        <li><strong>The "Squeeze":</strong> Occurs when the Bollinger Bands move inside the Keltner Channels, indicating low volatility and accumulation. This is often followed by a strong directional move.</li>
+                        <li><strong>Momentum Histogram:</strong> Shows the direction and strength of momentum. Green bars indicate upward momentum, red bars indicate downward momentum. Lighter shades can indicate fading momentum.</li>
+                    </ul>
+                    <p>This indicator is crucial for spotting **imminent breakouts** from periods of consolidation, allowing us to position for significant price action.</p>
+                </div>
+
+                <div class="strategy-card">
+                    <h3><i class="fas fa-dollar-sign"></i> Other Integrated Analysis</h3>
+                    <p>Beyond these core indicators, our strategies incorporate a broader range of analytical techniques to refine signal generation and manage risk. We don't rely on a single indicator but rather a confluence of multiple factors to increase the probability of success.</p>
+                    <ul>
+                        <li><strong>Volume Analysis:</strong> Confirming price moves with significant volume.</li>
+                        <li><strong>Support & Resistance Levels:</strong> Identifying key price areas where buying or selling pressure is expected.</li>
+                        <li><strong>Multi-Timeframe Analysis:</strong> Confirming trends and signals across different timeframes for higher conviction.</li>
+                        <li><strong>Market Structure & Price Action:</strong> Understanding the underlying behavior of buyers and sellers.</li>
+                    </ul>
+                    <p>This holistic approach allows us to generate more robust signals and adapt to various market conditions.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    ---
+
+    <section class="section cta" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ready to Elevate Your Crypto Game?</h2>
+                <p>Secure your spot for early access and gain an immediate advantage.</p>
+            </div>
+            <div class="waitlist-form">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="john.doe@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest">What are you most interested in?</label>
+                        <textarea id="interest" placeholder="Crypto signals, API access, or collaborating on a custom strategy?"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Join Waitlist</button>
+                </form>
+                <div class="social-links-box">
+                    <h3>Or connect with us on social media:</h3>
+                    <div class="social-links-grid">
+                        <div class="social-link-item">
+                            <a href="https://twitter.com/ApexStrikeAI" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                                Twitter
+                            </a>
+                        </div>
+                        <div class="social-link-item">
+                            <a href="https://discord.gg/yourinvite" target="_blank">
+                                <i class="fab fa-discord"></i>
+                                Discord
+                            </a>
+                        </div>
+                        <div class="social-link-item">
+                            <a href="https://t.me/ApexStrikeOfficial" target="_blank">
+                                <i class="fab fa-telegram-plane"></i>
+                                Telegram
+                            </a>
+                        </div>
+                        <div class="social-link-item">
+                            <a href="https://www.youtube.com/channel/yourchannel" target="_blank">
+                                <i class="fab fa-youtube"></i>
+                                YouTube
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    ---
+
+    <footer class="section">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Apex Strike</h3>
+                    <p>AI-Powered Signals for Smarter Decisions.</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/ApexStrikeAI" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://discord.gg/yourinvite" target="_blank" aria-label="Discord"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="https://www.youtube.com/channel/yourchannel" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="strategies.html">Strategies</a></li>
+                        <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p>Email: support@apexstrike.ai</p>
+                    <p>Address: 123 AI Lane, Data City, 90210</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2025 Apex Strike. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Basic JavaScript for mobile menu toggle - Replicated
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navUl = document.querySelector('nav ul');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navUl.classList.toggle('active');
+            });
+
+            // Close menu if a link is clicked (for single-page navigation)
+            navUl.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navUl.classList.contains('active')) {
+                        navUl.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
