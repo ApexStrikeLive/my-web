@@ -3,34 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Strike | AI-Powered Sports & Crypto Signals</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Apex Strike - AI-Powered Signals for Crypto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS Variables */
         :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray-100: #f7f7f7;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-500: #737373;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-800: #262626;
-            --gray-900: #171717;
-            --primary: #3b82f6;
-            --primary-light: #93c5fd;
-            --primary-dark: #1d4ed8;
-            --accent: #f59e0b;
+            --black: #0d0d0d; /* Slightly softer black */
+            --white: #fdfdfd; /* Slightly off-white for backgrounds */
+            --gray-900: #1a1a1a; /* Darker than your current gray-900 for text */
+            --gray-800: #292929;
+            --gray-700: #424242; /* Deeper gray for body text */
+            --gray-600: #6b6b6b; /* Lighter gray for secondary text */
+            --gray-500: #949494;
+            --gray-400: #c2c2c2;
+            --gray-300: #dcdcdc;
+            --gray-200: #ececec;
+            --gray-100: #f5f5f5; /* Slightly darker light gray */
+
+            --primary: #3b82f6; /* Keep blue, it's good */
+            --primary-light: #bfdbfe; /* Make lighter for primary pill background */
+            --primary-dark: #1e40af; /* Deeper primary for hover/stronger elements */
+            --accent: #f59e0b; /* Keep accent, it provides good contrast */
+            --accent-light: #fef3c7; /* Lighter accent for pill background */
+            --accent-dark: #b45309; /* Darker accent for text on light accent background */
+
+            --success: #10B981; /* Green for success */
+            --failure: #EF4444; /* Red for failure */
+
+
             --radius: 0.5rem;
             --radius-lg: 0.75rem;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.06); /* Slightly more prominent */
+            --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Increased */
+            --shadow-md: 0 6px 12px -3px rgba(0, 0, 0, 0.12), 0 3px 6px -3px rgba(0, 0, 0, 0.08); /* More pronounced */
+            --shadow-lg: 0 16px 24px -6px rgba(0, 0, 0, 0.15), 0 8px 12px -6px rgba(0, 0, 0, 0.1); /* Even more */
+
+            --transition: all 0.3s ease;
         }
 
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -38,135 +51,157 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--gray-900);
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
             background-color: var(--white);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        h1, h2, h3, h4, h5 {
-            font-weight: 600;
-            line-height: 1.25;
-            margin-bottom: 1rem;
-            color: var(--black);
-        }
-
-        h1 {
-            font-size: 2.25rem;
-            letter-spacing: -0.025em;
-        }
-
-        h2 {
-            font-size: 1.875rem;
-            letter-spacing: -0.025em;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-        }
-
-        p {
-            color: var(--gray-600);
-            margin-bottom: 1.25rem;
-            font-size: 1.125rem;
-        }
-
-        a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        a:hover {
-            color: var(--primary-dark);
+            color: var(--gray-700);
+            scroll-behavior: smooth;
         }
 
         .container {
-            width: 100%;
-            max-width: 80rem;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
 
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--gray-900);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem; /* Slightly larger, or adjust downwards based on preference */
+            line-height: 1.15; /* Tighter line height for large headings */
+        }
+
+        h2 {
+            font-size: 2.125rem; /* Adjusted for better hierarchy with h1 */
+        }
+
+        h3 {
+            font-size: 1.6rem; /* A bit larger for more impact */
+        }
+
+        p {
+            font-size: 1.05rem; /* Slightly smaller for better flow, if 1.125rem feels too big */
+            margin-bottom: 1.25rem;
+            color: var(--gray-700); /* Darker for better contrast on white background */
+        }
+
         .section {
-            padding: 6rem 0;
+            padding: 6rem 0; /* Consistent padding */
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.15rem; /* Keep main section descriptions slightly larger */
+            color: var(--gray-600); /* Lighter than body p for secondary role */
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 1.75rem;
             border-radius: var(--radius);
-            font-weight: 500;
+            font-weight: 600;
             font-size: 1rem;
-            transition: var(--transition);
             cursor: pointer;
-            border: none;
-            gap: 0.5rem;
+            transition: var(--transition);
+            text-align: center;
         }
 
         .btn-primary {
             background-color: var(--primary);
             color: var(--white);
-            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--primary);
         }
 
         .btn-primary:hover {
             background-color: var(--primary-dark);
-            box-shadow: var(--shadow);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
         }
 
+        /* Updated styles for btn-secondary */
         .btn-secondary {
             background-color: var(--white);
-            color: var(--gray-900);
-            border: 1px solid var(--gray-200);
-            box-shadow: var(--shadow-sm);
+            color: var(--gray-800);
+            border: 1px solid var(--gray-300);
         }
 
         .btn-secondary:hover {
-            background-color: var(--gray-100);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-accent {
-            background-color: var(--accent);
-            color: var(--black);
+            background-color: var(--accent); /* Gold background on hover */
+            color: var(--black); /* Black text on gold */
+            border-color: var(--accent-dark); /* Darker gold border on hover */
             box-shadow: var(--shadow-sm);
         }
 
-        .btn-accent:hover {
-            opacity: 0.9;
-            box-shadow: var(--shadow);
+        .grid-cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .grid-cols-4 { /* New grid for stats */
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
         }
 
         .card {
             background: var(--white);
+            padding: 2.5rem;
             border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200); /* Keep the subtle border */
             transition: var(--transition);
-            height: 100%;
-            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-md); /* Use the slightly larger shadow on hover */
+            transform: translateY(-3px); /* Make the lift more noticeable */
         }
 
         .pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            background: var(--gray-100);
+            display: inline-block;
+            padding: 0.35rem 0.8rem;
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 500;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
-            color: var(--gray-700);
+            white-space: nowrap;
         }
 
         .pill.primary {
@@ -175,33 +210,20 @@
         }
 
         .pill.accent {
-            background: #fef3c7;
-            color: #92400e;
+            background: var(--accent-light);
+            color: var(--accent-dark); /* Use darker accent for text */
         }
 
-        .grid-cols-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .grid-cols-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
 
         /* Header */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: var(--white);
             padding: 1rem 0;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
         }
 
         .header-container {
@@ -211,35 +233,43 @@
         }
 
         .logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--black);
-            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
         }
 
         .logo i {
             color: var(--primary);
+            margin-right: 0.5rem;
         }
 
         nav ul {
             display: flex;
-            list-style: none;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
-        nav a {
-            text-decoration: none;
-            color: var(--gray-600);
+        nav ul a {
+            color: var(--gray-700);
             font-weight: 500;
-            font-size: 0.9375rem;
-            transition: var(--transition);
+            position: relative;
+            padding-bottom: 0.25rem;
         }
 
-        nav a:hover {
-            color: var(--black);
+        nav ul a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul a:hover::after {
+            width: 100%;
         }
 
         .mobile-menu-btn {
@@ -247,66 +277,102 @@
             background: none;
             border: none;
             font-size: 1.5rem;
+            color: var(--gray-700);
             cursor: pointer;
-            color: var(--gray-600);
         }
 
         /* Hero Section */
         .hero {
-            padding-top: 7rem;
-            padding-bottom: 6rem;
+            background-color: var(--gray-900); /* Set background to gray-900 */
+            color: var(--white);
+            padding: 8rem 0;
+            text-align: center;
             position: relative;
             overflow: hidden;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        /* Remove the blue gradient overlay */
+        .hero::before {
+            content: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
         }
 
         .hero-content {
             display: flex;
+            flex-direction: row; /* Back to row for side-by-side */
             align-items: center;
             gap: 4rem;
         }
 
         .hero-text {
             flex: 1;
+            text-align: left; /* Aligned left for side-by-side */
         }
 
-        .hero-image {
-            flex: 1;
-            position: relative;
+        .hero-text h1 {
+            color: var(--white);
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        .hero-image img {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            display: block;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
+        .hero-text p {
+            color: var(--gray-300);
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px; /* Adjusted max-width for text */
+            margin-left: 0; /* Reset margin */
+            margin-right: auto; /* Push to left */
         }
 
         .hero-buttons {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-bottom: 2.5rem;
+            justify-content: flex-start; /* Align buttons to the left */
+        }
+
+        .hero-buttons .btn {
+            padding: 1rem 2rem;
+            font-size: 1.05rem;
         }
 
         .hero-stats {
             display: flex;
+            flex-wrap: wrap; /* Allow wrapping for more stats */
             gap: 2rem;
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 1px solid var(--gray-200);
+            border-top: 1px solid var(--gray-700);
+            justify-content: flex-start; /* Align stats to the left */
         }
 
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
+            flex-basis: auto;
+        }
+        @media (min-width: 1024px) {
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr); /* Adjusted for 3 columns now */
+                gap: 2rem;
+            }
+            .stat-item {
+                flex-basis: auto; /* Let grid handle sizing */
+            }
         }
 
+
         .stat-icon {
+            background: var(--gray-800);
             width: 3rem;
             height: 3rem;
-            background: var(--gray-100);
             border-radius: var(--radius);
             display: flex;
             align-items: center;
@@ -316,211 +382,177 @@
         }
 
         .stat-text h3 {
-            font-size: 1.5rem;
+            color: var(--white);
+            font-size: 1.75rem;
             margin-bottom: 0.25rem;
-            color: var(--primary);
         }
 
         .stat-text p {
-            font-size: 0.9375rem;
-            color: var(--gray-500);
+            color: var(--gray-400);
+            font-size: 0.95rem;
             margin-bottom: 0;
         }
 
-        /* Features Section */
-        .features {
-            background-color: var(--gray-100);
-            border-top: 1px solid var(--gray-200);
-            border-bottom: 1px solid var(--gray-200);
+        /* Specific styles for success/fail stats */
+        .stat-text .success {
+            color: var(--success);
+        }
+        .stat-text .failure {
+            color: var(--failure);
         }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            max-width: 48rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .section-title p {
-            font-size: 1.125rem;
-            color: var(--gray-500);
-        }
-
-        .feature-card {
-            padding: 2rem;
-            text-align: left;
-        }
-
-        .feature-icon {
-            width: 3rem;
-            height: 3rem;
-            background: var(--white);
-            border-radius: var(--radius);
+        .hero-image {
+            flex: 1;
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            color: var(--primary);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
+            align-items: center;
+            width: auto; /* Reset width to auto for flex item */
+            max-width: 100%; /* Ensure image fits */
         }
 
-        /* Problem Solution */
-        .problem-solution {
-            background: var(--black);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .problem-solution h2,
-        .problem-solution h3,
-        .problem-solution p {
-            color: var(--white);
-        }
-
-        .ps-card {
-            padding: 2rem;
-            background: var(--gray-900);
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
             border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
             border: 1px solid var(--gray-800);
         }
 
+        /* Features Section */
+        .features .section-title p {
+            max-width: 800px; /* Allow more width for this intro text */
+        }
+
+        .ps-card {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            padding: 2rem;
+            border-radius: var(--radius-lg); /* Ensure consistent radius */
+            height: 100%; /* Make cards equal height in the grid */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out content and button */
+        }
+
         .ps-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            color: var(--gray-900);
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+        }
+
+        .ps-card h3 i {
+            margin-right: 0.75rem;
+            color: var(--primary);
+            font-size: 1.75rem;
+        }
+
+        .ps-card p {
+            flex-grow: 1; /* Allow paragraph to take up available space */
+            margin-bottom: 1.5rem; /* Ensure space before lists */
         }
 
         .ps-card ul {
-            list-style: none;
-            margin: 1.5rem 0;
+            list-style: none; /* Ensure no default bullets */
+            margin: 0; /* Reset margin */
+            padding: 0; /* Reset padding */
         }
 
         .ps-card ul li {
             margin-bottom: 1rem;
             padding-left: 2rem;
             position: relative;
-            color: var(--gray-300);
+            color: var(--gray-700);
+            font-size: 0.95rem;
         }
 
         .ps-card ul li::before {
-            content: "✓";
+            content: "\f00c"; /* Font Awesome checkmark icon */
+            font-family: "Font Awesome 5 Free"; /* Specify Font Awesome font */
+            font-weight: 900; /* For solid icons */
             position: absolute;
             left: 0;
             top: 0;
-            color: var(--accent);
-            font-weight: bold;
+            color: var(--accent); /* Keep accent color for emphasis */
+            font-size: 1.1em;
         }
 
-        /* Roadmap */
-        .roadmap-container {
-            position: relative;
-            padding-left: 1.5rem;
-            max-width: 48rem;
-            margin: 0 auto;
+        /* Sub-list for strategy development */
+        .ps-card ul ul {
+            margin-top: 0.5rem;
+            margin-left: 1rem; /* Indent sub-list */
+            padding-left: 1rem;
+            border-left: 2px dashed var(--gray-300); /* Visual separation */
         }
 
-        .roadmap-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 2px;
-            background: var(--gray-200);
-        }
-
-        .roadmap-item {
-            position: relative;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            border-left: 3px solid var(--primary);
-            border: 1px solid var(--gray-200);
-        }
-
-        .roadmap-item::before {
-            content: '';
-            position: absolute;
-            top: 2.5rem;
-            left: -0.5rem;
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
-            background: var(--primary);
-            border: 3px solid var(--white);
-        }
-
-        .roadmap-item.current {
-            border-left-color: var(--accent);
-        }
-
-        .roadmap-item.current::before {
-            background: var(--accent);
-        }
-
-        .roadmap-item.completed {
-            border-left-color: var(--gray-400);
-        }
-
-        .roadmap-item.completed::before {
-            background: var(--gray-400);
-        }
-
-        .roadmap-date {
-            font-weight: 500;
-            color: var(--primary);
+        .ps-card ul ul li {
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9375rem;
+            font-size: 0.9em;
         }
 
-        .roadmap-date i {
-            color: var(--accent);
-        }
-
-        .roadmap-item ul {
-            list-style: none;
-        }
-
-        .roadmap-item ul li {
-            margin-bottom: 0.5rem;
-            position: relative;
-            padding-left: 1.5rem;
+        .ps-card ul ul li::before {
+            content: "—"; /* Simple dash for sub-list items */
+            font-family: 'Inter', sans-serif;
+            font-weight: normal;
             color: var(--gray-600);
+            font-size: 1em;
+            left: 0.5rem; /* Adjust position */
         }
 
-        .roadmap-item ul li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--gray-400);
+        /* Action button within cards */
+        .ps-card .card-action-btn {
+            margin-top: auto; /* Push button to the bottom of the card */
+            display: block; /* Make button fill width */
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius);
+            transition: var(--transition);
         }
 
-        .strategy-tags {
-            margin-top: 1rem;
+        .ps-card .card-action-btn.btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
         }
+
+        .ps-card .card-action-btn.btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .ps-card .card-action-btn.btn-secondary-outline {
+            background-color: transparent;
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-light);
+        }
+
+        .ps-card .card-action-btn.btn-secondary-outline:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--primary);
+        }
+
+
+        /* Roadmap Section */
+        /* Removed all roadmap specific styles */
+
 
         /* CTA Section */
         .cta {
-            background: var(--gray-900);
-            color: var(--white);
+            background: var(--gray-900); /* Use new gray-900 */
+            color: var(--gray-200); /* Lighter text for contrast */
             border-top: 1px solid var(--gray-800);
             border-bottom: 1px solid var(--gray-800);
         }
 
         .cta .section-title h2,
         .cta .section-title p {
-            color: var(--white);
+            color: var(--white); /* Keep white for main titles */
         }
 
         /* Waitlist Form */
@@ -638,8 +670,8 @@
 
         /* Footer */
         footer {
-            background: var(--gray-900);
-            color: var(--gray-400);
+            background: var(--gray-900); /* Use new gray-900 */
+            color: var(--gray-500); /* Adjusted for contrast */
             border-top: 1px solid var(--gray-800);
         }
 
@@ -653,7 +685,7 @@
         .footer-col h3 {
             font-size: 1rem;
             margin-bottom: 1.5rem;
-            color: var(--white);
+            color: var(--white); /* Keep white */
             position: relative;
             padding-bottom: 0.75rem;
         }
@@ -677,7 +709,7 @@
         }
 
         .footer-links a {
-            color: var(--gray-400);
+            color: var(--gray-400); /* Adjusted for better contrast on dark background */
             text-decoration: none;
             transition: var(--transition);
             font-size: 0.9375rem;
@@ -700,8 +732,8 @@
             width: 2.5rem;
             height: 2.5rem;
             border-radius: var(--radius);
-            background: var(--gray-800);
-            color: var(--gray-400);
+            background: var(--gray-800); /* Adjusted for contrast */
+            color: var(--gray-400); /* Adjusted for contrast */
             font-size: 1rem;
             transition: var(--transition);
         }
@@ -722,7 +754,7 @@
         /* Responsive */
         @media (max-width: 1024px) {
             .hero-content {
-                flex-direction: column;
+                flex-direction: column; /* Stack vertically on smaller screens */
             }
 
             .hero-text, .hero-image {
@@ -730,12 +762,17 @@
                 width: 100%;
             }
 
-            .hero-buttons, .hero-stats {
+            .hero-buttons {
                 justify-content: center;
             }
 
-            .hero-image {
-                order: -1;
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+                justify-content: center; /* Center stats when stacked */
+            }
+             .hero-image {
+                order: -1; /* Move image above text on mobile/tablet */
                 margin-bottom: 3rem;
             }
         }
@@ -746,14 +783,43 @@
             }
 
             nav ul {
-                display: none;
+                display: none; /* Hidden by default */
+                flex-direction: column;
+                position: absolute;
+                top: 100%; /* Position below header */
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                border-top: 1px solid var(--gray-200);
+                padding: 1rem 1.5rem;
+                box-shadow: var(--shadow-md);
+                z-index: 40; /* Below fixed header */
+            }
+
+            /* This class would be toggled by JavaScript */
+            nav ul.active {
+                display: flex; /* Show when active */
+            }
+
+            nav ul li {
+                margin-bottom: 0.75rem; /* Space out links */
+            }
+
+            nav ul li:last-child {
+                margin-bottom: 0;
+            }
+
+            nav ul a {
+                padding: 0.5rem 0; /* Make links easier to tap */
+                display: block;
+                color: var(--gray-800);
             }
 
             .mobile-menu-btn {
                 display: block;
             }
 
-            .grid-cols-2 {
+            .grid-cols-2, .grid-cols-3 {
                 grid-template-columns: 1fr;
             }
 
@@ -766,13 +832,12 @@
                 flex-direction: column;
             }
 
-            .hero-stats {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
             .waitlist-form {
                 padding: 1.5rem;
+            }
+
+            .ps-card {
+                padding: 1.5rem; /* Adjust padding for smaller screens */
             }
         }
 
@@ -782,7 +847,15 @@
             }
 
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.6rem; /* A bit larger than your 1.5rem for h2 on mobile */
+            }
+
+            h3 {
+                font-size: 1.4rem; /* Adjusted for smaller screens */
+            }
+
+            p {
+                font-size: 1rem; /* Standard mobile paragraph size */
             }
 
             .section-title {
@@ -792,11 +865,18 @@
             .social-links-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .hero-stats {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+            }
+
+            .stat-item {
+                flex-basis: auto; /* Revert flex-basis */
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container header-container">
             <a href="#" class="logo">
@@ -806,61 +886,57 @@
             <nav>
                 <ul>
                     <li><a href="#features">Features</a></li>
-                    <li><a href="#solution">How It Works</a></li>
-                    <li><a href="#roadmap">Roadmap</a></li>
-                    <!-- New LIVE Signals link -->
-                    <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="strategies.html">Strategies</a></li> <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu-btn">
+                <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
                     <i class="fas fa-bars"></i>
                 </button>
             </nav>
-            <a href="#contact" class="btn btn-primary">Get Started</a>
+            <a href="signals.html" class="btn btn-primary">Live Signals</a>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>AI-Powered Signals for Sports & Crypto Markets</h1>
-                    <p>Apex Strike combines data science with market intelligence to deliver high-probability signals for trading and betting.</p>
+                    <h1>Stop Guessing. Start **Seeing**. Unveil Your Crypto Trading Edge.</h1>
+                    <p>Tired of opaque trading signals and unverified claims? Apex Strike brings **unprecedented, crystal-clear transparency** to crypto markets. We deliver high-probability signals from our advanced, publicly verified strategies. Even better, we **empower you to *design* your unique strategies!** Our AI engineers will then **transform your vision, deploying and running your custom strategies on our secure, 24/7 servers.**</p>
+                    <p>The proof is in the performance. **Every single signal generated, and its verifiable outcome, is openly displayed in real-time on our Live Signals page.**</p>
                     <div class="hero-buttons">
-                        <a href="#solution" class="btn btn-primary">
-                            How It Works
+                        <a href="signals.html" class="btn btn-primary">
+                            🚀 See LIVE Signals & Proof Right Now!
                         </a>
-                        <a href="#roadmap" class="btn btn-secondary">
-                            Development Roadmap
+                        <a href="#contact" class="btn btn-secondary">
+                            Submit Your Strategy Idea
                         </a>
                     </div>
                     <div class="hero-stats">
                         <div class="stat-item">
                             <div class="stat-icon">
-                                <i class="fas fa-running"></i>
-                            </div>
-                            <div class="stat-text">
-                                <h3>5+</h3>
-                                <p>Football Leagues Covered</p>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
                                 <i class="fas fa-coins"></i>
                             </div>
                             <div class="stat-text">
-                                <h3>3</h3>
-                                <p>Crypto Strategies Live</p>
+                                <h3>3+</h3>
+                                <p>High-Precision Crypto Strategies Live</p>
+                            </div>
+                        </div>
+                         <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3 class="success">66 / 75</h3>
+                                <p>Signals Successful (Take Profit)</p>
                             </div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-icon">
-                                <i class="fas fa-bolt"></i>
+                                <i class="fas fa-chart-line"></i>
                             </div>
                             <div class="stat-text">
-                                <h3>0.5s</h3>
-                                <p>Signal Generation Speed</p>
+                                <h3>88%</h3>
+                                <p>Current Strategy Win Rate</p>
                             </div>
                         </div>
                     </div>
@@ -872,178 +948,55 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="section features" id="features">
         <div class="container">
             <div class="section-title">
-                <h2>Dual Stream Analytics</h2>
-                <p>Two specialized AI systems working in tandem to identify high-probability opportunities</p>
-            </div>
-
-            <div class="grid-cols-2">
-                <div class="card feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-futbol"></i>
-                    </div>
-                    <h3>Sports Analysis Engine</h3>
-                    <p>Machine learning models trained on historical and real-time sports data to predict outcomes with precision.</p>
-
-                    <h4>Current Coverage:</h4>
-                    <div class="pill primary">Premier League</div>
-                    <div class="pill primary">La Liga</div>
-                    <div class="pill primary">Bundesliga</div>
-                    <div class="pill">Serie A (Q3)</div>
-                    <div class="pill">Ligue 1 (Q4)</div>
-
-                    <div style="margin-top: 2rem;">
-                        <h4>Development Path:</h4>
-                        <div style="margin-top: 1rem;">
-                            <div style="display: flex; margin-bottom: 1.5rem;">
-                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Now - 2mo</div>
-                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200); padding-bottom: 1rem;">
-                                    <strong>MVP Launch:</strong> Core European football leagues with basic metrics (xG, form, H2H)
-                                </div>
-                            </div>
-                            <div style="display: flex;">
-                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Next 4mo</div>
-                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200);">
-                                    <strong>Secondary Leagues:</strong> Championship, 2.Bundesliga with refined models
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Market Analysis Engine</h3>
-                    <p>Quantitative models scanning crypto markets for high-probability trading setups using multiple strategies.</p>
-
-                    <h4>Current Strategies:</h4>
-                    <div class="pill accent">MACD Cross</div>
-                    <div class="pill accent">RSI Extremes</div>
-                    <div class="pill accent">SQL Momentum</div>
-                    <div class="pill">Volume Spikes (Q3)</div>
-                    <div class="pill">Liquidation Heatmap (Q4)</div>
-
-                    <div style="margin-top: 2rem;">
-                        <h4>Development Path:</h4>
-                        <div style="margin-top: 1rem;">
-                            <div style="display: flex; margin-bottom: 1.5rem;">
-                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Now - 1mo</div>
-                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200); padding-bottom: 1rem;">
-                                    <strong>MVP Launch:</strong> Core crypto pairs with MACD/RSI/SQL signals (BTC, ETH, SOL)
-                                </div>
-                            </div>
-                            <div style="display: flex;">
-                                <div style="min-width: 6rem; font-weight: 500; color: var(--primary);">Next 3mo</div>
-                                <div style="flex: 1; padding-left: 1rem; border-left: 2px solid var(--gray-200);">
-                                    <strong>Strategy Fusion:</strong> Combined signal confidence scoring and backtesting
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="section problem-solution" id="solution">
-        <div class="container">
-            <div class="section-title">
-                <h2>How Our System Works</h2>
-                <p>High-level architecture of our AI-powered signal generation pipeline</p>
+                <h2>Precision Crypto Analytics: Your Ideas. Our AI. Your Edge.</h2>
+                <p>Specialized AI systems identify high-probability opportunities in crypto markets. We don't just offer our strategies; we **empower your vision** to gain a verifiable edge. Discover how our unique approach combines advanced analytics with unparalleled transparency:</p>
             </div>
 
             <div class="grid-cols-3">
                 <div class="card ps-card">
-                    <h3><i class="fas fa-database"></i> Data Acquisition Layer</h3>
+                    <h3><i class="fas fa-database"></i> Transparent Data Foundation</h3>
+                    <p>Every high-conviction signal starts with clean, reliable data. We meticulously collect and validate vast datasets from real-time market feeds, ensuring a rock-solid foundation for every prediction. Trust what you see.</p>
                     <ul>
-                        <li><strong>Sports:</strong> Custom scrapers collecting team stats, player performance, and betting odds from multiple bookmakers</li>
-                        <li><strong>Markets:</strong> CCXT integration with Binance, Bybit, OKX APIs for real-time crypto data</li>
-                        <li>Automated data validation and cleaning pipelines</li>
-                        <li>Historical database for backtesting (5+ years sports data, full crypto history)</li>
+                        <li>Direct API integrations with major exchanges (Binance, Bybit, OKX) for instant crypto data.</li>
+                        <li>Automated data validation ensures accuracy and integrity.</li>
+                        <li>Comprehensive historical data for robust backtesting.</li>
                     </ul>
+                    <a href="signals.html" class="btn card-action-btn btn-secondary-outline">See LIVE Signals</a>
                 </div>
 
                 <div class="card ps-card">
-                    <h3><i class="fas fa-brain"></i> Analysis Engine</h3>
+                    <h3><i class="fas fa-brain"></i> Your Strategy. Our Platform. Proven Results.</h3>
+                    <p>**Unlock your trading genius.** Have a brilliant crypto strategy idea but lack the coding or infrastructure to run it 24/7? **Submit your concept to us!** Our AI engineers will transform your vision into a fully automated, publicly verifiable signal generator, deployed on our secure, round-the-clock servers. This is your chance to turn unique insights into actionable, real-time signals with full transparency on performance.</p>
                     <ul>
-                        <li><strong>Sports Models:</strong> xG models, team form analysis, injury impact prediction, referee bias detection</li>
-                        <li><strong>Market Models:</strong> MACD/RSI/SQL momentum with dynamic parameter optimization</li>
-                        <li>Custom ensemble models weighting multiple strategies</li>
-                        <li>Real-time signal generation every 30-60 seconds</li>
-                        <li>Automated backtesting framework for strategy validation</li>
+                        <li>We operationalize your ideas: no coding or server management needed.</li>
+                        <li>Benefit from our rigorous backtesting and deployment expertise.</li>
+                        <li>Maintain full control over your strategy's logic and understanding.</li>
                     </ul>
+                    <a href="#contact" class="btn card-action-btn btn-primary">Submit Your Idea Now</a>
                 </div>
 
                 <div class="card ps-card">
-                    <h3><i class="fas fa-bell"></i> Signal Delivery</h3>
+                    <h3><i class="fas fa-chart-bar"></i> Verifiable Live Signals & Performance.</h3>
+                    <p>No more blind trust. We believe in showing, not just telling. Every signal generated by both our AI and your custom strategies, along with its outcome, is tracked and made available for full transparency. **See the real-time proof for yourself.**</p>
                     <ul>
-                        <li>Live on Twitch, YouTube, Kick </li>
-                        <li>Web dashboard with historical performance tracking - soon </li>
-                        <li>API access for automated trading systems</li>
-                        <li>Daily email summaries with top opportunities</li>
-                        <li>Risk management recommendations for each signal</li>
+                        <li>All strategies run live, generating signals and monitoring markets every second.</li>
+                        <li>Publicly verifiable results (5-min delay) on our "LIVE Signals" page show actual profit/loss.</li>
+                        <li>Subscribers get **instant access** to live signals via email/Telegram for a zero-delay advantage.</li>
                     </ul>
+                    <a href="signals.html" class="btn card-action-btn btn-secondary-outline">Verify Performance Live</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Roadmap Section -->
-    <section class="section" id="roadmap">
+    <section class="section cta" id="contact">
         <div class="container">
             <div class="section-title">
-                <h2>6-Quarter Development Plan</h2>
-                <p>Focused roadmap to build a billion-dollar analytics engine</p>
-            </div>
-
-            <div class="roadmap-container">
-                <!-- Q3 2024 -->
-                <div class="roadmap-item current">
-                    <div class="roadmap-date">
-                        <i class="fas fa-sync-alt"></i> Q3 2025 (Now)
-                    </div>
-                    <h3>Foundation Phase</h3>
-                    <ul>
-                        <li><strong>Football:</strong> Core European leagues MVP (Premier League, La Liga, Bundesliga)</li>
-                        <li><strong>Crypto:</strong> MACD/RSI/SQL strategy implementation for top 10 coins</li>
-                        <li>Basic Discord/TG alert integration</li>
-                        <li>Automated data collection pipelines</li>
-                    </ul>
-                    <div class="strategy-tags">
-                        <span class="pill primary">Football MVP</span>
-                        <span class="pill accent">Crypto MVP</span>
-                    </div>
-                </div>
-
-                <!-- Q4 2024 -->
-                <div class="roadmap-item">
-                    <div class="roadmap-date">
-                        <i class="fas fa-calendar-alt"></i> Q4 2025
-                    </div>
-                    <h3>Expansion Phase</h3>
-                    <ul>
-                        <li><strong>Football:</strong> Add secondary leagues (Championship, 2.Bundesliga) + cup competitions</li>
-                        <li><strong>Crypto:</strong> Volume spike detection strategy and liquidity analysis</li>
-                        <li>Enhanced backtesting framework</li>
-                        <li>Basic web dashboard for performance tracking</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="section cta">
-        <div class="container">
-            <div class="section-title">
-                <h2>Ready to Elevate Your Game?</h2>
-                <p>Join our exclusive waitlist for early access and maximize your edge.</p>
+                <h2>Ready to Elevate Your Crypto Game?</h2>
+                <p>Secure your spot for early access and gain an immediate advantage.</p>
             </div>
             <div class="waitlist-form">
                 <form>
@@ -1057,7 +1010,7 @@
                     </div>
                     <div class="form-group">
                         <label for="interest">What are you most interested in?</label>
-                        <textarea id="interest" placeholder="Sports signals, crypto signals, API access, etc."></textarea>
+                        <textarea id="interest" placeholder="Crypto signals, API access, or collaborating on a custom strategy?"></textarea>
                     </div>
                     <button type="submit" class="form-submit">Join Waitlist</button>
                 </form>
@@ -1094,7 +1047,8 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    ---
+
     <footer class="section">
         <div class="container">
             <div class="footer-grid">
@@ -1102,19 +1056,16 @@
                     <h3>Apex Strike</h3>
                     <p>AI-Powered Signals for Smarter Decisions.</p>
                     <div class="social-links">
-                        <a href="https://twitter.com/ApexStrikeAI" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://discord.gg/yourinvite" target="_blank"><i class="fab fa-discord"></i></a>
-                        <a href="https://t.me/ApexStrikeOfficial" target="_blank"><i class="fab fa-telegram-plane"></i></a>
-                        <a href="https://www.youtube.com/channel/yourchannel" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://twitter.com/ApexStrikeAI" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://discord.gg/yourinvite" target="_blank" aria-label="Discord"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="https://www.youtube.com/channel/yourchannel" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
                         <li><a href="#features">Features</a></li>
-                        <li><a href="#solution">How It Works</a></li>
-                        <li><a href="#roadmap">Roadmap</a></li>
-                        <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
+                        <li><a href="strategies.html" target="_blank">Strategies</a></li> <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
@@ -1133,9 +1084,30 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                &copy; 2025 Apex Strike. All rights reserved.
+                © 2025 Apex Strike. All rights reserved.
             </div>
         </div>
     </footer>
+
+    <script>
+        // Basic JavaScript for mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navUl = document.querySelector('nav ul');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navUl.classList.toggle('active');
+            });
+
+            // Close menu if a link is clicked (for single-page navigation)
+            navUl.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navUl.classList.contains('active')) {
+                        navUl.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
