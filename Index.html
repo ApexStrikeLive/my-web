@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TT3HE32003"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TT3HE32003');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Strike - AI-Powered Signals for Crypto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --black: #0d0d0d;
+            --white: #fdfdfd;
+            --gray-900: #1a1a1a;
+            --gray-800: #292929;
+            --gray-700: #424242;
+            --gray-600: #6b6b6b;
+            --gray-500: #949494;
+            --gray-400: #c2c2c2;
+            --gray-300: #dcdcdc;
+            --gray-200: #ececec;
+            --gray-100: #f5f5f5;
+
+            --primary: #3b82f6;
+            --primary-light: #bfdbfe;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --accent-dark: #b45309;
+
+            --success: #10B981;
+            --failure: #EF4444;
+
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 6px 12px -3px rgba(0, 0, 0, 0.12), 0 3px 6px -3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 16px 24px -6px rgba(0, 0, 0, 0.15), 0 8px 12px -6px rgba(0, 0, 0, 0.1);
+
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--gray-700);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--gray-900);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.15;
+        }
+
+        h2 {
+            font-size: 2.125rem;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+        }
+
+        p {
+            font-size: 1.05rem;
+            margin-bottom: 1.25rem;
+            color: var(--gray-700);
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Updated styles for btn-secondary */
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--gray-800);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: var(--black);
+            border-color: var(--accent-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .grid-cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .grid-cols-4 { /* New grid for stats */
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.35rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .pill.primary {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .pill.accent {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+        }
+
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .logo i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul a {
+            color: var(--gray-700);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        nav ul a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--gray-900);
+            color: var(--white);
+            padding: 8rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .hero::before {
+            content: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .hero-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .hero-text h1 {
+            color: var(--white);
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text p {
+            color: var(--gray-300);
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            justify-content: flex-start;
+        }
+
+        .hero-buttons .btn {
+            padding: 1rem 2rem;
+            font-size: 1.05rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-700);
+            justify-content: flex-start;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-basis: auto;
+        }
+        @media (min-width: 1024px) {
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+            .stat-item {
+                flex-basis: auto;
+            }
+        }
+
+
+        .stat-icon {
+            background: var(--gray-800);
+            width: 3rem;
+            height: 3rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .stat-text h3 {
+            color: var(--white);
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-text p {
+            color: var(--gray-400);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Specific styles for success/fail stats */
+        .stat-text .success {
+            color: var(--success);
+        }
+        .stat-text .failure {
+            color: var(--failure);
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-800);
+        }
+
+        /* Features Section */
+        .features .section-title p {
+            max-width: 800px;
+        }
+
+        .ps-card {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            padding: 2.5rem; /* Increased padding */
+            border-radius: var(--radius-lg);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .ps-card h3 {
+            font-size: 1.5rem; /* Slightly larger for problem/solution */
+            margin-bottom: 1.25rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            font-weight: 700; /* Bold title */
+        }
+
+        .ps-card h3 i {
+            margin-right: 0.75rem;
+            color: var(--primary);
+            font-size: 2rem; /* Larger icon */
+        }
+
+        .ps-card p.problem-statement { /* Specific class for problem statement */
+            font-style: italic;
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            font-size: 1rem; /* Slightly smaller for italic problem */
+        }
+
+        .ps-card h4.solution-title { /* New style for solution title */
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .ps-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1; /* Allows content to push button to bottom */
+            margin-bottom: 1.5rem; /* Space before button */
+        }
+
+        .ps-card ul li {
+            margin-bottom: 0.75rem; /* Reduced margin for list items */
+            padding-left: 2rem;
+            position: relative;
+            color: var(--gray-700);
+            font-size: 1rem; /* Clearer font size */
+        }
+
+        .ps-card ul li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--success); /* Use success color for checkmark */
+            font-size: 1.1em;
+        }
+
+        /* Sub-list for strategy development */
+        .ps-card ul ul {
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+            padding-left: 1rem;
+            border-left: 2px dashed var(--gray-300);
+        }
+
+        .ps-card ul ul li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9em;
+        }
+
+        .ps-card ul ul li::before {
+            content: "—";
+            font-family: 'Inter', sans-serif;
+            font-weight: normal;
+            color: var(--gray-600);
+            font-size: 1em;
+            left: 0.5rem;
+        }
+
+        /* Action button within cards */
+        .ps-card .card-action-btn {
+            margin-top: auto;
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .ps-card .card-action-btn.btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+        }
+
+        .ps-card .card-action-btn.btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .ps-card .card-action-btn.btn-secondary-outline {
+            background-color: transparent;
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-light);
+        }
+
+        .ps-card .card-action-btn.btn-secondary-outline:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--primary);
+        }
+
+
+        /* CTA Section */
+        .cta {
+            background: var(--gray-900);
+            color: var(--gray-200);
+            border-top: 1px solid var(--gray-800);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .cta .section-title h2,
+        .cta .section-title p {
+            color: var(--white);
+        }
+
+        /* Waitlist Form */
+        .waitlist-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 40rem;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            font-size: 0.9375rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 8rem;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover {
+            background-color: var(--gray-800);
+        }
+
+        /* Social Links Box */
+        .social-links-box {
+            background: var(--gray-800);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem auto 0;
+            text-align: center;
+            border: 1px solid var(--gray-700);
+            max-width: 40rem;
+        }
+
+        .social-links-box h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .social-link-item {
+            background: var(--gray-700);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .social-link-item:hover {
+            background: var(--gray-600);
+        }
+
+        .social-link-item a {
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .social-link-item i {
+            font-size: 1.25rem;
+        }
+
+
+        /* Footer */
+        footer {
+            background: var(--gray-900);
+            color: var(--gray-500);
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2rem;
+            height: 2px;
+            background: var(--gray-700);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9375rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius);
+            background: var(--gray-800);
+            color: var(--gray-400);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--gray-700);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--gray-800);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text, .hero-image {
+                text-align: center;
+                width: 100%;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+                justify-content: center;
+            }
+            .hero-image {
+                order: -1;
+                margin-bottom: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                border-top: 1px solid var(--gray-200);
+                padding: 1rem 1.5rem;
+                box-shadow: var(--shadow-md);
+                z-index: 40;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin-bottom: 0.75rem;
+            }
+
+            nav ul li:last-child {
+                margin-bottom: 0;
+            }
+
+            nav ul a {
+                padding: 0.5rem 0;
+                display: block;
+                color: var(--gray-800);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .grid-cols-2, .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 6rem;
+                padding-bottom: 4rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .waitlist-form {
+                padding: 1.5rem;
+            }
+
+            .ps-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                margin-bottom: 2rem;
+            }
+
+            .social-links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Apex Strike</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#features">Solutions</a></li>
+                    <li><a href="strategies.html">Strategies</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="howitworks.html">How It Works</a></li>
+                </ul>
+                <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+            <a href="signals.html" class="btn btn-primary" target="_blank">Live Signal's</a>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Stop Guessing. Start **Seeing**. Unveil Your Crypto Trading Edge.</h1>
+                    <p>Community-Driven Strategies & Live Signals</p>
+                    <p>Unique platform where traders like you contribute, refine, and access high-potential crypto trading strategies. Our community-driven approach ensures continuous improvement and transparent, actionable signals, empowering you to make informed decisions.</p>
+                    <div class="hero-buttons">
+                        <a href="signals.html" class="btn btn-primary" target="_blank">
+                            🚀 See LIVE Signals & Proof Right Now!
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            Submit Your Strategy Idea
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <a href="signals.html" target="_blank" class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3>3+</h3>
+                                <p>High-Precision Crypto Strategies Live</p>
+                            </div>
+                        </a>
+                       <a href="signals.html" target="_blank" class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3 class="success">66 / 75</h3>
+                                <p>Signals Successful (Take Profit)</p>
+                            </div>
+                        </a>
+                        <a href="signals.html" target="_blank" class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-text">
+                                <h3>88%</h3>
+                                <p>Current Strategy Win Rate</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e" alt="Apex Strike Analytics Dashboard">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Problems We Solve: Empowering Your Crypto Edge</h2>
+                <p>The crypto market is complex, volatile, and full of hidden opportunities. Many traders face significant hurdles in identifying profitable strategies, executing them effectively, and trusting the signals they receive. Apex Strike addresses these core challenges:</p>
+            </div>
+
+            <div class="grid-cols-3">
+                <div class="card ps-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Problem 1: Unreliable Data & Missed Opportunities</h3>
+                    <p class="problem-statement">Many traders struggle with **accessing clean, real-time, and reliable crypto market data**. Without it, even the best strategies can fail, leading to inaccurate analyses and missed trading opportunities.</p>
+                    <h4 class="solution-title">Our Solution: Transparent & Reliable Data</h4>
+                    <ul>
+                        <li>**Direct API integrations** with major exchanges (Binance, Bybit, OKX) for instant crypto data.</li>
+                        <li>**Automated data validation** ensures accuracy and integrity.</li>
+                        <li>**Comprehensive historical data** for robust backtesting.</li>
+                    </ul>
+                    <a href="signals.html" class="btn card-action-btn btn-secondary-outline" target="_blank">See LIVE Signals</a>
+                </div>
+
+                <div class="card ps-card">
+                    <h3><i class="fas fa-lightbulb"></i> Problem 2: Brilliant Ideas, Lacking Execution</h3>
+                    <p class="problem-statement">You have a **brilliant crypto trading strategy idea, but lack the coding skills, infrastructure, or time** to transform it into a 24/7 automated system. This means your insights remain untapped potential.</p>
+                    <h4 class="solution-title">Our Solution: Your Strategy, Operationalized</h4>
+                    <ul>
+                        <li>We **operationalize your ideas**: no coding or server management needed on your part.</li>
+                        <li>Benefit from our **rigorous backtesting and deployment expertise**.</li>
+                        <li>Maintain **full control** over your strategy's logic and understanding.</li>
+                    </ul>
+                    <a href="#contact" class="btn card-action-btn btn-primary">Submit Your Idea Now</a>
+                </div>
+
+                <div class="card ps-card">
+                    <h3><i class="fas fa-lock"></i> Problem 3: The Demand for Verified Performance</h3>
+                    <p class="problem-statement">In a market flooded with unverified claims, it's hard to **trust trading signals without clear, transparent, and verifiable performance history**. You need proof, not just promises.</p>
+                    <h4 class="solution-title">Our Solution: Live Signals & Verified Performance</h4>
+                    <ul>
+                        <li>All strategies run live, generating signals and monitoring markets every second.</li>
+                        <li>**Publicly verifiable results** (5-min delay) on our "LIVE Signals" page show actual profit/loss.</li>
+                        <li>Subscribers get **instant access** to live signals via email/Telegram for a zero-delay advantage.</li>
+                    </ul>
+                    <a href="signals.html" class="btn card-action-btn btn-secondary-outline" target="_blank">Verify Performance Live</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section cta" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ready to Elevate Your Crypto Game?</h2>
+                <p>Submit Your Trading Strategy Idea</p>
+            </div>
+            <div class="waitlist-form">
+                <form id="waitlistForm" action="https://formspree.io/f/xyzjewjw" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest">What are you most interested in?</label>
+                        <textarea id="interest" name="interest" placeholder="Crypto signals, API access, or collaborating on a custom strategy?Do you have a unique approach to the crypto market? Share your strategy with the Apex Strike community and contribute to building the next generation of effective trading insights. Fill out the form below to get started."></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Join</button>
+                </form>
+                <div class="social-links-box">
+                    <h3>Or connect with us on social media:</h3>
+                    <div class="social-links-grid">
+                        <div class="social-link-item">
+                            <a href="https://twitter.com/ApexStrikeAI" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                                Twitter
+                            </a>
+                        </div>
+                        <div class="social-link-item">
+                            <a href="https://discord.gg/yourinvite" target="_blank">
+                                <i class="fab fa-discord"></i>
+                                Discord
+                            </a>
+                        </div>
+                        <div class="social-link-item">
+                            <a href="https://t.me/ApexStrikeOfficial" target="_blank">
+                                <i class="fab fa-telegram-plane"></i>
+                                Telegram
+                            </a>
+                        </div>
+                        <div class="social-link-item">
+                            <a href="https://www.youtube.com/channel/yourchannel" target="_blank">
+                                <i class="fab fa-youtube"></i>
+                                YouTube
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    ---
+
+    <footer class="section">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Apex Strike</h3>
+                    <p>Powered Signals for Smarter Decisions.</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/ApexStrikeAI" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://discord.gg/yourinvite" target="_blank" aria-label="Discord"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="https://www.youtube.com/channel/yourchannel" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Solutions</a></li>
+                        <li><a href="strategies.html" target="_blank">Strategies</a></li>
+                        <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p>Email: apexstrikelive@gmail.com</p>
+                    <p>Address: ITTM, Gdansk , Poland</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2025 ITTM. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Basic JavaScript for mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navUl = document.querySelector('nav ul');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navUl.classList.toggle('active');
+            });
+
+            // Close menu if a link is clicked (for single-page navigation)
+            navUl.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navUl.classList.contains('active')) {
+                        navUl.classList.remove('active');
+                    }
+                });
+            });
+
+            // Form submission handling - RE-ADDED THIS PART
+            const waitlistForm = document.getElementById('waitlistForm');
+            if (waitlistForm) {
+                waitlistForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    submitBtn.disabled = true;
+
+                    // Get form data
+                    const formData = new FormData(this);
+
+                    // Send form data
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json' // Important for Formspree AJAX
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Thank you for joining the waitlist! We will be in touch shortly.');
+                            this.reset(); // Clear the form
+                        } else {
+                            // Handle errors from Formspree (e.g., rate limits, invalid form ID)
+                            response.json().then(data => {
+                                if (data.errors) {
+                                    alert('Error: ' + data.errors.map(error => error.message).join(', '));
+                                } else {
+                                    alert('There was a problem submitting your form. Please try again later.');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        alert('There was a problem submitting your form. Please try again later.');
+                        console.error('Form submission error:', error);
+                    })
+                    .finally(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
