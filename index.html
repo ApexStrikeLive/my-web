@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TT3HE32003"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TT3HE32003"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -434,7 +433,7 @@
             background: var(--white);
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--gray-200);
-            padding: 2rem;
+            padding: 2.5rem; /* Increased padding */
             border-radius: var(--radius-lg);
             height: 100%;
             display: flex;
@@ -443,36 +442,49 @@
         }
 
         .ps-card h3 {
-            font-size: 1.35rem;
+            font-size: 1.5rem; /* Slightly larger for problem/solution */
             margin-bottom: 1.25rem;
             color: var(--gray-900);
             display: flex;
             align-items: center;
+            font-weight: 700; /* Bold title */
         }
 
         .ps-card h3 i {
             margin-right: 0.75rem;
             color: var(--primary);
-            font-size: 1.75rem;
+            font-size: 2rem; /* Larger icon */
         }
 
-        .ps-card p {
-            flex-grow: 1;
+        .ps-card p.problem-statement { /* Specific class for problem statement */
+            font-style: italic;
+            color: var(--gray-600);
             margin-bottom: 1.5rem;
+            font-size: 1rem; /* Slightly smaller for italic problem */
+        }
+
+        .ps-card h4.solution-title { /* New style for solution title */
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .ps-card ul {
             list-style: none;
             margin: 0;
             padding: 0;
+            flex-grow: 1; /* Allows content to push button to bottom */
+            margin-bottom: 1.5rem; /* Space before button */
         }
 
         .ps-card ul li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem; /* Reduced margin for list items */
             padding-left: 2rem;
             position: relative;
             color: var(--gray-700);
-            font-size: 0.95rem;
+            font-size: 1rem; /* Clearer font size */
         }
 
         .ps-card ul li::before {
@@ -482,7 +494,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            color: var(--accent);
+            color: var(--success); /* Use success color for checkmark */
             font-size: 1.1em;
         }
 
@@ -775,7 +787,7 @@
                 gap: 1.5rem;
                 justify-content: center;
             }
-             .hero-image {
+            .hero-image {
                 order: -1;
                 margin-bottom: 3rem;
             }
@@ -872,10 +884,6 @@
             .hero-stats {
                 grid-template-columns: 1fr;
             }
-
-            .stat-item {
-                flex-basis: auto;
-            }
         }
     </style>
 </head>
@@ -888,7 +896,7 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="#features">Features</a></li>
+                    <li><a href="#features">Solutions</a></li>
                     <li><a href="strategies.html">Strategies</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="howitworks.html">How It Works</a></li>
@@ -917,7 +925,7 @@
                         </a>
                     </div>
                     <div class="hero-stats">
-                        <div class="stat-item">
+                        <a href="signals.html" target="_blank" class="stat-item">
                             <div class="stat-icon">
                                 <i class="fas fa-coins"></i>
                             </div>
@@ -925,8 +933,8 @@
                                 <h3>3+</h3>
                                 <p>High-Precision Crypto Strategies Live</p>
                             </div>
-                        </div>
-                         <div class="stat-item">
+                        </a>
+                       <a href="signals.html" target="_blank" class="stat-item">
                             <div class="stat-icon">
                                 <i class="fas fa-check-circle"></i>
                             </div>
@@ -934,8 +942,8 @@
                                 <h3 class="success">66 / 75</h3>
                                 <p>Signals Successful (Take Profit)</p>
                             </div>
-                        </div>
-                        <div class="stat-item">
+                        </a>
+                        <a href="signals.html" target="_blank" class="stat-item">
                             <div class="stat-icon">
                                 <i class="fas fa-chart-line"></i>
                             </div>
@@ -943,7 +951,7 @@
                                 <h3>88%</h3>
                                 <p>Current Strategy Win Rate</p>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -956,38 +964,42 @@
     <section class="section features" id="features">
         <div class="container">
             <div class="section-title">
-                <h2>Precision Crypto Analytics: Your Ideas. Your Edge.</h2>
-                <p>Identify high-probability opportunities in crypto markets. We empower your vision to gain a verifiable edge. Discover how Your unique approach combines advanced analytics with unparalleled transparency:</p>
+                <h2>Problems We Solve: Empowering Your Crypto Edge</h2>
+                <p>The crypto market is complex, volatile, and full of hidden opportunities. Many traders face significant hurdles in identifying profitable strategies, executing them effectively, and trusting the signals they receive. Apex Strike addresses these core challenges:</p>
             </div>
 
             <div class="grid-cols-3">
                 <div class="card ps-card">
-                    <h3><i class="fas fa-database"></i> Transparent Data </h3>
+                    <h3><i class="fas fa-exclamation-triangle"></i> Problem 1: Unreliable Data & Missed Opportunities</h3>
+                    <p class="problem-statement">Many traders struggle with **accessing clean, real-time, and reliable crypto market data**. Without it, even the best strategies can fail, leading to inaccurate analyses and missed trading opportunities.</p>
+                    <h4 class="solution-title">Our Solution: Transparent & Reliable Data</h4>
                     <ul>
-                        <li>Direct API integrations with major exchanges (Binance, Bybit, OKX) for instant crypto data.</li>
-                        <li>Automated data validation ensures accuracy and integrity.</li>
-                        <li>Comprehensive historical data for robust backtesting.</li>
+                        <li>**Direct API integrations** with major exchanges (Binance, Bybit, OKX) for instant crypto data.</li>
+                        <li>**Automated data validation** ensures accuracy and integrity.</li>
+                        <li>**Comprehensive historical data** for robust backtesting.</li>
                     </ul>
                     <a href="signals.html" class="btn card-action-btn btn-secondary-outline" target="_blank">See LIVE Signals</a>
                 </div>
 
                 <div class="card ps-card">
-                    <h3><i class="fas fa-brain"></i> Your Strategy. Your Results.</h3>
-                  
+                    <h3><i class="fas fa-lightbulb"></i> Problem 2: Brilliant Ideas, Lacking Execution</h3>
+                    <p class="problem-statement">You have a **brilliant crypto trading strategy idea, but lack the coding skills, infrastructure, or time** to transform it into a 24/7 automated system. This means your insights remain untapped potential.</p>
+                    <h4 class="solution-title">Our Solution: Your Strategy, Operationalized</h4>
                     <ul>
-                        <li>We operationalize your ideas: no coding or server management needed.</li>
-                        <li>Benefit from our rigorous backtesting and deployment expertise.</li>
-                        <li>Maintain full control over your strategy's logic and understanding.</li>
+                        <li>We **operationalize your ideas**: no coding or server management needed on your part.</li>
+                        <li>Benefit from our **rigorous backtesting and deployment expertise**.</li>
+                        <li>Maintain **full control** over your strategy's logic and understanding.</li>
                     </ul>
                     <a href="#contact" class="btn card-action-btn btn-primary">Submit Your Idea Now</a>
                 </div>
 
                 <div class="card ps-card">
-                    <h3><i class="fas fa-chart-bar"></i> Live Signals & Performance.</h3>
-                    
+                    <h3><i class="fas fa-lock"></i> Problem 3: The Demand for Verified Performance</h3>
+                    <p class="problem-statement">In a market flooded with unverified claims, it's hard to **trust trading signals without clear, transparent, and verifiable performance history**. You need proof, not just promises.</p>
+                    <h4 class="solution-title">Our Solution: Live Signals & Verified Performance</h4>
                     <ul>
                         <li>All strategies run live, generating signals and monitoring markets every second.</li>
-                        <li>Publicly verifiable results (5-min delay) on our "LIVE Signals" page show actual profit/loss.</li>
+                        <li>**Publicly verifiable results** (5-min delay) on our "LIVE Signals" page show actual profit/loss.</li>
                         <li>Subscribers get **instant access** to live signals via email/Telegram for a zero-delay advantage.</li>
                     </ul>
                     <a href="signals.html" class="btn card-action-btn btn-secondary-outline" target="_blank">Verify Performance Live</a>
@@ -1068,7 +1080,7 @@
                 <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#features">Features</a></li>
+                        <li><a href="#features">Solutions</a></li>
                         <li><a href="strategies.html" target="_blank">Strategies</a></li>
                         <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
                         <li><a href="#contact">Contact</a></li>
