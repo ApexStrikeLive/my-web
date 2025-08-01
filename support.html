@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TT3HE32003"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-TT3HE32003');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Apex Strike - Help Us Grow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Keep consistent with your other pages */
+        :root {
+            --black: #0d0d0d;
+            --white: #fdfdfd;
+            --gray-900: #1a1a1a;
+            --gray-800: #292929;
+            --gray-700: #424242;
+            --gray-600: #6b6b6b;
+            --gray-500: #949494;
+            --gray-400: #c2c2c2;
+            --gray-300: #dcdcdc;
+            --gray-200: #ececec;
+            --gray-100: #f5f5f5;
+
+            --robinhood-green: #00C900; /* Main accent */
+            --robinhood-green-dark: #009900;
+            --primary-blue: #3b82f6; /* Secondary accent, if needed */
+            --primary-blue-light: #bfdbfe;
+            --primary-blue-dark: #1e40af;
+
+            --success: #10B981;
+            --failure: #EF4444;
+
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 6px 12px -3px rgba(0, 0, 0, 0.12), 0 3px 6px -3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 16px 24px -6px rgba(0, 0, 0, 0.15), 0 8px 12px -6px rgba(0, 0, 0, 0.1);
+
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles - Reused from index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--gray-700);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--robinhood-green);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--gray-900);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: var(--gray-700);
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--robinhood-green);
+            color: var(--white);
+            border: 1px solid var(--robinhood-green);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--robinhood-green-dark);
+            border-color: var(--robinhood-green-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--gray-800);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .grid-cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        /* Header - Reused from index.html */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .logo i {
+            color: var(--robinhood-green);
+            margin-right: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        nav ul a {
+            color: var(--gray-700);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        nav ul a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--robinhood-green);
+            transition: width 0.3s ease;
+        }
+
+        nav ul a:hover::after {
+            width: 100%;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .header-buttons .btn {
+            padding: 0.65rem 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        /* Hero Section for Support Page */
+        .support-hero {
+            background-color: var(--gray-900);
+            color: var(--white);
+            padding: 8rem 0;
+            text-align: center;
+            position: relative;
+        }
+        .support-hero h1 {
+            color: var(--white);
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .support-hero p {
+            color: var(--gray-300);
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* Donation Sections */
+        .donation-section {
+            padding: 4rem 0; /* Reduced padding for more sections */
+        }
+        .donation-section h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .donation-section p {
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+
+        /* Stripe Button Styling */
+        .stripe-section .btn {
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            border-radius: var(--radius-full); /* Pill shape */
+            margin: 0 auto;
+            display: block; /* Center button */
+        }
+
+        /* Crypto Donation Grid */
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .crypto-box {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .crypto-box:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .crypto-box .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--robinhood-green); /* Default icon color */
+        }
+        /* Specific coin colors for icons */
+        .crypto-box.btc .icon { color: #F7931A; } /* Bitcoin Orange */
+        .crypto-box.eth .icon { color: #627EEA; } /* Ethereum Blue */
+        .crypto-box.usdt .icon { color: #26A17B; } /* Tether Green */
+        .crypto-box.sol .icon { color: #9945FF; } /* Solana Purple */
+        .crypto-box.usdc .icon { color: #2775C9; } /* USDC Blue */
+        .crypto-box.doge .icon { color: #C2A111; } /* Dogecoin Gold */
+        .crypto-box.bnb .icon { color: #F3BA2F; } /* BNB Yellow */
+        .crypto-box.shib .icon { color: #F35502; } /* SHIB Orange/Red */
+        .crypto-box.xrp .icon { color: #00A69D; } /* Ripple Teal */
+
+
+        .crypto-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+        }
+
+        .wallet-address {
+            background-color: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            padding: 0.75rem 1rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            color: var(--gray-800);
+            word-break: break-all; /* Ensures long addresses wrap */
+            margin-bottom: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            user-select: all; /* Allows easy selection */
+            transition: background-color 0.2s ease;
+            width: 100%; /* Take full width of box */
+        }
+        .wallet-address:hover {
+            background-color: var(--gray-200);
+        }
+
+        .qr-code-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: var(--gray-200);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1rem;
+            border-radius: var(--radius);
+            overflow: hidden; /* Ensure image fits */
+        }
+        .qr-code-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Maintain aspect ratio */
+        }
+        .qr-code-placeholder span {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .copy-button {
+            background-color: var(--primary-blue); /* Use secondary blue for copy */
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+        .copy-button:hover {
+            background-color: var(--primary-blue-dark);
+        }
+
+        /* Footer - Reused from index.html */
+        footer {
+            background: var(--gray-900);
+            color: var(--gray-500);
+            border-top: 1px solid var(--gray-800);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.05rem;
+            margin-bottom: 1.25rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2rem;
+            height: 2px;
+            background: var(--gray-700);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.65rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: var(--radius-full);
+            background: var(--gray-800);
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--gray-700);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--gray-800);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .disclaimer-text {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            text-align: left;
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .disclaimer-text p {
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            color: var(--gray-600);
+        }
+
+        /* Responsive - Reused from index.html */
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+
+            .header-buttons {
+                display: none;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                border-top: 1px solid var(--gray-200);
+                padding: 1rem 1.5rem;
+                box-shadow: var(--shadow-md);
+                z-index: 90;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin-bottom: 0.75rem;
+            }
+
+            nav ul li:last-child {
+                margin-bottom: 0;
+            }
+
+            nav ul a {
+                padding: 0.5rem 0;
+                display: block;
+                color: var(--gray-800);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .support-hero {
+                padding-top: 6rem;
+                padding-bottom: 4rem;
+            }
+            .support-hero h1 {
+                font-size: 2.5rem;
+            }
+            .support-hero p {
+                font-size: 1rem;
+            }
+
+            .crypto-grid {
+                grid-template-columns: 1fr;
+            }
+            .donation-section h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            h3 {
+                font-size: 1.4rem;
+            }
+            p {
+                font-size: 0.95rem;
+            }
+            .section-title {
+                margin-bottom: 2rem;
+            }
+            .support-hero h1 {
+                font-size: 2.2rem;
+            }
+            .support-hero p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Apex Strike</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html#solutions">Solutions</a></li>
+                    <li><a href="strategies.html">Strategies</a></li>
+                    <li><a href="howitworks.html">How It Works</a></li>
+                    <li><a href="support.html">Support Us</a></li>
+                    <li><a href="index.html#contact-section">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+            <div class="header-buttons">
+                <a href="signals.html" class="btn btn-secondary" target="_blank">Live Signals</a>
+                <a href="index.html#contact-section" class="btn btn-primary">Submit Idea</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="support-hero">
+        <div class="container">
+            <h1>Support Apex Strike's Mission</h1>
+            <p>Your contribution helps us continue to build innovative tools, expand our community, and deliver high-precision crypto trading insights. Thank you for being a part of our journey!</p>
+        </div>
+    </section>
+
+    <section class="section donation-section stripe-section">
+        <div class="container">
+            <h2>Contribute via Credit Card (Stripe)</h2>
+            <p>Make a quick and secure one-time donation using your credit card through Stripe.</p>
+            <a href="YOUR_STRIPE_CHECKOUT_LINK_HERE" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-stripe"></i> Donate with Stripe
+            </a>
+            <p style="font-size: 0.9rem; color: var(--gray-600); margin-top: 1.5rem;">(You will be redirected to a secure Stripe page)</p>
+        </div>
+    </section>
+
+    <section class="section donation-section crypto-section" style="background-color: var(--gray-100);">
+        <div class="container">
+            <h2>Donate Cryptocurrency</h2>
+            <p>You can also support us directly by sending cryptocurrency to one of our secure wallet addresses. Please ensure you select the correct network.</p>
+
+            <div class="crypto-grid">
+                <div class="crypto-box btc">
+                    <div class="icon"><i class="fab fa-bitcoin"></i></div>
+                    <h3>Bitcoin (BTC)</h3>
+                    <p class="wallet-address" id="btc-address">YOUR_BTC_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('btc-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=BTC+QR+Code" alt="Bitcoin QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box eth">
+                    <div class="icon"><i class="fab fa-ethereum"></i></div>
+                    <h3>Ethereum (ETH) ERC-20</h3>
+                    <p class="wallet-address" id="eth-address">YOUR_ETH_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('eth-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=ETH+QR+Code" alt="Ethereum QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box usdt">
+                    <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                    <h3>Tether (USDT) TRC-20</h3>
+                    <p class="wallet-address" id="usdt-trc20-address">YOUR_USDT_TRC20_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('usdt-trc20-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=USDT+TRC20+QR" alt="USDT TRC20 QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box sol">
+                    <div class="icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Solana (SOL)</h3>
+                    <p class="wallet-address" id="sol-address">YOUR_SOL_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('sol-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=SOL+QR+Code" alt="Solana QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box usdc">
+                    <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                    <h3>USD Coin (USDC) ERC-20</h3>
+                    <p class="wallet-address" id="usdc-address">YOUR_USDC_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('usdc-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=USDC+QR+Code" alt="USDC QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box doge">
+                    <div class="icon"><i class="fas fa-dog"></i></div>
+                    <h3>Dogecoin (DOGE)</h3>
+                    <p class="wallet-address" id="doge-address">YOUR_DOGE_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('doge-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=DOGE+QR+Code" alt="Dogecoin QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box bnb">
+                    <div class="icon"><i class="fas fa-gem"></i></div>
+                    <h3>BNB (BEP-20)</h3>
+                    <p class="wallet-address" id="bnb-address">YOUR_BNB_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('bnb-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=BNB+QR+Code" alt="BNB QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box shib">
+                    <div class="icon"><i class="fas fa-bone"></i></div>
+                    <h3>Shiba Inu (SHIB) ERC-20</h3>
+                    <p class="wallet-address" id="shib-address">YOUR_SHIB_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('shib-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=SHIB+QR+Code" alt="Shiba Inu QR Code">
+                    </div>
+                </div>
+
+                <div class="crypto-box xrp">
+                    <div class="icon"><i class="fas fa-coins"></i></div>
+                    <h3>Ripple (XRP)</h3>
+                    <p class="wallet-address" id="xrp-address">YOUR_XRP_WALLET_ADDRESS_HERE</p>
+                    <button class="copy-button" onclick="copyToClipboard('xrp-address', this)">Copy Address</button>
+                    <div class="qr-code-placeholder">
+                        <img src="https://via.placeholder.com/150x150?text=XRP+QR+Code" alt="Ripple QR Code">
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem;">(Remember Destination Tag, if any)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Apex Strike</h3>
+                    <p>AI-Powered Signals for Smarter Decisions.</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/ApexStrikeAI" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://discord.gg/yourinvite" target="_blank" aria-label="Discord"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="https://www.youtube.com/channel/yourchannel" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#solutions">Solutions</a></li>
+                        <li><a href="strategies.html" target="_blank">Strategies</a></li>
+                        <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
+                        <li><a href="support.html">Support Us</a></li>
+                        <li><a href="index.html#contact-section">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p>Email: apexstrikelive@gmail.com</p>
+                    <p>Address: ITTM, Gdansk , Poland</p>
+                </div>
+            </div>
+            <div class="disclaimer-text">
+                <p><strong>Disclaimer:</strong> Trading in cryptocurrencies involves significant risk and can result in the loss of your capital. You should not invest more than you can afford to lose and should ensure that you fully understand the risks involved. Past performance is not indicative of future results. Apex Strike provides analytical signals and strategic development services; it is not a financial advisor and does not offer investment advice. Please consult with a qualified professional before making any investment decisions.</p>
+                <p>The information provided on this website is for general informational purposes only and does not constitute financial, investment, or other professional advice.</p>
+            </div>
+            <div class="footer-bottom">
+                © 2025 ITTM. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle (reused from index.html)
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navUl = document.querySelector('nav ul');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navUl.classList.toggle('active');
+            });
+
+            navUl.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navUl.classList.contains('active')) {
+                        navUl.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Function to copy wallet address to clipboard
+        function copyToClipboard(elementId, button) {
+            const addressElement = document.getElementById(elementId);
+            const address = addressElement.textContent || addressElement.innerText;
+
+            navigator.clipboard.writeText(address).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000); // Reset button text after 2 seconds
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy address. Please copy it manually.');
+            });
+        }
+    </script>
+</body>
+</html>
