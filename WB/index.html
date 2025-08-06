@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TT3HE32003"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TT3HE32003');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Strike - AI-Powered Signals for Crypto</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /*
+            --- REFINED CSS ---
+            Updated with a new, light theme: white, light blue, and gold.
+        */
+        :root {
+            --white: #ffffff;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #4a5568;
+            --black: #1a202c;
+
+            --primary: #4299e1; /* A light blue */
+            --primary-light: #90cdf4;
+            --primary-dark: #2c5282;
+
+            --gold: #ecc94b; /* A subtle gold accent */
+            --gold-light: #f6e05e;
+            --gold-dark: #b7791f;
+
+            --success: #48bb78;
+            --failure: #f56565;
+
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--dark-gray);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--black);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 3.25rem;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+        }
+
+        p {
+            font-size: 1.05rem;
+            margin-bottom: 1.25rem;
+            color: var(--dark-gray);
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        .section-title p {
+            font-size: 1.15rem;
+            color: var(--dark-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--medium-gray);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .logo i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul a {
+            color: var(--dark-gray);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        nav ul a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        /*
+            --- HERO SECTION CSS ---
+        */
+        .hero {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            padding: 8rem 0;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--medium-gray);
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: var(--black);
+        }
+
+        .hero-text {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            justify-content: center;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-icon {
+            background: var(--primary);
+            width: 3rem;
+            height: 3rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text h3 {
+            color: var(--black);
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-text p, .stat-text small {
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .stat-text .success {
+            color: var(--gold-dark);
+        }
+
+        /* Features Section */
+        .features .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .features .card i {
+            margin-right: 0.75rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .features .card p.problem-statement {
+            font-style: italic;
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .features .card h4.solution-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .features .card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .features .card ul li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--dark-gray);
+            font-size: 1rem;
+        }
+
+        .features .card ul li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--success);
+            font-size: 1em;
+        }
+
+        .features .card .btn {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* PRICING SECTION STYLES */
+        .pricing {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        .dark-text {
+            color: var(--white) !important;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .pricing-card {
+            background-color: var(--dark-gray);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--primary);
+        }
+
+        .pricing-card.featured-card {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #1f2833, #0b0c10);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .price-tag {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .price-tag small {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--light-gray);
+        }
+
+        .price-desc {
+            font-size: 1rem;
+            color: var(--medium-gray);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .features-list {
+            text-align: left;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            font-size: 0.95rem;
+            color: var(--light-gray);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .features-list li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            color: var(--success);
+        }
+
+        .features-list li .text-muted {
+            color: var(--medium-gray);
+        }
+
+        /* TESTIMONIALS SECTION STYLES */
+        .testimonials {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--dark-gray);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .testimonial-card .quote {
+            font-style: italic;
+            color: var(--light-gray);
+            flex-grow: 1;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .author-title {
+            font-size: 0.9rem;
+            color: var(--medium-gray);
+            margin: 0;
+        }
+        /*
+            --- CORRECTED CTA SECTION CSS ---
+            Improved contrast for better visibility.
+        */
+        .cta {
+            background: #f0f4f8; /* A slightly darker background to make the form pop */
+            color: var(--black);
+            border-top: 1px solid var(--medium-gray);
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .cta .section-title h2 {
+            color: var(--black);
+        }
+
+        .cta .section-title p {
+            color: var(--dark-gray);
+        }
+
+        .waitlist-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 40rem;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--black);
+            font-size: 0.9375rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--dark-gray); /* Darker border for visibility */
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--dark-gray); /* Corrected placeholder color */
+            opacity: 0.6;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 8rem;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .social-links-box {
+            background: var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem auto 0;
+            text-align: center;
+            border: 1px solid var(--primary-dark);
+        }
+
+        .social-links-box h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .social-link-item {
+            background: var(--white); /* White background for visibility */
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .social-link-item:hover {
+            background: var(--gold-light); /* Gold hover effect */
+        }
+
+        .social-link-item a {
+            color: var(--dark-gray); /* Dark text color for contrast */
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .social-link-item i {
+            font-size: 1.25rem;
+            color: var(--gold); /* Gold icons */
+        }
+
+        /* Footer */
+        footer {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+            border-top: 1px solid var(--medium-gray);
+            padding-top: 3rem;
+            padding-bottom: 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9375rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--black);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius);
+            background: var(--medium-gray);
+            color: var(--dark-gray);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--medium-gray);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--dark-gray);
+        }
+
+        /*
+            --- RESPONSIVE CSS ---
+        */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .hero-text {
+                text-align: center;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .header-container {
+                flex-wrap: wrap;
+            }
+            .header-btn {
+                margin-top: 1rem;
+                width: 100%;
+            }
+            nav {
+                width: 100%;
+                order: 1;
+                margin-top: 1rem;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                border-top: 1px solid var(--medium-gray);
+                padding-top: 1rem;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin-bottom: 0.75rem;
+            }
+            .mobile-menu-btn {
+                display: block;
+                order: 2;
+                margin-left: auto;
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+            .pricing-card.featured-card {
+                transform: translateY(0);
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .social-links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Apex Strike</span>
+            </a>
+            <nav>
+                <button class="mobile-menu-btn" aria-label="Toggle mobile menu" aria-controls="main-nav-menu" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul id="main-nav-menu">
+                    <li><a href="#features">Solutions</a></li>
+                    <li><a href="strategies.html">Strategies</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="howitworks.html">How It Works</a></li>
+                    <li><a href="support.html">Support Us</a></li>
+                    <li><a href="terms.html">Terms</a></li>
+                </ul>
+            </nav>
+            <a href="signals.html" class="btn btn-primary header-btn" target="_blank">Live Signal's</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-text">
+                    <h1>
+                        Community-Powered Crypto Trading Signals
+                    </h1>
+                    <p>Contribute your unique strategy, and we'll turn it into transparent, live signals for everyone to track and use.</p>
+                    <div class="hero-buttons">
+                        <a href="signals.html" class="btn btn-primary" target="_blank">
+                            🚀 See LIVE Signals & Proof Right Now!
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            Submit Your Strategy Idea
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <a href="signals.html" target="_blank" class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                        <div class="stat-text">
+                            <h3>3+</h3>
+                            <p>Strategies Live and Running</p>
+                            <small>High-Precision Crypto Strategies</small>
+                        </div>
+                    </a>
+                   <a href="signals.html" target="_blank" class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-text">
+                            <h3>Live Signals</h3>
+                            <p>Verifiably Hit Take Profit</p>
+                            <small>See our real-time performance</small>
+                        </div>
+                    </a>
+                    <a href="signals.html" target="_blank" class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-text">
+                            <h3>88%</h3>
+                            <p>Win Rate on Current Strategies</p>
+                            <small>An industry-leading success rate</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section features" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Problems We Solve: Empowering Your Crypto Edge</h2>
+                    <p>The crypto market is complex, volatile, and full of hidden opportunities. Many traders face significant hurdles in identifying profitable strategies, executing them effectively, and trusting the signals they receive. Apex Strike addresses these core challenges:</p>
+                </div>
+
+                <div class="grid-cols-3">
+                    <div class="card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Problem 1: Unreliable Data & Missed Opportunities</h3>
+                        <p class="problem-statement">Many traders struggle with **accessing clean, real-time, and reliable crypto market data**. Without it, even the best strategies can fail, leading to inaccurate analyses and missed trading opportunities.</p>
+                        <h4 class="solution-title">Our Solution: Transparent & Reliable Data</h4>
+                        <ul>
+                            <li>**Direct API integrations** with major exchanges (Binance, Bybit, OKX) for instant crypto data.</li>
+                            <li>**Automated data validation** ensures accuracy and integrity.</li>
+                            <li>**Comprehensive historical data** for robust backtesting.</li>
+                        </ul>
+                        <a href="signals.html" class="btn btn-secondary" target="_blank">See LIVE Signals</a>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-lightbulb"></i> Problem 2: Brilliant Ideas, Lacking Execution</h3>
+                        <p class="problem-statement">You have a **brilliant crypto trading strategy idea, but lack the coding skills, infrastructure, or time** to transform it into a 24/7 automated system. This means your insights remain untapped potential.</p>
+                        <h4 class="solution-title">Our Solution: Your Strategy, Operationalized</h4>
+                        <ul>
+                            <li>We **operationalize your ideas**: no coding or server management needed on your part.</li>
+                            <li>Benefit from our **rigorous backtesting and deployment expertise**.</li>
+                            <li>Maintain **full control** over your strategy's logic and understanding.</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-primary">Submit Your Idea Now</a>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-lock"></i> Problem 3: The Demand for Verified Performance</h3>
+                        <p class="problem-statement">In a market flooded with unverified claims, it's hard to **trust trading signals without clear, transparent, and verifiable performance history**. You need proof, not just promises.</p>
+                        <h4 class="solution-title">Our Solution: Live Signals & Verified Performance</h4>
+                        <ul>
+                            <li>All strategies run live, generating signals and monitoring markets every second.</li>
+                            <li>**Publicly verifiable results** (5-min delay) on our "LIVE Signals" page show actual profit/loss.</li>
+                            <li>Subscribers get **instant access** to live signals via email/Telegram for a zero-delay advantage.</li>
+                        </ul>
+                        <a href="signals.html" class="btn btn-secondary" target="_blank">Verify Performance Live</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section pricing" id="pricing">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="dark-text">Our Trading Plans</h2>
+                    <p class="dark-text">Choose the plan that's right for you to get started with Apex Strike.</p>
+                </div>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3 class="dark-text">Basic Trader</h3>
+                        <p class="price-tag dark-text">$0<small>/month</small></p>
+                        <p class="price-desc dark-text">Perfect for beginners and those new to signals.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check-circle"></i> Basic spot trading signals</li>
+                            <li><i class="fas fa-check-circle"></i> Real-time market data</li>
+                            <li><i class="fas fa-check-circle"></i> Community forum access</li>
+                            <li><i class="fas fa-times-circle text-muted"></i> No margin trading</li>
+                            <li><i class="fas fa-times-circle text-muted"></i> Basic email support</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Start for Free</a>
+                    </div>
+                    <div class="pricing-card featured-card">
+                        <h3 class="dark-text">Pro Trader</h3>
+                        <p class="price-tag dark-text">$29<small>/month</small></p>
+                        <p class="price-desc dark-text">For serious traders who need advanced tools.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check-circle"></i> All Basic features</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced trading tools & analytics</li>
+                            <li><i class="fas fa-check-circle"></i> Margin trading up to 10x</li>
+                            <li><i class="fas fa-check-circle"></i> Priority customer support</li>
+                            <li><i class="fas fa-check-circle"></i> Exclusive strategy insights</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Go Pro</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3 class="dark-text">Institutional</h3>
+                        <p class="price-tag dark-text">Custom</p>
+                        <p class="price-desc dark-text">Tailored solutions for institutions and large teams.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check-circle"></i> All Pro features</li>
+                            <li><i class="fas fa-check-circle"></i> Custom API integrations</li>
+                            <li><i class="fas fa-check-circle"></i> Dedicated account manager</li>
+                            <li><i class="fas fa-check-circle"></i> 24/7 priority support</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced security and compliance</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section testimonials">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="dark-text">What Our Users Say</h2>
+                    <p class="dark-text">Hear from the community about how Apex Strike has changed their trading game.</p>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="quote">"Apex Strike's signals are a game-changer. The win rate is incredible, and the transparency is unmatched. I've never felt more confident in my trades."</p>
+                        <div class="testimonial-author">
+                            <img src="https://lovable.dev/assets/images/user-1.jpg" alt="User 1" class="author-avatar">
+                            <div>
+                                <p class="author-name dark-text">Michael T.</p>
+                                <p class="author-title">Pro Trader</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="quote">"I had a fantastic strategy idea but no way to execute it. Apex Strike helped me operationalize it, and now it's a live, profitable signal. Thank you!"</p>
+                        <div class="testimonial-author">
+                            <img src="https://lovable.dev/assets/images/user-2.jpg" alt="User 2" class="author-avatar">
+                            <div>
+                                <p class="author-name dark-text">Sarah L.</p>
+                                <p class="author-title">Strategy Contributor</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="quote">"The community is amazing, and the signals are consistently reliable. It's the best platform I've found for crypto trading insights."</p>
+                        <div class="testimonial-author">
+                            <img src="https://lovable.dev/assets/images/user-3.jpg" alt="User 3" class="author-avatar">
+                            <div>
+                                <p class="author-name dark-text">Alex P.</p>
+                                <p class="author-title">Basic Trader</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta" id="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Ready to Elevate Your Crypto Game?</h2>
+                    <p>Submit Your Trading Strategy Idea</p>
+                </div>
+                <div class="waitlist-form">
+                    <form id="waitlistForm" action="https://formspree.io/f/xyzjewjw" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="interest">What are you most interested in?</label>
+                            <textarea id="interest" name="interest" placeholder="Crypto signals, API access, or collaborating on a custom strategy? Do you have a unique approach to the crypto market? Share your strategy with the Apex Strike community and contribute to building the next generation of effective trading insights. Fill out the form below to get started."></textarea>
+                        </div>
+                        <button type="submit" class="form-submit">Join</button>
+                    </form>
+                    <div class="social-links-box">
+                        <h3>Or connect with us on social media:</h3>
+                        <div class="social-links-grid">
+                            <div class="social-link-item">
+                                <a href="https://twitter.com/ApexStrikeAI" target="_blank" aria-label="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                    Twitter
+                                </a>
+                            </div>
+                            <div class="social-link-item">
+                                <a href="https://discord.gg/yourinvite" target="_blank" aria-label="Discord">
+                                    <i class="fab fa-discord"></i>
+                                    Discord
+                                </a>
+                            </div>
+                            <div class="social-link-item">
+                                <a href="https://t.me/ApexStrikeOfficial" target="_blank" aria-label="Telegram">
+                                    <i class="fab fa-telegram-plane"></i>
+                                    Telegram
+                                </a>
+                            </div>
+                            <div class="social-link-item">
+                                <a href="https://www.youtube.com/channel/yourchannel" target="_blank" aria-label="YouTube">
+                                    <i class="fab fa-youtube"></i>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Apex Strike</h3>
+                    <p>Powered Signals for Smarter Decisions.</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/ApexStrikeAI" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://discord.gg/yourinvite" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.youtube.com/channel/yourchannel" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Solutions</a></li>
+                        <li><a href="strategies.html" target="_blank">Strategies</a></li>
+                        <li><a href="signals.html" target="_blank">LIVE Signals</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p>Email: apexstrikelive@gmail.com</p>
+                    <p>Address: ITTM, Gdansk , Poland</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2025 ITTM. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navUl = document.querySelector('#main-nav-menu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true' || false;
+                mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                navUl.classList.toggle('active');
+            });
+
+            navUl.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navUl.classList.contains('active')) {
+                        navUl.classList.remove('active');
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+
+            const waitlistForm = document.getElementById('waitlistForm');
+            if (waitlistForm) {
+                waitlistForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    submitBtn.disabled = true;
+
+                    const formData = new FormData(this);
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Thank you for joining the waitlist! We will be in touch shortly.');
+                            this.reset();
+                        } else {
+                            response.json().then(data => {
+                                if (data.errors) {
+                                    alert('Error: ' + data.errors.map(error => error.message).join(', '));
+                                } else {
+                                    alert('There was a problem submitting your form. Please try again later.');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        alert('There was a problem submitting your form. Please try again later.');
+                        console.error('Form submission error:', error);
+                    })
+                    .finally(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

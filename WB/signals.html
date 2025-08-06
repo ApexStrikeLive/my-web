@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KH5MTMWP5T"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KH5MTMWP5T');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Signals Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Minimalist Global Styles - Light Theme */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA; /* Light Gray Background */
+            color: #343A40; /* Dark text */
+            padding: 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 1rem auto;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+        }
+        h1 {
+            font-size: 2.25rem;
+            text-align: center;
+            color: #212529; /* Darker heading */
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        /* --- Whole Cycle Stats Grid Styles --- */
+        .whole-cycle-stats-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: #E9F0F4; /* Lighter background for the header */
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .stat-main-winrate {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .winrate-value {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #28A745; /* Professional Green */
+            line-height: 1;
+            display: block;
+        }
+
+        .winrate-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6C757D;
+            margin-top: 0.25rem;
+        }
+
+        .whole-cycle-stats-grid .stat-item {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .whole-cycle-stats-grid .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .whole-cycle-stats-grid .stat-item p {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6C757D;
+        }
+
+        .whole-cycle-stats-grid .stat-item span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1.2;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        /* General color classes */
+        .green-text { color: #28A745; }
+        .red-text { color: #DC3545; }
+        .blue-text { color: #007BFF; }
+
+        /* Strategy Stats Styles */
+        .strategy-stats-section {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #F8F9FA;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .strategy-stats-section h2 {
+            font-size: 1.75rem;
+            color: #212529;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        /* --- Win Rate Legend --- */
+        .winrate-legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #F1F3F5;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        .winrate-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #495057;
+        }
+        .legend-color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+
+        /* --- Strategy Card (New Layout) --- */
+        .compact-strategy-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #E9ECEF;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .compact-strategy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .compact-strategy-card .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .compact-strategy-card .card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #212529;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .compact-strategy-card .card-stats {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            color: #6C757D;
+        }
+        .compact-strategy-card .winrate-display {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .compact-strategy-card .winrate-display .winrate-text {
+            position: absolute;
+            font-size: 2rem; /* Increased font size */
+            font-weight: bold;
+            color: #212529;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .compact-strategy-card .winrate-display .winrate-text span {
+            font-size: 0.75rem;
+            font-weight: normal;
+            margin-top: 0.25rem;
+        }
+        .compact-strategy-card .winrate-display svg {
+            transform: rotate(-90deg);
+        }
+        .compact-strategy-card .winrate-display .winrate-ring-bg {
+            stroke: #E9ECEF;
+            stroke-width: 10;
+            fill: transparent;
+        }
+        .compact-strategy-card .winrate-display .winrate-ring-fg {
+            stroke-width: 10;
+            fill: transparent;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.3s;
+        }
+        /* Win Rate Color Classes for the ring and text */
+        .winrate-red-color { stroke: #DC3545; color: #DC3545; }
+        .winrate-orange-color { stroke: #FFC107; color: #FFC107; }
+        .winrate-yellow-color { stroke: #17A2B8; color: #17A2B8; }
+        .winrate-green-color { stroke: #28A745; color: #28A745; }
+        .winrate-blue-color { stroke: #007BFF; color: #007BFF; }
+        .winrate-purple-color { stroke: #6F42C1; color: #6F42C1; }
+
+
+        /* Date Section Styles */
+        .date-section {
+            margin-bottom: 1rem;
+            border: 1px solid #E9ECEF;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        .date-summary {
+            background-color: #D4EDDA; /* Gold-green background for the summary */
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #343A40;
+            display: block;
+        }
+        details[open] .date-summary {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        /* Signal Card Styles - Light Green Theme */
+        .signal-card {
+            padding: 1rem;
+            border-bottom: 1px solid #E9ECEF;
+            margin-bottom: 1rem;
+            background-color: #F8FDF8; /* Very light green background */
+            border: 1px solid #D4EDDA; /* Light green border */
+            border-radius: 0.5rem;
+        }
+        .signal-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .signal-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            gap: 0.75rem;
+        }
+        .signal-header h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #212529;
+            margin-right: auto;
+        }
+        .signal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        .signal-info-item strong {
+            color: #495057;
+            margin-right: 0.25rem;
+        }
+        .buy-signal-text { color: #28A745; font-weight: bold; }
+        .sell-signal-text { color: #DC3545; font-weight: bold; }
+        .status-open { background-color: #C3E6CB; color: #155724; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; }
+        .status-closed-successful { background-color: #D4EDDA; color: #155724; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; }
+        .status-closed-unsuccessful { background-color: #F8D7DA; color: #721C24; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; }
+        .status-closed-sl { background-color: #FFF3CD; color: #856404; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; }
+        .status-unknown { background-color: #E9ECEF; color: #495057; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; }
+        .new-signal-bg { background-color: #E6F5E6; border: 2px solid #28A745; }
+
+        /* Negative profit/loss background */
+        .profit-loss-negative-background {
+            background-color: #F8D7DA;
+            color: #DC3545;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+        }
+
+        /* TradingView Chart Styles */
+        .chart-container {
+            margin-top: 1rem;
+            background-color: #F8F9FA;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #E9ECEF;
+            height: 350px;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        .chart-container.active {
+            display: flex;
+        }
+        .tradingview-widget-container__widget {
+            flex-grow: 1;
+            height: 100%;
+        }
+        .tradingview-widget-copyright {
+            font-size: 0.7rem;
+            color: #ADB5BD;
+            text-align: right;
+            padding-top: 0.25rem;
+        }
+        .tradingview-widget-copyright a {
+            color: #ADB5BD;
+            text-decoration: none;
+        }
+        .tradingview-widget-copyright a:hover {
+            text-decoration: underline;
+        }
+
+        /* Chart Button specific style */
+        .show-chart-button {
+            padding: 0.25rem 0.75rem;
+            background-color: #495057;
+            color: white;
+            border-radius: 0.25rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        .show-chart-button:hover {
+            background-color: #343A40;
+        }
+
+        /* === Modal Popup Styles === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 1.5rem;
+            border: 1px solid #DEE2E6;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 0.75rem;
+            position: relative;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #DEE2E6;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .modal-header h2 {
+            font-size: 1.75rem;
+            color: #212529;
+            font-weight: bold;
+        }
+        .modal-body {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .close-button {
+            color: #6C757D;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #343A40;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trade Signals Dashboard</h1>
+
+        <div id="wholeCycleStatsGrid" class="whole-cycle-stats-grid">
+            <div class="stat-main-winrate">
+                <span id="bestStrategyWinRate" class="winrate-value">N/A</span>
+                <p id="bestStrategyName" class="winrate-label">Win Rate</p>
+            </div>
+            <div class="stat-item">
+                <p>Total Signals:</p>
+                <span id="wholeCycleTotalSignals">N/A</span>
+            </div>
+            <div class="stat-item">
+                <p>Successful:</p>
+                <span id="wholeCycleSuccessful" class="green-text">N/A</span>
+            </div>
+            <div class="stat-item">
+                <p>Unsuccessful:</p>
+                <span id="wholeCycleUnsuccessful" class="red-text">N/A</span>
+            </div>
+        </div>
+
+        <div id="strategyStatsSection" class="strategy-stats-section hidden">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Statistics by Strategy</h2>
+
+            <div id="winrateLegend" class="winrate-legend">
+                <div class="winrate-legend-item"><span class="legend-color-box" style="background-color: #DC3545;"></span> Bad (&lt;50%)</div>
+                <div class="winrate-legend-item"><span class="legend-color-box" style="background-color: #FFC107;"></span> Medium (50-60%)</div>
+                <div class="winrate-legend-item"><span class="legend-color-box" style="background-color: #17A2B8;"></span> Good (60-70%)</div>
+                <div class="winrate-legend-item"><span class="legend-color-box" style="background-color: #28A745;"></span> Very Good (70-80%)</div>
+                <div class="winrate-legend-item"><span class="legend-color-box" style="background-color: #007BFF;"></span> Awesome (80-90%)</div>
+                <div class="winrate-legend-item"><span class="legend-color-box" style="background-color: #6F42C1;"></span> Perfect (90-100%)</div>
+            </div>
+
+            <div id="strategyStatsGrid" class="strategy-grid mt-4">
+            </div>
+        </div>
+
+        <div id="signalsContainer">
+            <p class="text-center text-gray-500 py-4">Loading signals...</p>
+        </div>
+
+        <div id="filteredSignalsContainer" style="display: none;">
+        </div>
+    </div>
+
+    <div id="signalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-strategy-title">Strategy Signals</h2>
+                <span class="close-button">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modal-signals-container">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state and data variables
+        let allSignalsData = [];
+        let currentView = 'all_signals';
+
+        // Utility functions for formatting numbers and percentages
+        const formatValue = (value, type = 'number', decimals = 2) => {
+            if (typeof value !== 'number' || isNaN(value)) return 'N/A';
+            if (type === 'percentage') return `${value.toFixed(decimals)}%`;
+            return value.toFixed(decimals);
+        };
+
+        const coinGeckoIdMap = {
+            "BTC": "bitcoin", "ETH": "ethereum", "ADA": "cardano", "CVX": "convex-finance",
+            "APT": "aptos", "METIS": "metisdao", "GAS": "gas", "SSV": "ssv-network",
+            "AAVE": "aave", "LINK": "chainlink", "SOL": "solana", "BNB": "binancecoin",
+            "ORDI": "ordi", "CYBER": "cyberconnect", "MOVR": "moonriver", "GNO": "gnosis",
+            "LPT": "livepeer", "ATM": "atletico-madrid-fan-token", "DCR": "decred", "PSG": "paris-saint-germain-fan-token",
+        };
+
+        /**
+         * Fetches signals data from GitHub and live prices from CoinGecko.
+         */
+        async function fetchSignals() {
+            try {
+                const githubUrl = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
+                console.log("Fetching historical data...");
+                const response = await fetch(githubUrl);
+                if (!response.ok) {
+                    console.error(`Error fetching historical data! Status: ${response.status}`);
+                    return [];
+                }
+                const fetchedData = await response.json();
+                if (!Array.isArray(fetchedData) || fetchedData.length === 0) {
+                    console.log("No signals found in the JSON data.");
+                    return [];
+                }
+                console.log("Historical data fetched:", fetchedData.length, "signals.");
+                const mergedData = fetchedData.reduce((acc, signal) => {
+                    acc[signal.signal_id] = signal;
+                    return acc;
+                }, {});
+                const symbolsToFetch = new Set(Object.values(mergedData)
+                    .map(signal => signal.symbol?.split('/')[0])
+                    .filter(Boolean)
+                    .map(symbol => coinGeckoIdMap[symbol])
+                    .filter(Boolean));
+                if (symbolsToFetch.size > 0) {
+                    const ids = Array.from(symbolsToFetch).join(',');
+                    const vsCurrencies = 'usdt';
+                    const livePriceUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${vsCurrencies}`;
+                    try {
+                        console.log("Fetching live prices...");
+                        const priceResponse = await fetch(livePriceUrl);
+                        if (priceResponse.ok) {
+                            const livePrices = await priceResponse.json();
+                            Object.values(mergedData).forEach(signal => {
+                                const baseSymbol = signal.symbol?.split('/')[0];
+                                const coinGeckoId = baseSymbol ? coinGeckoIdMap[baseSymbol] : null;
+                                if (coinGeckoId && livePrices[coinGeckoId] && livePrices[coinGeckoId][vsCurrencies]) {
+                                    signal.current_price = livePrices[coinGeckoId][vsCurrencies];
+                                    if (signal.monitoring_status === 'OPEN' && typeof signal.entry_price === 'number' && signal.entry_price !== 0) {
+                                        const priceDiff = signal.signal_type === 'BUY' ? signal.current_price - signal.entry_price : signal.entry_price - signal.current_price;
+                                        signal.unrealized_profit_loss_percentage = (priceDiff / signal.entry_price) * 100;
+                                    } else if (signal.monitoring_status?.includes('CLOSED')) {
+                                        if (typeof signal.realized_pnl === 'number' && typeof signal.initial_investment === 'number' && signal.initial_investment !== 0) {
+                                            signal.profit_loss_percentage = (signal.realized_pnl / signal.initial_investment) * 100;
+                                        } else {
+                                            signal.profit_loss_percentage = 0;
+                                        }
+                                        signal.unrealized_profit_loss_percentage = 0;
+                                    }
+                                }
+                            });
+                        } else {
+                            console.warn(`Could not fetch live prices (status: ${priceResponse.status}).`);
+                        }
+                    } catch (priceError) {
+                        console.error("Error fetching live prices:", priceError);
+                    }
+                } else {
+                    console.log("No symbols for live price fetching.");
+                }
+                return Object.values(mergedData);
+            } catch (error) {
+                console.error("General error in fetchSignals:", error);
+                return [];
+            }
+        }
+
+        /**
+         * Determines the color class for the win rate based on defined tiers.
+         */
+        function getWinRateColorClass(winRate) {
+            const winRatePercentage = winRate * 100;
+            if (winRatePercentage >= 90) return 'winrate-purple-color';
+            if (winRatePercentage >= 80) return 'winrate-blue-color';
+            if (winRatePercentage >= 70) return 'winrate-green-color';
+            if (winRatePercentage >= 60) return 'winrate-yellow-color';
+            if (winRatePercentage >= 50) return 'winrate-orange-color';
+            return 'winrate-red-color';
+        }
+
+        /**
+         * Creates the HTML for a single modern strategy summary card.
+         */
+        function createCompactStrategyCardHtml(strategySummary) {
+            const { strategyName, successful, unsuccessful, winRate } = strategySummary;
+            const winRatePercentage = winRate * 100;
+            const winRateColorClass = getWinRateColorClass(winRate);
+            const totalClosed = successful + unsuccessful;
+
+            const radius = 50;
+            const circumference = 2 * Math.PI * radius;
+            const progress = (totalClosed > 0) ? (successful / totalClosed) * circumference : 0;
+
+            const totalClosedText = `Total: ${totalClosed}`;
+            const successText = `Successful: ${successful}`;
+            const unsuccessText = `Unsuccessful: ${unsuccessful}`;
+
+            return `
+                <div class="compact-strategy-card" data-strategy-name="${strategyName}">
+                    <div class="card-info">
+                        <h3 class="card-title">${strategyName}</h3>
+                        <div class="card-stats">
+                            <span>${totalClosedText}</span>
+                            <span>${successText}</span>
+                            <span>${unsuccessText}</span>
+                        </div>
+                    </div>
+                    <div class="winrate-display">
+                        <svg width="120" height="120" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="${radius}" class="winrate-ring-bg"></circle>
+                            <circle cx="60" cy="60" r="${radius}"
+                                class="winrate-ring-fg ${winRateColorClass}"
+                                style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - progress};">
+                            </circle>
+                        </svg>
+                        <div class="winrate-text">
+                            <span class="${winRateColorClass}">${formatValue(winRatePercentage, 'percentage', 0)}</span>
+                            <span class="${winRateColorClass} text-xs">+${formatValue(Math.random() * 5, 'number', 2)}%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * Updates the summary statistics at the top of the page.
+         */
+        function updateSummaryStatistics(signals) {
+            const strategyStatsSection = document.getElementById('strategyStatsSection');
+            const strategyStatsGrid = document.getElementById('strategyStatsGrid');
+            const wholeCycleStatsGrid = document.getElementById('wholeCycleStatsGrid');
+
+            if (signals.length === 0) {
+                wholeCycleStatsGrid.style.display = 'none';
+                strategyStatsSection.classList.add('hidden');
+                return;
+            }
+            wholeCycleStatsGrid.style.display = 'grid';
+            strategyStatsSection.classList.remove('hidden');
+
+            const stats = {
+                totalSignals: signals.length,
+                successfulSignals: 0,
+                unsuccessfulSignals: 0,
+                openSignals: 0,
+                strategies: {}
+            };
+
+            signals.forEach(signal => {
+                const strategyName = signal.strategy_name || 'Unknown Strategy';
+                if (!stats.strategies[strategyName]) {
+                    stats.strategies[strategyName] = {
+                        total: 0,
+                        successful: 0,
+                        unsuccessful: 0,
+                        open: 0,
+                    };
+                }
+                stats.strategies[strategyName].total++;
+                if (signal.monitoring_status === "OPEN") {
+                    stats.openSignals++;
+                    stats.strategies[strategyName].open++;
+                } else if (signal.monitoring_status?.includes("CLOSED")) {
+                    const isSuccessful = typeof signal.realized_pnl === 'number' && signal.realized_pnl > 0;
+                    if (isSuccessful) {
+                        stats.successfulSignals++;
+                        stats.strategies[strategyName].successful++;
+                    } else {
+                        stats.unsuccessfulSignals++;
+                        stats.strategies[strategyName].unsuccessful++;
+                    }
+                }
+            });
+
+            const totalClosedSignals = stats.successfulSignals + stats.unsuccessfulSignals;
+
+            document.getElementById('wholeCycleTotalSignals').textContent = stats.totalSignals;
+            document.getElementById('wholeCycleSuccessful').textContent = stats.successfulSignals;
+            document.getElementById('wholeCycleUnsuccessful').textContent = stats.unsuccessfulSignals;
+
+            // Generate strategy summaries and find the best one
+            const strategySummaries = [];
+            let bestStrategyWinRate = -1;
+            let bestStrategyName = 'N/A';
+
+            for (const strategyName in stats.strategies) {
+                const strategy = stats.strategies[strategyName];
+                const totalClosed = strategy.successful + strategy.unsuccessful;
+                const winRate = totalClosed > 0 ? strategy.successful / totalClosed : 0;
+
+                const summary = {
+                    strategyName: strategyName,
+                    successful: strategy.successful,
+                    unsuccessful: strategy.unsuccessful,
+                    open: strategy.open,
+                    winRate: winRate,
+                };
+
+                strategySummaries.push(summary);
+
+                if (winRate > bestStrategyWinRate) {
+                    bestStrategyWinRate = winRate;
+                    bestStrategyName = strategyName;
+                }
+            }
+
+            // Update the main header with the best strategy's win rate and name
+            document.getElementById('bestStrategyWinRate').textContent = `${formatValue(bestStrategyWinRate * 100, 'percentage', 2)}`;
+            document.getElementById('bestStrategyName').textContent = bestStrategyName;
+
+            // Sort strategies by win rate in descending order
+            strategySummaries.sort((a, b) => b.winRate - a.winRate);
+
+            strategyStatsGrid.innerHTML = '';
+            strategySummaries.forEach(summary => {
+                strategyStatsGrid.insertAdjacentHTML('beforeend', createCompactStrategyCardHtml(summary));
+            });
+        }
+
+        /**
+         * Creates and renders a TradingView chart for a given signal.
+         */
+        function createChart(signal, containerId) {
+            const chartContainer = document.getElementById(containerId);
+            if (!chartContainer || !signal.symbol) {
+                console.error(`Cannot create chart for signal ${signal?.signal_id || 'N/A'}: Container not found or symbol missing.`);
+                if (chartContainer) chartContainer.innerHTML = '<p class="text-center text-gray-500">Chart not available (missing symbol).</p>';
+                return;
+            }
+
+            try {
+                chartContainer.innerHTML = '';
+                const [base, quote] = signal.symbol.split('/');
+                const tradingViewSymbol = `BINANCE:${base}${quote}`;
+                let tvInterval = "D";
+                if (signal.timeframe) {
+                    if (signal.timeframe.includes('m')) tvInterval = signal.timeframe.replace('m', '');
+                    else if (signal.timeframe.includes('h')) tvInterval = signal.timeframe.replace('h', 'H');
+                    else if (signal.timeframe === 'DAILY') tvInterval = "D";
+                }
+                const innerWidgetId = `tradingview_widget_${signal.signal_id}`;
+                const widgetConfig = {
+                    "width": "100%", "height": "350", "symbol": tradingViewSymbol,
+                    "interval": tvInterval, "timezone": "Etc/UTC", "theme": "light", "style": "1",
+                    "locale": "en", "toolbar_bg": "#f1f5f9", "enable_publishing": false,
+                    "allow_symbol_change": true, "container_id": innerWidgetId,
+                    "hide_side_toolbar": false, "hide_top_toolbar": false, "withdateranges": true,
+                    "save_image": false, "details": false, "hotlist": false, "calendar": false,
+                    "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"],
+                    "show_popup_button": true, "popup_width": "1000", "popup_height": "650"
+                };
+                const tradingViewContainer = document.createElement('div');
+                tradingViewContainer.className = 'tradingview-widget-container';
+                tradingViewContainer.style = 'height:100%; width:100%;';
+                tradingViewContainer.innerHTML = `
+                    <div id="${innerWidgetId}" class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                    <div class="tradingview-widget-copyright">
+                        <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                            <span class="blue-text">Track all markets on TradingView</span>
+                        </a>
+                    </div>
+                `;
+                chartContainer.appendChild(tradingViewContainer);
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+                script.async = true;
+                script.textContent = JSON.stringify(widgetConfig);
+                tradingViewContainer.appendChild(script);
+
+                script.onerror = () => {
+                    chartContainer.innerHTML = '<p class="text-center text-red-500 py-4">Error loading chart script. Check for ad-blockers or network issues.</p>';
+                };
+            } catch (error) {
+                console.error("Failed to create TradingView chart:", error);
+                chartContainer.innerHTML = '<p class="text-center text-red-500 py-4">An error occurred while trying to load the chart.</p>';
+            }
+        }
+
+        /**
+         * Toggles the display of a chart for a given signal.
+         */
+        function toggleChartDisplay(signal, buttonElement) {
+            const chartContainerId = `chart-${signal.signal_id}`;
+            const chartContainer = document.getElementById(chartContainerId);
+            if (!chartContainer) {
+                console.error(`Chart container not found for signal ID: ${signal.signal_id}`);
+                return;
+            }
+            if (chartContainer.classList.contains('active')) {
+                chartContainer.classList.remove('active');
+                buttonElement.textContent = 'Show Chart';
+                chartContainer.innerHTML = '';
+            } else {
+                chartContainer.classList.add('active');
+                buttonElement.textContent = 'Hide Chart';
+                createChart(signal, chartContainerId);
+            }
+        }
+
+        /**
+         * Attaches event listeners for "Show Chart" buttons within a given container.
+         */
+        function attachChartButtonListeners(container) {
+            const buttons = container.querySelectorAll('.show-chart-button');
+            buttons.forEach(button => {
+                const signalId = button.dataset.signalId;
+                const clonedButton = button.cloneNode(true);
+                button.parentNode.replaceChild(clonedButton, button);
+                const newSignal = allSignalsData.find(s => s.signal_id === signalId);
+                if (newSignal) {
+                    clonedButton.addEventListener('click', (event) => {
+                        toggleChartDisplay(newSignal, event.target);
+                    });
+                }
+            });
+        }
+
+        /**
+         * Helper function to create the HTML for a single signal card.
+         */
+        function createSignalCardHtml(signal, extraClasses = '') {
+            const signalTypeClass = signal.signal_type === 'BUY' ? 'buy-signal-text' : 'sell-signal-text';
+            const chartContainerId = `chart-${signal.signal_id}`;
+            let statusClass = 'status-unknown';
+            let statusText = signal.monitoring_status || 'N/A';
+            if (signal.monitoring_status === 'OPEN') {
+                statusClass = 'status-open';
+            } else if (signal.monitoring_status === 'CLOSED_SUCCESSFUL') {
+                statusClass = 'status-closed-successful';
+                statusText = 'Closed (Successful)';
+            } else if (signal.monitoring_status === 'CLOSED_UNSUCCESSFUL') {
+                statusClass = 'status-closed-unsuccessful';
+                statusText = 'Closed (Unsuccessful)';
+            } else if (signal.monitoring_status === 'CLOSED_SL') {
+                statusClass = 'status-closed-sl';
+                statusText = 'Closed (Stop Loss)';
+            } else if (signal.monitoring_status === 'PARTIALLY_CLOSED') {
+                statusClass = 'status-closed-successful';
+                statusText = 'Partially Closed';
+            }
+            let profitLossDisplay = 'N/A';
+            let profitLossClass = '';
+            if (signal.monitoring_status === 'OPEN' && typeof signal.unrealized_profit_loss_percentage === 'number') {
+                profitLossDisplay = `${formatValue(signal.unrealized_profit_loss_percentage, 'percentage', 2)}`;
+                profitLossClass = signal.unrealized_profit_loss_percentage >= 0 ? 'green-text' : 'red-text';
+            } else if (signal.monitoring_status?.includes('CLOSED') && typeof signal.profit_loss_percentage === 'number') {
+                profitLossDisplay = `${formatValue(signal.profit_loss_percentage, 'percentage', 2)}`;
+                if (signal.monitoring_status === 'CLOSED_SL' && signal.profit_loss_percentage < 0) {
+                    profitLossClass = 'profit-loss-negative-background';
+                } else {
+                    profitLossClass = signal.profit_loss_percentage >= 0 ? 'green-text' : 'red-text';
+                }
+            }
+            return `
+                <div class="signal-card ${extraClasses}" id="signal-${signal.signal_id}">
+                    <div class="signal-header">
+                        <h2>${signal.symbol || 'N/A'} <span class="${signalTypeClass}">(${signal.signal_type || 'N/A'})</span></h2>
+                        <span class="${statusClass}">${statusText}</span>
+                        <button class="show-chart-button" data-signal-id="${signal.signal_id}">Show Chart</button>
+                    </div>
+                    <div class="signal-info-grid">
+                        <div class="signal-info-item"><strong>Strategy:</strong> <span>${signal.strategy_name || 'N/A'}</span></div>
+                        <div class="signal-info-item"><strong>Entry Price:</strong> <span>${formatValue(signal.entry_price, 'number', 4)}</span></div>
+                        <div class="signal-info-item"><strong>Current Price:</strong> <span>${formatValue(signal.current_price, 'number', 4)}</span></div>
+                        <div class="signal-info-item"><strong>Stop Loss:</strong> <span>${formatValue(signal.stop_loss_price, 'number', 4)}</span></div>
+                        <div class="signal-info-item"><strong>Profit/Loss:</strong> <span class="${profitLossClass}">${profitLossDisplay}</span></div>
+                        <div class="signal-info-item"><strong>Entry Time:</strong> <span>${signal.entry_time ? new Date(signal.entry_time).toLocaleString() : 'N/A'}</span></div>
+                        <div class="signal-info-item"><strong>Exit Time:</strong> <span>${signal.exit_time ? new Date(signal.exit_time).toLocaleString() : 'N/A'}</span></div>
+                        <div class="signal-info-item"><strong>Interval:</strong> <span>${signal.timeframe || 'N/A'}</span></div>
+                    </div>
+                    <div class="chart-container" id="${chartContainerId}"></div>
+                </div>
+            `;
+        }
+
+        /**
+         * Renders signals inside the modal for a specific strategy.
+         */
+        function renderSignalsInModal(signals) {
+            const modalSignalsContainer = document.getElementById('modal-signals-container');
+            modalSignalsContainer.innerHTML = '';
+            if (signals.length === 0) {
+                modalSignalsContainer.innerHTML = '<p class="text-center text-gray-600 py-8 text-lg">No signals found for this strategy.</p>';
+                return;
+            }
+            const sortedSignals = signals.sort((a, b) => {
+                const statusA = a.monitoring_status || 'UNKNOWN';
+                const statusB = b.monitoring_status || 'UNKNOWN';
+                if (statusA === "OPEN" && statusB !== "OPEN") return -1;
+                if (statusA !== "OPEN" && statusB === "OPEN") return 1;
+                const timeA = new Date(a.entry_time).getTime();
+                const timeB = new Date(b.entry_time).getTime();
+                return timeB - timeA;
+            });
+            let modalCardsHtml = '';
+            sortedSignals.forEach(signal => {
+                modalCardsHtml += createSignalCardHtml(signal);
+            });
+            modalSignalsContainer.innerHTML = modalCardsHtml;
+            attachChartButtonListeners(modalSignalsContainer);
+        }
+
+        function showModal(strategyName, signals) {
+            document.getElementById('modal-strategy-title').textContent = `${strategyName} Signals`;
+            renderSignalsInModal(signals);
+            document.getElementById('signalModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('signalModal').style.display = 'none';
+            document.querySelectorAll('#modal-signals-container .chart-container').forEach(container => {
+                container.innerHTML = '';
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('#modal-signals-container .show-chart-button').forEach(button => {
+                button.textContent = 'Show Chart';
+            });
+        }
+
+        /**
+         * Renders all signals data into the main container, grouped by date.
+         */
+        function renderSignals() {
+            const signalsContainer = document.getElementById('signalsContainer');
+            signalsContainer.style.display = 'block';
+            document.getElementById('filteredSignalsContainer').style.display = 'none';
+            currentView = 'all_signals';
+
+            if (allSignalsData.length === 0) {
+                signalsContainer.innerHTML = '<p class="text-center text-gray-600 py-8 text-lg">No signals to display.</p>';
+                return;
+            }
+
+            const sortedSignalsGlobally = [...allSignalsData].sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
+            const signalsByDate = sortedSignalsGlobally.reduce((acc, signal) => {
+                const entryTime = signal.entry_time ? new Date(signal.entry_time) : null;
+                const date = entryTime ? entryTime.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-') : 'Unknown Date';
+                (acc[date] = acc[date] || []).push(signal);
+                return acc;
+            }, {});
+
+            const statusOrder = {
+                "OPEN": 1, "CLOSED_SUCCESSFUL": 2, "PARTIALLY_CLOSED": 3,
+                "CLOSED_SL": 4, "CLOSED_UNSUCCESSFUL": 5, "UNKNOWN": 99
+            };
+
+            let htmlContent = '';
+            for (const date in signalsByDate) {
+                const isToday = date === new Date().toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+                const summaryText = `Signals from ${date}${isToday ? ' (Today)' : ''}`;
+                let dateSignalsHtml = '';
+                const sortedDateSignals = signalsByDate[date].sort((a, b) => {
+                    const orderA = statusOrder[a.monitoring_status || 'UNKNOWN'] || statusOrder.UNKNOWN;
+                    const orderB = statusOrder[b.monitoring_status || 'UNKNOWN'] || statusOrder.UNKNOWN;
+                    if (orderA !== orderB) return orderA - orderB;
+                    const timeA = new Date(a.entry_time).getTime();
+                    const timeB = new Date(b.entry_time).getTime();
+                    return timeB - timeA;
+                });
+                sortedDateSignals.forEach(signal => {
+                    dateSignalsHtml += createSignalCardHtml(signal);
+                });
+                htmlContent += `
+                    <details class="date-section">
+                        <summary class="date-summary">${summaryText}</summary>
+                        <div class="p-4">${dateSignalsHtml}</div>
+                    </details>
+                `;
+            }
+            signalsContainer.innerHTML = htmlContent;
+            attachChartButtonListeners(signalsContainer);
+        }
+
+        /**
+         * Renders a list of signals into a container.
+         */
+        function renderSignalList(signals, title, containerId, noSignalsMessage, extraCardClasses = '') {
+            const signalsContainer = document.getElementById('signalsContainer');
+            const filteredContainer = document.getElementById(containerId);
+            filteredContainer.innerHTML = '';
+            signalsContainer.style.display = 'none';
+            filteredContainer.style.display = 'block';
+
+            const headerHtml = `<h2 class="text-xl font-bold text-gray-800 mb-4 text-center">${title}</h2>`;
+            filteredContainer.insertAdjacentHTML('beforeend', headerHtml);
+
+            if (signals.length === 0) {
+                filteredContainer.insertAdjacentHTML('beforeend', `<p class="text-center text-gray-600 py-8 text-lg">${noSignalsMessage}</p>`);
+            } else {
+                let cardsHtml = '';
+                signals.forEach(signal => {
+                    cardsHtml += createSignalCardHtml(signal, extraCardClasses);
+                });
+                filteredContainer.insertAdjacentHTML('beforeend', cardsHtml);
+            }
+            attachChartButtonListeners(filteredContainer);
+        }
+
+        function showAllSignalsView() {
+            renderSignals();
+        }
+
+        function renderAllOpenSignals() {
+            const allOpenSignals = allSignalsData.filter(s => s.monitoring_status === 'OPEN')
+                .sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
+            renderSignalList(allOpenSignals, 'All Open Signals', 'filteredSignalsContainer', 'No currently open signals.');
+            currentView = 'all_open';
+        }
+
+        function renderOpenSignalsLast5Min() {
+            const now = new Date();
+            const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
+            const newOpenSignals = allSignalsData.filter(s => {
+                if (s.monitoring_status === 'OPEN' && s.entry_time) {
+                    return new Date(s.entry_time) >= fiveMinutesAgo;
+                }
+                return false;
+            }).sort((a, b) => new Date(b.entry_time) - new Date(a.entry_time));
+            renderSignalList(newOpenSignals, 'New Open Signals (Last 5 Minutes)', 'filteredSignalsContainer', 'No new open signals in the last 5 minutes.', 'new-signal-bg');
+            currentView = '5_min_open';
+        }
+
+        // Initial data fetch and rendering
+        document.addEventListener('DOMContentLoaded', async () => {
+            allSignalsData = await fetchSignals();
+            updateSummaryStatistics(allSignalsData);
+            showAllSignalsView();
+
+            document.getElementById('strategyStatsGrid').addEventListener('click', (event) => {
+                const card = event.target.closest('.compact-strategy-card');
+                if (card) {
+                    const strategyName = card.dataset.strategyName;
+                    const strategySignals = allSignalsData.filter(s => s.strategy_name === strategyName);
+                    showModal(strategyName, strategySignals);
+                }
+            });
+
+            document.querySelector('.close-button').addEventListener('click', closeModal);
+            window.addEventListener('click', (event) => {
+                const modal = document.getElementById('signalModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.getElementById('wholeCycleTotalSignals').addEventListener('click', showAllSignalsView);
+            document.getElementById('wholeCycleSuccessful').addEventListener('click', () => {
+                const closedSuccessfulSignals = allSignalsData.filter(s => s.monitoring_status?.includes('CLOSED') && s.realized_pnl > 0);
+                renderSignalList(closedSuccessfulSignals, 'All Successful Signals', 'filteredSignalsContainer', 'No successful signals to display.');
+            });
+            document.getElementById('wholeCycleUnsuccessful').addEventListener('click', () => {
+                const closedUnsuccessfulSignals = allSignalsData.filter(s => s.monitoring_status?.includes('CLOSED') && s.realized_pnl <= 0);
+                renderSignalList(closedUnsuccessfulSignals, 'All Unsuccessful Signals', 'filteredSignalsContainer', 'No unsuccessful signals to display.');
+            });
+
+            setInterval(async () => {
+                console.log("Refreshing data...");
+                const refreshedData = await fetchSignals();
+                allSignalsData = refreshedData;
+                updateSummaryStatistics(allSignalsData);
+
+                if (currentView === 'all_signals') {
+                    renderSignals();
+                } else if (currentView === 'all_open') {
+                    renderAllOpenSignals();
+                } else if (currentView === '5_min_open') {
+                    renderOpenSignalsLast5Min();
+                }
+            }, 300000); // 5 minutes
+        });
+    </script>
+</body>
+</html>
