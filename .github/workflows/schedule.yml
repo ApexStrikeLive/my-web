@@ -1,0 +1,33 @@
+name: Run My Python Script Every Hour
+
+# When to run the script
+on:
+  schedule:
+    - cron: '0 * * * *'  # Every hour at minute 0
+  workflow_dispatch:  # Also allows manual running
+
+# What to do when it runs
+jobs:
+  run-my-script:
+    runs-on: ubuntu-latest  # Use Ubuntu computer
+    
+    steps:
+    # Step 1: Get my code from GitHub
+    - name: Get my code
+      uses: actions/checkout@v4
+    
+    # Step 2: Install Python
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    # Step 3: Install packages (if requirements.txt exists)
+    - name: Install packages
+      run: |
+        pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    # Step 4: Run my Python script
+    - name: Run my script
+      run: python my_script.py  # ← CHANGE THIS TO YOUR FILE NAME!
