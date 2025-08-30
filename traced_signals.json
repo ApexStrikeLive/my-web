@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "signal_id": "353744fb-4607-4f9b-909f-37ec4c4816ff",
+    "symbol": "SOL/USDT",
+    "timeframe": "1h",
+    "signal_type": "SELL",
+    "entry_price": 200.42,
+    "entry_time": "2025-08-30T14:54:01.377477",
+    "is_monitored": true,
+    "monitoring_status": "OPEN",
+    "current_price": 200.6,
+    "profit_loss_percentage": -0.28981139606826006,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": -0.08981139606826007,
+    "stop_loss_price": 206.43259999999998,
+    "take_profit_target": 0.0,
+    "closed_percentage": 0.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [],
+    "notes": "",
+    "strategy_name": "Binance_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": false,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": []
+  }
+]
