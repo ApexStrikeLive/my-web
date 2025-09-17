@@ -692,7 +692,7 @@
                     }
                     if (typeof signal.profit_loss_percentage === 'number') {
                         stats.strategies[strategyName].totalPnlPercentage += signal.profit_loss_percentage;
-                    } else if (typeof signal.realized_pnl === 'number') {
+                    } else if (typeof signal.realized_pnl === 'number' && initialInvestment > 0) {
                         // Fallback calculation for percentage if not available
                         const pnlPercentage = (signal.realized_pnl / initialInvestment) * 100;
                         stats.strategies[strategyName].totalPnlPercentage += pnlPercentage;
