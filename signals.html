@@ -460,7 +460,7 @@
         </div>
 
         <div id="signalsContainer">
-            <p class="text-center text-gray-500 py-4">Loading signals...</p>
+            <p class="text-center text-gray-500 py-4">Fetching signals from the server...</p>
         </div>
 
         <div id="filteredSignalsContainer" style="display: none;">
@@ -506,12 +506,15 @@
          */
         async function fetchSignals() {
             try {
+                const signalsContainer = document.getElementById('signalsContainer');
+                signalsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Fetching signals from the server...</p>';
+
                 const githubUrl = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
                 console.log("Fetching historical data...");
                 const response = await fetch(githubUrl);
                 if (!response.ok) {
                     console.error(`Error fetching historical data! Status: ${response.status}`);
-                    return [];
+                    throw new Error('Network response was not ok');
                 }
                 const fetchedData = await response.json();
                 if (!Array.isArray(fetchedData) || fetchedData.length === 0) {
@@ -567,6 +570,8 @@
                 return Object.values(mergedData);
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
+                const signalsContainer = document.getElementById('signalsContainer');
+                signalsContainer.innerHTML = `<p class="text-center text-red-500 py-4">Failed to load signals. Please check your connection or the data source.</p>`;
                 return [];
             }
         }
