@@ -460,7 +460,7 @@
         </div>
 
         <div id="signalsContainer">
-            <p class="text-center text-gray-500 py-4">Loading signals...</p>
+            <p class="text-center text-gray-500 py-4">Fetching signals from the server...</p>
         </div>
 
         <div id="filteredSignalsContainer" style="display: none;">
@@ -484,6 +484,7 @@
         // Global state and data variables
         let allSignalsData = [];
         let currentView = 'all_signals';
+        const initialInvestment = 10; // New constant for the assumed trade size
 
         // Utility functions for formatting numbers and percentages
         const formatValue = (value, type = 'number', decimals = 2) => {
@@ -505,12 +506,15 @@
          */
         async function fetchSignals() {
             try {
+                const signalsContainer = document.getElementById('signalsContainer');
+                signalsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Fetching signals from the server...</p>';
+
                 const githubUrl = 'https://raw.githubusercontent.com/ApexStrikeLive/my-web/main/traced_signals.json';
                 console.log("Fetching historical data...");
                 const response = await fetch(githubUrl);
                 if (!response.ok) {
                     console.error(`Error fetching historical data! Status: ${response.status}`);
-                    return [];
+                    throw new Error('Network response was not ok');
                 }
                 const fetchedData = await response.json();
                 if (!Array.isArray(fetchedData) || fetchedData.length === 0) {
@@ -566,6 +570,8 @@
                 return Object.values(mergedData);
             } catch (error) {
                 console.error("General error in fetchSignals:", error);
+                const signalsContainer = document.getElementById('signalsContainer');
+                signalsContainer.innerHTML = `<p class="text-center text-red-500 py-4">Failed to load signals. Please check your connection or the data source.</p>`;
                 return [];
             }
         }
@@ -587,11 +593,12 @@
          * Creates the HTML for a single modern strategy summary card.
          */
         function createCompactStrategyCardHtml(strategySummary) {
-            const { strategyName, successful, unsuccessful, winRate, open, totalPnl } = strategySummary;
+            const { strategyName, successful, unsuccessful, winRate, open, totalPnl, totalPnlPercentage } = strategySummary;
             const winRatePercentage = winRate * 100;
             const winRateColorClass = getWinRateColorClass(winRate);
             const totalClosed = successful + unsuccessful;
             const pnlColorClass = totalPnl >= 0 ? 'green-text' : 'red-text';
+            const pnlPercentColorClass = totalPnlPercentage >= 0 ? 'green-text' : 'red-text';
 
             const radius = 50;
             const circumference = 2 * Math.PI * radius;
@@ -611,6 +618,7 @@
                             <span>${unsuccessText}</span>
                             <span>Open: ${open}</span>
                             <span>Total PnL: <span class="${pnlColorClass}">$${formatValue(totalPnl, 'number', 2)}</span></span>
+                            <span>Total PnL %: <span class="${pnlPercentColorClass}">${formatValue(totalPnlPercentage, 'percentage', 2)}</span></span>
                         </div>
                     </div>
                     <div class="winrate-display">
@@ -623,7 +631,7 @@
                         </svg>
                         <div class="winrate-text">
                             <span class="${winRateColorClass}">${formatValue(winRatePercentage, 'percentage', 0)}</span>
-                            <span class="${winRateColorClass} text-xs">+${formatValue(Math.random() * 5, 'number', 2)}%</span>
+                            <span class="${winrateColorClass} text-xs">+${formatValue(Math.random() * 5, 'number', 2)}%</span>
                         </div>
                     </div>
                 </div>
@@ -662,7 +670,8 @@
                         successful: 0,
                         unsuccessful: 0,
                         open: 0,
-                        totalPnl: 0
+                        totalPnl: 0,
+                        totalPnlPercentage: 0
                     };
                 }
                 stats.strategies[strategyName].total++;
@@ -680,6 +689,13 @@
                     }
                     if (typeof signal.realized_pnl === 'number') {
                         stats.strategies[strategyName].totalPnl += signal.realized_pnl;
+                    }
+                    if (typeof signal.profit_loss_percentage === 'number') {
+                        stats.strategies[strategyName].totalPnlPercentage += signal.profit_loss_percentage;
+                    } else if (typeof signal.realized_pnl === 'number' && initialInvestment > 0) {
+                        // Fallback calculation for percentage if not available
+                        const pnlPercentage = (signal.realized_pnl / initialInvestment) * 100;
+                        stats.strategies[strategyName].totalPnlPercentage += pnlPercentage;
                     }
                 }
             });
@@ -706,6 +722,7 @@
                     unsuccessful: strategy.unsuccessful,
                     open: strategy.open,
                     totalPnl: strategy.totalPnl,
+                    totalPnlPercentage: strategy.totalPnlPercentage,
                     winRate: winRate,
                 };
 
