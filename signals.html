@@ -484,6 +484,7 @@
         // Global state and data variables
         let allSignalsData = [];
         let currentView = 'all_signals';
+        const FIXED_INVESTMENT = 10; // New constant for the fixed investment amount
 
         // Utility functions for formatting numbers and percentages
         const formatValue = (value, type = 'number', decimals = 2) => {
@@ -604,11 +605,12 @@
          * Creates the HTML for a single modern strategy summary card.
          */
         function createCompactStrategyCardHtml(strategySummary) {
-            const { strategyName, successful, unsuccessful, winRate, open, totalPnl, profitabilityFactor } = strategySummary;
+            const { strategyName, successful, unsuccessful, winRate, open, totalPnl, profitabilityFactor, fixedPnl } = strategySummary;
             const winRatePercentage = winRate * 100;
             const winRateColorClass = getWinRateColorClass(winRate);
             const totalClosed = successful + unsuccessful;
             const pnlColorClass = totalPnl >= 0 ? 'green-text' : 'red-text';
+            const fixedPnlColorClass = fixedPnl >= 0 ? 'green-text' : 'red-text';
             const pfactorColorClass = profitabilityFactor >= 0 ? 'green-text' : 'red-text';
 
             const radius = 50;
@@ -629,6 +631,7 @@
                             <span>${unsuccessText}</span>
                             <span>Open: ${open}</span>
                             <span>Total PnL: <span class="${pnlColorClass}">$${formatValue(totalPnl, 'number', 2)}</span></span>
+                            <span>Fixed PnL ($${FIXED_INVESTMENT}): <span class="${fixedPnlColorClass}">$${formatValue(fixedPnl, 'number', 2)}</span></span>
                             <span>P-Factor: <span class="${pfactorColorClass}">${formatValue(profitabilityFactor, 'number', 2)}%</span></span>
                         </div>
                     </div>
@@ -642,7 +645,7 @@
                         </svg>
                         <div class="winrate-text">
                             <span class="${winRateColorClass}">${formatValue(winRatePercentage, 'percentage', 0)}</span>
-                            <span class="${winRateColorClass} text-xs">+${formatValue(Math.random() * 5, 'number', 2)}%</span>
+                            <span class="${winRateColorClass} text-xs">Win Rate</span>
                         </div>
                     </div>
                 </div>
@@ -671,6 +674,7 @@
                 unsuccessfulSignals: 0,
                 openSignals: 0,
                 totalPnl: 0,
+                totalFixedPnl: 0,
                 totalSuccessfulPnl: 0,
                 totalUnsuccessfulPnl: 0,
                 strategies: {}
@@ -685,6 +689,7 @@
                         unsuccessful: 0,
                         open: 0,
                         totalPnl: 0,
+                        totalFixedPnl: 0,
                         successfulPnl: 0,
                         unsuccessfulPnl: 0
                     };
@@ -709,6 +714,13 @@
                     if (typeof signal.realized_pnl === 'number') {
                         stats.totalPnl += signal.realized_pnl;
                         stats.strategies[strategyName].totalPnl += signal.realized_pnl;
+
+                        // New fixed PnL calculation based on profit_loss_percentage
+                        if (typeof signal.profit_loss_percentage === 'number') {
+                            const fixedTradePnl = FIXED_INVESTMENT * (signal.profit_loss_percentage / 100);
+                            stats.totalFixedPnl += fixedTradePnl;
+                            stats.strategies[strategyName].totalFixedPnl += fixedTradePnl;
+                        }
                     }
                 }
             });
@@ -720,16 +732,12 @@
             document.getElementById('wholeCycleTotalSignals').textContent = stats.totalSignals;
             document.getElementById('wholeCycleSuccessful').textContent = stats.successfulSignals;
             document.getElementById('wholeCycleUnsuccessful').textContent = stats.unsuccessfulSignals;
-            document.getElementById('bestStrategyWinRate').textContent = `${formatValue(wholeCyclePfactor, 'number', 2)}%`;
-            document.getElementById('bestStrategyName').textContent = 'Overall P-Factor';
-            document.getElementById('bestStrategyWinRate').style.color = wholeCyclePfactor >= 0 ? '#28A745' : '#DC3545';
+            document.getElementById('bestStrategyWinRate').textContent = `${formatValue(wholeCycleWinRate * 100, 'percentage', 0)}`;
+            document.getElementById('bestStrategyName').textContent = 'Overall Win Rate';
+            document.getElementById('bestStrategyWinRate').style.color = getWinRateColorClass(wholeCycleWinRate);
 
-
-            // Generate strategy summaries and find the best one
+            // Generate strategy summaries
             const strategySummaries = [];
-            let bestStrategyWinRate = -1;
-            let bestStrategyName = 'N/A';
-
             for (const strategyName in stats.strategies) {
                 const strategy = stats.strategies[strategyName];
                 const totalClosed = strategy.successful + strategy.unsuccessful;
@@ -742,16 +750,11 @@
                     unsuccessful: strategy.unsuccessful,
                     open: strategy.open,
                     totalPnl: strategy.totalPnl,
+                    fixedPnl: strategy.totalFixedPnl,
                     winRate: winRate,
                     profitabilityFactor: profitabilityFactor
                 };
-
                 strategySummaries.push(summary);
-
-                if (winRate > bestStrategyWinRate) {
-                    bestStrategyWinRate = winRate;
-                    bestStrategyName = strategyName;
-                }
             }
 
             // Sort strategies by win rate in descending order
