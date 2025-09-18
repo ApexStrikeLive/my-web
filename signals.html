@@ -587,10 +587,11 @@
          * Creates the HTML for a single modern strategy summary card.
          */
         function createCompactStrategyCardHtml(strategySummary) {
-            const { strategyName, successful, unsuccessful, winRate } = strategySummary;
+            const { strategyName, successful, unsuccessful, winRate, open, totalPnl } = strategySummary;
             const winRatePercentage = winRate * 100;
             const winRateColorClass = getWinRateColorClass(winRate);
             const totalClosed = successful + unsuccessful;
+            const pnlColorClass = totalPnl >= 0 ? 'green-text' : 'red-text';
 
             const radius = 50;
             const circumference = 2 * Math.PI * radius;
@@ -608,6 +609,8 @@
                             <span>${totalClosedText}</span>
                             <span>${successText}</span>
                             <span>${unsuccessText}</span>
+                            <span>Open: ${open}</span>
+                            <span>Total PnL: <span class="${pnlColorClass}">$${formatValue(totalPnl, 'number', 2)}</span></span>
                         </div>
                     </div>
                     <div class="winrate-display">
@@ -659,6 +662,7 @@
                         successful: 0,
                         unsuccessful: 0,
                         open: 0,
+                        totalPnl: 0
                     };
                 }
                 stats.strategies[strategyName].total++;
@@ -673,6 +677,9 @@
                     } else {
                         stats.unsuccessfulSignals++;
                         stats.strategies[strategyName].unsuccessful++;
+                    }
+                    if (typeof signal.realized_pnl === 'number') {
+                        stats.strategies[strategyName].totalPnl += signal.realized_pnl;
                     }
                 }
             });
@@ -698,6 +705,7 @@
                     successful: strategy.successful,
                     unsuccessful: strategy.unsuccessful,
                     open: strategy.open,
+                    totalPnl: strategy.totalPnl,
                     winRate: winRate,
                 };
 
