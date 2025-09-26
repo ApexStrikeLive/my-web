@@ -4279,10 +4279,10 @@
     "entry_time": "2025-09-26T17:54:19.980375",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 3780.49,
-    "profit_loss_percentage": -0.3676859862048664,
+    "current_price": 3781.11,
+    "profit_loss_percentage": -0.35131349621320196,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -0.1676859862048664,
+    "unrealized_pnl": -0.15131349621320198,
     "stop_loss_price": 3673.2348,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -4824,6 +4824,78 @@
     "activated_tp_levels": [
       "tp_0.7",
       "tp_0.8"
+    ]
+  },
+  {
+    "signal_id": "acf03e5c-9362-43b9-b58d-247b1adf6fe8",
+    "symbol": "ALPINE/USDT",
+    "timeframe": "1h",
+    "signal_type": "BUY",
+    "entry_price": 2.996,
+    "entry_time": "2025-09-26T18:59:07.707558",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_SL (-3.34%)",
+    "current_price": 2.902,
+    "profit_loss_percentage": -3.3375166889185537,
+    "realized_pnl": -3.3375166889185537,
+    "unrealized_pnl": -3.1375166889185535,
+    "stop_loss_price": 2.90612,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 2.902,
+    "exit_time": "2025-09-26T18:59:15.037289",
+    "partial_closes": [],
+    "notes": "Closed by Stop Loss",
+    "strategy_name": "Binance_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": false,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": []
+  },
+  {
+    "signal_id": "c035895a-2180-4fa9-8456-40222291f0be",
+    "symbol": "SNX/USDT",
+    "timeframe": "1h",
+    "signal_type": "BUY",
+    "entry_price": 1.102,
+    "entry_time": "2025-09-26T18:59:07.707558",
+    "is_monitored": true,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 1.117,
+    "profit_loss_percentage": 1.1611615245008984,
+    "realized_pnl": 0.5352087114337523,
+    "unrealized_pnl": 0.6805807622504492,
+    "stop_loss_price": 1.110816,
+    "take_profit_target": 0.0,
+    "closed_percentage": 50.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 1.113,
+        "time": "2025-09-26T18:59:10.729000",
+        "realized_pnl_usd": 0.19954627949183074
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 1.119,
+        "time": "2025-09-26T19:00:37.571998",
+        "realized_pnl_usd": 0.3356624319419216
+      }
+    ],
+    "notes": "SL moved to 0.6% profit (net)",
+    "strategy_name": "Binance_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2"
     ]
   }
 ]
