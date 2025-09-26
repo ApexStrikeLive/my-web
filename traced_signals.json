@@ -4279,10 +4279,10 @@
     "entry_time": "2025-09-26T17:54:19.980375",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 3782.27,
-    "profit_loss_percentage": -0.3206810955836572,
+    "current_price": 3782.24,
+    "profit_loss_percentage": -0.3214733128413232,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -0.12068109558365718,
+    "unrealized_pnl": -0.1214733128413232,
     "stop_loss_price": 3673.2348,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -4895,6 +4895,73 @@
       "tp_0.7",
       "tp_0.8",
       "tp_1.2"
+    ]
+  },
+  {
+    "signal_id": "bbee1cbc-eda1-4c87-8d2a-0254334a8630",
+    "symbol": "ALPINE/USDT",
+    "timeframe": "30m",
+    "signal_type": "BUY",
+    "entry_price": 2.566,
+    "entry_time": "2025-09-26T19:03:08.344706",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (22.33%)",
+    "current_price": 3.144,
+    "profit_loss_percentage": 22.325331254871408,
+    "realized_pnl": 22.325331254871408,
+    "unrealized_pnl": 22.525331254871407,
+    "stop_loss_price": 2.6352819999999997,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 3.144,
+    "exit_time": "2025-09-26T19:03:09.166667",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 3.144,
+        "time": "2025-09-26T19:03:09.165901",
+        "realized_pnl_usd": 5.581332813717852
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 3.144,
+        "time": "2025-09-26T19:03:09.166134",
+        "realized_pnl_usd": 5.581332813717852
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 3.144,
+        "time": "2025-09-26T19:03:09.166355",
+        "realized_pnl_usd": 5.581332813717852
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 3.144,
+        "time": "2025-09-26T19:03:09.166609",
+        "realized_pnl_usd": 5.581332813717852
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "SQZ_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
     ]
   }
 ]
