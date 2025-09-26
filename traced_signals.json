@@ -4279,10 +4279,10 @@
     "entry_time": "2025-09-26T17:54:19.980375",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 3781.18,
-    "profit_loss_percentage": -0.349464989278668,
+    "current_price": 3782.48,
+    "profit_loss_percentage": -0.31513557478003107,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -0.14946498927866794,
+    "unrealized_pnl": -0.11513557478003103,
     "stop_loss_price": 3673.2348,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -4439,23 +4439,41 @@
     "entry_price": 1.096,
     "entry_time": "2025-09-26T18:26:28.311731",
     "is_monitored": true,
-    "monitoring_status": "OPEN",
-    "current_price": 1.089,
-    "profit_loss_percentage": -0.8386861313868722,
-    "realized_pnl": 0.0,
-    "unrealized_pnl": -0.638686131386872,
-    "stop_loss_price": 1.06312,
+    "monitoring_status": "CLOSED_SL (0.78%)",
+    "current_price": 1.104,
+    "profit_loss_percentage": 0.5299270072992706,
+    "realized_pnl": 0.7808394160583924,
+    "unrealized_pnl": 0.3649635036496353,
+    "stop_loss_price": 1.1047680000000002,
     "take_profit_target": 0.0,
-    "closed_percentage": 0.0,
-    "exit_price": null,
-    "exit_time": null,
-    "exit_time_obj": null,
-    "partial_closes": [],
-    "notes": "",
+    "closed_percentage": 100.0,
+    "exit_price": 1.104,
+    "exit_time": "2025-09-26T18:31:49.088469",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 1.107,
+        "time": "2025-09-26T18:31:05.145902",
+        "realized_pnl_usd": 0.20091240875912175
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 1.112,
+        "time": "2025-09-26T18:31:26.727072",
+        "realized_pnl_usd": 0.3149635036496353
+      }
+    ],
+    "notes": "Closed by Stop Loss",
     "strategy_name": "Binance_OPT_PROD",
     "initial_investment": 100.0,
-    "achieved_25_percent_tp": false,
-    "achieved_50_percent_tp": false,
-    "activated_tp_levels": []
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2"
+    ]
   }
 ]
