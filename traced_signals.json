@@ -66363,5 +66363,32 @@
       "tp_1.2",
       "tp_1.5"
     ]
+  },
+  {
+    "signal_id": "4fa7f2e1-1f33-4bca-879b-5a86bdfdbbfb",
+    "symbol": "0G/USDT",
+    "timeframe": "15m",
+    "signal_type": "BUY",
+    "entry_price": 2.877,
+    "entry_time": "2025-09-29T18:27:52.181211",
+    "is_monitored": true,
+    "monitoring_status": "OPEN",
+    "current_price": 2.816,
+    "profit_loss_percentage": -2.320264164059783,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": -2.120264164059783,
+    "stop_loss_price": 2.7906899999999997,
+    "take_profit_target": 0.0,
+    "closed_percentage": 0.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [],
+    "notes": "",
+    "strategy_name": "RSI_OPT_TEST",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": false,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": []
   }
 ]
