@@ -70899,5 +70899,32 @@
       "tp_0.7",
       "tp_0.8"
     ]
+  },
+  {
+    "signal_id": "06581691-7438-47e0-8641-a686313b8835",
+    "symbol": "YFI/USDT",
+    "timeframe": "30m",
+    "signal_type": "SELL",
+    "entry_price": 5289.0,
+    "entry_time": "2025-09-30T07:15:34.289009",
+    "is_monitored": true,
+    "monitoring_status": "OPEN",
+    "current_price": 5284.0,
+    "profit_loss_percentage": -0.10546417092077898,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": 0.09453582907922103,
+    "stop_loss_price": 5447.67,
+    "take_profit_target": 0.0,
+    "closed_percentage": 0.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [],
+    "notes": "",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": false,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": []
   }
 ]
