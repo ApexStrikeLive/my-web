@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "signal_id": "9486fb91-f5dc-42ee-9110-7d3afa01af0a",
+    "symbol": "XVS/USDT",
+    "timeframe": "1h",
+    "signal_type": "BUY",
+    "entry_price": 7.29,
+    "entry_time": "2025-10-08T10:51:35.749723",
+    "is_monitored": true,
+    "monitoring_status": "OPEN",
+    "current_price": 7.34,
+    "profit_loss_percentage": 0.4858710562414241,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": 0.6858710562414242,
+    "stop_loss_price": 7.0713,
+    "take_profit_target": 0.0,
+    "closed_percentage": 0.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [],
+    "notes": "",
+    "strategy_name": "Binance_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": false,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": []
+  }
+]
