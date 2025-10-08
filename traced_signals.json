@@ -8,13 +8,13 @@
     "entry_time": "2025-10-08T10:51:35.749723",
     "is_monitored": true,
     "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 7.39,
-    "profit_loss_percentage": 1.1717421124828484,
-    "realized_pnl": 0.1900548696845003,
-    "unrealized_pnl": 1.0288065843621363,
-    "stop_loss_price": 7.31916,
+    "current_price": 7.37,
+    "profit_loss_percentage": 0.8973936899862835,
+    "realized_pnl": 0.517283950617286,
+    "unrealized_pnl": 0.5486968449931418,
+    "stop_loss_price": 7.34832,
     "take_profit_target": 0.0,
-    "closed_percentage": 25.0,
+    "closed_percentage": 50.0,
     "exit_price": null,
     "exit_time": null,
     "exit_time_obj": null,
@@ -25,16 +25,24 @@
         "price": 7.36,
         "time": "2025-10-08T10:57:48.180556",
         "realized_pnl_usd": 0.1900548696845003
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 7.4,
+        "time": "2025-10-08T11:02:08.225173",
+        "realized_pnl_usd": 0.32722908093278574
       }
     ],
-    "notes": "SL moved to 0.2% profit (net)",
+    "notes": "SL moved to 0.6% profit (net)",
     "strategy_name": "Binance_OPT_PROD",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
-    "achieved_50_percent_tp": false,
+    "achieved_50_percent_tp": true,
     "activated_tp_levels": [
       "tp_0.7",
-      "tp_0.8"
+      "tp_0.8",
+      "tp_1.2"
     ]
   },
   {
@@ -45,17 +53,16 @@
     "entry_price": 0.5157,
     "entry_time": "2025-10-08T10:58:07.392563",
     "is_monitored": true,
-    "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 0.5202,
-    "profit_loss_percentage": 0.6726003490401296,
-    "realized_pnl": 0.2893445801822768,
-    "unrealized_pnl": 0.6544502617800971,
+    "monitoring_status": "CLOSED_SL (0.42%)",
+    "current_price": 0.5176,
+    "profit_loss_percentage": 0.16843125848359541,
+    "realized_pnl": 0.4156680240449734,
+    "unrealized_pnl": 0.2763234438626966,
     "stop_loss_price": 0.5177628000000001,
     "take_profit_target": 0.0,
-    "closed_percentage": 25.0,
-    "exit_price": null,
-    "exit_time": null,
-    "exit_time_obj": null,
+    "closed_percentage": 100.0,
+    "exit_price": 0.5176,
+    "exit_time": "2025-10-08T11:01:15.430366",
     "partial_closes": [
       {
         "level": "tp_0.7",
@@ -65,7 +72,7 @@
         "realized_pnl_usd": 0.2893445801822768
       }
     ],
-    "notes": "SL moved to 0.2% profit (net)",
+    "notes": "Closed by Stop Loss",
     "strategy_name": "Binance_OPT_DEV",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
@@ -84,10 +91,10 @@
     "entry_time": "2025-10-08T10:58:07.392563",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 1.708,
-    "profit_loss_percentage": -0.7531295487627403,
+    "current_price": 1.6956,
+    "profit_loss_percentage": -1.4751091703056785,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -0.5531295487627402,
+    "unrealized_pnl": -1.2751091703056785,
     "stop_loss_price": 1.665975,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -110,24 +117,34 @@
     "entry_price": 7.34,
     "entry_time": "2025-10-08T10:58:07.392563",
     "is_monitored": true,
-    "monitoring_status": "OPEN",
-    "current_price": 7.39,
-    "profit_loss_percentage": 0.48119891008174154,
-    "realized_pnl": 0.0,
-    "unrealized_pnl": 0.6811989100817415,
-    "stop_loss_price": 7.1198,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 7.37,
+    "profit_loss_percentage": 0.20871934604904974,
+    "realized_pnl": 0.18841961852861133,
+    "unrealized_pnl": 0.3065395095367873,
+    "stop_loss_price": 7.35468,
     "take_profit_target": 0.0,
-    "closed_percentage": 0.0,
+    "closed_percentage": 25.0,
     "exit_price": null,
     "exit_time": null,
     "exit_time_obj": null,
-    "partial_closes": [],
-    "notes": "",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 7.41,
+        "time": "2025-10-08T11:02:12.305196",
+        "realized_pnl_usd": 0.18841961852861133
+      }
+    ],
+    "notes": "SL moved to 0.0% profit (net)",
     "strategy_name": "Binance_OPT_DEV",
     "initial_investment": 100.0,
-    "achieved_25_percent_tp": false,
+    "achieved_25_percent_tp": true,
     "achieved_50_percent_tp": false,
-    "activated_tp_levels": []
+    "activated_tp_levels": [
+      "tp_0.7"
+    ]
   },
   {
     "signal_id": "41620ef8-dc7d-4dbf-b541-74b0793e496d",
@@ -163,24 +180,35 @@
     "entry_price": 7.33,
     "entry_time": "2025-10-08T10:58:07.392563",
     "is_monitored": true,
-    "monitoring_status": "OPEN",
-    "current_price": 7.39,
-    "profit_loss_percentage": 0.6185538881309631,
-    "realized_pnl": 0.0,
-    "unrealized_pnl": 0.8185538881309632,
-    "stop_loss_price": 7.1101,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 7.37,
+    "profit_loss_percentage": 0.34570259208731285,
+    "realized_pnl": 0.1887448840382001,
+    "unrealized_pnl": 0.40927694406548465,
+    "stop_loss_price": 7.35932,
     "take_profit_target": 0.0,
-    "closed_percentage": 0.0,
+    "closed_percentage": 25.0,
     "exit_price": null,
     "exit_time": null,
     "exit_time_obj": null,
-    "partial_closes": [],
-    "notes": "",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 7.4,
+        "time": "2025-10-08T11:02:08.225345",
+        "realized_pnl_usd": 0.1887448840382001
+      }
+    ],
+    "notes": "SL moved to 0.2% profit (net)",
     "strategy_name": "Binance_OPT_DEV",
     "initial_investment": 100.0,
-    "achieved_25_percent_tp": false,
+    "achieved_25_percent_tp": true,
     "achieved_50_percent_tp": false,
-    "activated_tp_levels": []
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8"
+    ]
   },
   {
     "signal_id": "87cbe71b-c8c4-4647-af08-92c2bfd40eb5",
@@ -216,24 +244,34 @@
     "entry_price": 7.34,
     "entry_time": "2025-10-08T10:58:07.392563",
     "is_monitored": true,
-    "monitoring_status": "OPEN",
-    "current_price": 7.39,
-    "profit_loss_percentage": 0.48119891008174154,
-    "realized_pnl": 0.0,
-    "unrealized_pnl": 0.6811989100817415,
-    "stop_loss_price": 7.1198,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 7.37,
+    "profit_loss_percentage": 0.20871934604904974,
+    "realized_pnl": 0.18841961852861133,
+    "unrealized_pnl": 0.3065395095367873,
+    "stop_loss_price": 7.35468,
     "take_profit_target": 0.0,
-    "closed_percentage": 0.0,
+    "closed_percentage": 25.0,
     "exit_price": null,
     "exit_time": null,
     "exit_time_obj": null,
-    "partial_closes": [],
-    "notes": "",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 7.41,
+        "time": "2025-10-08T11:02:12.305410",
+        "realized_pnl_usd": 0.18841961852861133
+      }
+    ],
+    "notes": "SL moved to 0.0% profit (net)",
     "strategy_name": "Binance_OPT_DEV",
     "initial_investment": 100.0,
-    "achieved_25_percent_tp": false,
+    "achieved_25_percent_tp": true,
     "achieved_50_percent_tp": false,
-    "activated_tp_levels": []
+    "activated_tp_levels": [
+      "tp_0.7"
+    ]
   },
   {
     "signal_id": "24933239-7927-4c65-921a-d608ec6a313a",
@@ -244,13 +282,13 @@
     "entry_time": "2025-10-08T10:58:07.392563",
     "is_monitored": true,
     "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 7.39,
-    "profit_loss_percentage": 1.1717421124828484,
-    "realized_pnl": 0.1900548696845003,
-    "unrealized_pnl": 1.0288065843621363,
-    "stop_loss_price": 7.31916,
+    "current_price": 7.37,
+    "profit_loss_percentage": 0.8973936899862835,
+    "realized_pnl": 0.517283950617286,
+    "unrealized_pnl": 0.5486968449931418,
+    "stop_loss_price": 7.34832,
     "take_profit_target": 0.0,
-    "closed_percentage": 25.0,
+    "closed_percentage": 50.0,
     "exit_price": null,
     "exit_time": null,
     "exit_time_obj": null,
@@ -261,16 +299,24 @@
         "price": 7.36,
         "time": "2025-10-08T10:58:47.288846",
         "realized_pnl_usd": 0.1900548696845003
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 7.4,
+        "time": "2025-10-08T11:02:08.225413",
+        "realized_pnl_usd": 0.32722908093278574
       }
     ],
-    "notes": "SL moved to 0.2% profit (net)",
+    "notes": "SL moved to 0.6% profit (net)",
     "strategy_name": "Binance_OPT_DEV",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
-    "achieved_50_percent_tp": false,
+    "achieved_50_percent_tp": true,
     "activated_tp_levels": [
       "tp_0.7",
-      "tp_0.8"
+      "tp_0.8",
+      "tp_1.2"
     ]
   }
 ]
