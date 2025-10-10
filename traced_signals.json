@@ -60205,10 +60205,10 @@
     "entry_time": "2025-10-10T23:39:42.838306",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 111626.82,
-    "profit_loss_percentage": -0.7462601634511061,
+    "current_price": 112128.64,
+    "profit_loss_percentage": -1.1982673448365677,
     "realized_pnl": 0.0,
-    "unrealized_pnl": -0.5462601634511061,
+    "unrealized_pnl": -0.9982673448365678,
     "stop_loss_price": 114350.97080000001,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -60939,6 +60939,140 @@
         "price": 0.2986,
         "time": "2025-10-10T23:43:24.795746",
         "realized_pnl_usd": 8.401562846375528
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "fb316b0b-f469-41c7-87e6-63f37cfc2654",
+    "symbol": "ALPINE/USDT",
+    "timeframe": "1h",
+    "signal_type": "SELL",
+    "entry_price": 0.982,
+    "entry_time": "2025-10-10T23:45:55.139321",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (18.54%)",
+    "current_price": 0.798,
+    "profit_loss_percentage": 18.537270875763742,
+    "realized_pnl": 18.537270875763742,
+    "unrealized_pnl": 18.73727087576374,
+    "stop_loss_price": 0.955486,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.798,
+    "exit_time": "2025-10-10T23:45:57.435580",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.798,
+        "time": "2025-10-10T23:45:57.435292",
+        "realized_pnl_usd": 4.6343177189409355
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.798,
+        "time": "2025-10-10T23:45:57.435375",
+        "realized_pnl_usd": 4.6343177189409355
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.798,
+        "time": "2025-10-10T23:45:57.435459",
+        "realized_pnl_usd": 4.6343177189409355
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.798,
+        "time": "2025-10-10T23:45:57.435557",
+        "realized_pnl_usd": 4.6343177189409355
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_PROD",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "ab0df512-58fe-4b25-acbf-129b06fd3425",
+    "symbol": "IMX/USDT",
+    "timeframe": "1h",
+    "signal_type": "SELL",
+    "entry_price": 0.545,
+    "entry_time": "2025-10-10T23:45:55.139321",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (20.53%)",
+    "current_price": 0.432,
+    "profit_loss_percentage": 20.533944954128447,
+    "realized_pnl": 20.533944954128447,
+    "unrealized_pnl": 20.733944954128447,
+    "stop_loss_price": 0.530285,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.432,
+    "exit_time": "2025-10-10T23:45:57.435987",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.432,
+        "time": "2025-10-10T23:45:57.435618",
+        "realized_pnl_usd": 5.133486238532112
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.432,
+        "time": "2025-10-10T23:45:57.435683",
+        "realized_pnl_usd": 5.133486238532112
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.432,
+        "time": "2025-10-10T23:45:57.435789",
+        "realized_pnl_usd": 5.133486238532112
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.432,
+        "time": "2025-10-10T23:45:57.435954",
+        "realized_pnl_usd": 5.133486238532112
       }
     ],
     "notes": "Fully closed by Take Profit",
