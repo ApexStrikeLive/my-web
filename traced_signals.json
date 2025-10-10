@@ -65457,10 +65457,10 @@
     "entry_time": "2025-10-11T01:19:47.083142",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 113135.07,
-    "profit_loss_percentage": 0.16429296605016258,
+    "current_price": 112988.3,
+    "profit_loss_percentage": 0.2935502575458343,
     "realized_pnl": 0.0,
-    "unrealized_pnl": 0.3642929660501626,
+    "unrealized_pnl": 0.4935502575458343,
     "stop_loss_price": 116955.18160000001,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -66247,5 +66247,789 @@
     "achieved_25_percent_tp": false,
     "achieved_50_percent_tp": false,
     "activated_tp_levels": []
+  },
+  {
+    "signal_id": "7f1634fd-49e4-43bc-bc5d-c023346124a5",
+    "symbol": "0G/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 2.225,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 2.156,
+    "profit_loss_percentage": 2.9011235955056156,
+    "realized_pnl": 1.973595505617983,
+    "unrealized_pnl": 0.775280898876404,
+    "stop_loss_price": 2.164925,
+    "take_profit_target": 0.0,
+    "closed_percentage": 75.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 2.162,
+        "time": "2025-10-11T01:53:50.924705",
+        "realized_pnl_usd": 0.6578651685393276
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 2.162,
+        "time": "2025-10-11T01:53:50.924815",
+        "realized_pnl_usd": 0.6578651685393276
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 2.162,
+        "time": "2025-10-11T01:53:50.924925",
+        "realized_pnl_usd": 0.6578651685393276
+      }
+    ],
+    "notes": "SL moved to 2.5% profit (net)",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0"
+    ]
+  },
+  {
+    "signal_id": "e3ed49ff-6bd3-4634-b8f5-6aca231e8ad2",
+    "symbol": "AVNT/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.5821,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (3.73%)",
+    "current_price": 0.5592,
+    "profit_loss_percentage": 3.73403195327262,
+    "realized_pnl": 3.73403195327262,
+    "unrealized_pnl": 3.93403195327262,
+    "stop_loss_price": 0.5663832999999999,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.5592,
+    "exit_time": "2025-10-11T01:53:50.925411",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.5592,
+        "time": "2025-10-11T01:53:50.925028",
+        "realized_pnl_usd": 0.933507988318155
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.5592,
+        "time": "2025-10-11T01:53:50.925172",
+        "realized_pnl_usd": 0.933507988318155
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.5592,
+        "time": "2025-10-11T01:53:50.925265",
+        "realized_pnl_usd": 0.933507988318155
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.5592,
+        "time": "2025-10-11T01:53:50.925378",
+        "realized_pnl_usd": 0.933507988318155
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "ec1d90ad-e230-4bbf-952e-735decddfd3e",
+    "symbol": "SOMI/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.5541,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (3.03%)",
+    "current_price": 0.5345,
+    "profit_loss_percentage": 3.337267641220007,
+    "realized_pnl": 3.025951994224869,
+    "unrealized_pnl": 0.8843169103050018,
+    "stop_loss_price": 0.5391393,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.5345,
+    "exit_time": "2025-10-11T01:54:35.660785",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.5368,
+        "time": "2025-10-11T01:53:50.925461",
+        "realized_pnl_usd": 0.7305450279732891
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.5368,
+        "time": "2025-10-11T01:53:50.925538",
+        "realized_pnl_usd": 0.7305450279732891
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.5368,
+        "time": "2025-10-11T01:53:50.925626",
+        "realized_pnl_usd": 0.7305450279732891
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.5345,
+        "time": "2025-10-11T01:54:35.660718",
+        "realized_pnl_usd": 0.8343169103050018
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "e2b8ffb1-b895-403f-a77b-b1bb8753a31d",
+    "symbol": "OPEN/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.3685,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_SL (0.17%)",
+    "current_price": 0.3679,
+    "profit_loss_percentage": -0.03717774762551171,
+    "realized_pnl": 0.16635006784260245,
+    "unrealized_pnl": 0.12211668928086622,
+    "stop_loss_price": 0.367026,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.3679,
+    "exit_time": "2025-10-11T01:54:32.494522",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.3649,
+        "time": "2025-10-11T01:53:50.928781",
+        "realized_pnl_usd": 0.19423337856173623
+      }
+    ],
+    "notes": "Closed by Stop Loss",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8"
+    ]
+  },
+  {
+    "signal_id": "d350f852-2b15-4820-9d3c-252ecc892f39",
+    "symbol": "PROVE/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.5874,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 0.575,
+    "profit_loss_percentage": 1.9109976166156073,
+    "realized_pnl": 1.4843207354443302,
+    "unrealized_pnl": 0.5277494041539018,
+    "stop_loss_price": 0.5780016,
+    "take_profit_target": 0.0,
+    "closed_percentage": 75.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.5752,
+        "time": "2025-10-11T01:53:50.928829",
+        "realized_pnl_usd": 0.46923731699012544
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.5752,
+        "time": "2025-10-11T01:53:50.928858",
+        "realized_pnl_usd": 0.46923731699012544
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.5734,
+        "time": "2025-10-11T01:54:32.494642",
+        "realized_pnl_usd": 0.5458461014640794
+      }
+    ],
+    "notes": "SL moved to 1.4% profit (net)",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0"
+    ]
+  },
+  {
+    "signal_id": "2852af62-c5b7-4b4b-ab71-aa485878b3ba",
+    "symbol": "NXPC/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.3588,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_SL (1.14%)",
+    "current_price": 0.3564,
+    "profit_loss_percentage": 0.46889632107023776,
+    "realized_pnl": 1.1377926421404678,
+    "unrealized_pnl": 0.3344481605351189,
+    "stop_loss_price": 0.3544944,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.3564,
+    "exit_time": "2025-10-11T01:54:29.067881",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.3516,
+        "time": "2025-10-11T01:53:50.928900",
+        "realized_pnl_usd": 0.4516722408026745
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.3516,
+        "time": "2025-10-11T01:53:50.928927",
+        "realized_pnl_usd": 0.4516722408026745
+      }
+    ],
+    "notes": "Closed by Stop Loss",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8"
+    ]
+  },
+  {
+    "signal_id": "cef87829-f876-4a3a-807e-f09b408e1b18",
+    "symbol": "ONDO/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.7118,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_SL (1.46%)",
+    "current_price": 0.7003,
+    "profit_loss_percentage": 1.4156223658330929,
+    "realized_pnl": 1.4577690362461333,
+    "unrealized_pnl": 0.4039055914582732,
+    "stop_loss_price": 0.6989875999999999,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.7003,
+    "exit_time": "2025-10-11T01:54:54.563969",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.7038,
+        "time": "2025-10-11T01:53:50.928967",
+        "realized_pnl_usd": 0.2309778027535827
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.7016,
+        "time": "2025-10-11T01:54:10.273672",
+        "realized_pnl_usd": 0.3082466985108172
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.6943,
+        "time": "2025-10-11T01:54:32.494749",
+        "realized_pnl_usd": 0.5646389435234602
+      }
+    ],
+    "notes": "Closed by Stop Loss",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4"
+    ]
+  },
+  {
+    "signal_id": "f109f51a-02fa-4b7d-94d0-f1628bcfdbc3",
+    "symbol": "VIRTUAL/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.7486,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (3.77%)",
+    "current_price": 0.7189,
+    "profit_loss_percentage": 3.7674058242051904,
+    "realized_pnl": 3.7674058242051904,
+    "unrealized_pnl": 3.9674058242051906,
+    "stop_loss_price": 0.7283878,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.7189,
+    "exit_time": "2025-10-11T01:53:50.930986",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.7189,
+        "time": "2025-10-11T01:53:50.929002",
+        "realized_pnl_usd": 0.9418514560512976
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.7189,
+        "time": "2025-10-11T01:53:50.929029",
+        "realized_pnl_usd": 0.9418514560512976
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.7189,
+        "time": "2025-10-11T01:53:50.929060",
+        "realized_pnl_usd": 0.9418514560512976
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.7189,
+        "time": "2025-10-11T01:53:50.930948",
+        "realized_pnl_usd": 0.9418514560512976
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "cbeedc9c-8801-48a9-a4a8-9e7c8ae2fd04",
+    "symbol": "EPIC/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 1.0,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (3.60%)",
+    "current_price": 0.962,
+    "profit_loss_percentage": 3.600000000000003,
+    "realized_pnl": 3.600000000000003,
+    "unrealized_pnl": 3.8000000000000034,
+    "stop_loss_price": 0.973,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.962,
+    "exit_time": "2025-10-11T01:53:50.931361",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.962,
+        "time": "2025-10-11T01:53:50.931045",
+        "realized_pnl_usd": 0.9000000000000008
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.962,
+        "time": "2025-10-11T01:53:50.931125",
+        "realized_pnl_usd": 0.9000000000000008
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.962,
+        "time": "2025-10-11T01:53:50.931215",
+        "realized_pnl_usd": 0.9000000000000008
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.962,
+        "time": "2025-10-11T01:53:50.931334",
+        "realized_pnl_usd": 0.9000000000000008
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "285ff262-a648-4f0e-bd11-134f5bc893bb",
+    "symbol": "FORM/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.8692,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (5.66%)",
+    "current_price": 0.8183,
+    "profit_loss_percentage": 5.65595950299125,
+    "realized_pnl": 5.65595950299125,
+    "unrealized_pnl": 5.85595950299125,
+    "stop_loss_price": 0.8457315999999999,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.8183,
+    "exit_time": "2025-10-11T01:53:50.931760",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.8183,
+        "time": "2025-10-11T01:53:50.931408",
+        "realized_pnl_usd": 1.4139898757478124
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.8183,
+        "time": "2025-10-11T01:53:50.931515",
+        "realized_pnl_usd": 1.4139898757478124
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.8183,
+        "time": "2025-10-11T01:53:50.931612",
+        "realized_pnl_usd": 1.4139898757478124
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.8183,
+        "time": "2025-10-11T01:53:50.931735",
+        "realized_pnl_usd": 1.4139898757478124
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "48fd0170-88c6-4a69-a582-bea86df8e7c4",
+    "symbol": "HEI/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 0.188,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (6.29%)",
+    "current_price": 0.1758,
+    "profit_loss_percentage": 6.289361702127653,
+    "realized_pnl": 6.289361702127653,
+    "unrealized_pnl": 6.4893617021276535,
+    "stop_loss_price": 0.182924,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 0.1758,
+    "exit_time": "2025-10-11T01:53:50.932648",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 0.1758,
+        "time": "2025-10-11T01:53:50.932490",
+        "realized_pnl_usd": 1.5723404255319133
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 0.1758,
+        "time": "2025-10-11T01:53:50.932558",
+        "realized_pnl_usd": 1.5723404255319133
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 0.1758,
+        "time": "2025-10-11T01:53:50.932594",
+        "realized_pnl_usd": 1.5723404255319133
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 0.1758,
+        "time": "2025-10-11T01:53:50.932637",
+        "realized_pnl_usd": 1.5723404255319133
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
+  },
+  {
+    "signal_id": "89afaacf-8c43-4310-95f5-0caa11a260f2",
+    "symbol": "KAITO/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 1.1751,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "PARTIALLY_CLOSED",
+    "current_price": 1.139,
+    "profit_loss_percentage": 2.8720789720023845,
+    "realized_pnl": 1.7328184835333214,
+    "unrealized_pnl": 0.7680197430005962,
+    "stop_loss_price": 1.1492478,
+    "take_profit_target": 0.0,
+    "closed_percentage": 75.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 1.1456,
+        "time": "2025-10-11T01:53:50.932669",
+        "realized_pnl_usd": 0.5776061611777737
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 1.1456,
+        "time": "2025-10-11T01:53:50.932697",
+        "realized_pnl_usd": 0.5776061611777737
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 1.1456,
+        "time": "2025-10-11T01:53:50.932731",
+        "realized_pnl_usd": 0.5776061611777737
+      }
+    ],
+    "notes": "SL moved to 2.0% profit (net)",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8"
+    ]
+  },
+  {
+    "signal_id": "c74784ab-4832-4b75-9fef-c5a3ff5b0586",
+    "symbol": "BERA/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 1.919,
+    "entry_time": "2025-10-11T01:53:45.817565",
+    "is_monitored": true,
+    "monitoring_status": "CLOSED_TP (3.97%)",
+    "current_price": 1.839,
+    "profit_loss_percentage": 3.968837936425225,
+    "realized_pnl": 3.968837936425225,
+    "unrealized_pnl": 4.168837936425225,
+    "stop_loss_price": 1.867187,
+    "take_profit_target": 0.0,
+    "closed_percentage": 100.0,
+    "exit_price": 1.839,
+    "exit_time": "2025-10-11T01:53:50.933742",
+    "partial_closes": [
+      {
+        "level": "tp_0.7",
+        "percentage": 25,
+        "price": 1.839,
+        "time": "2025-10-11T01:53:50.932756",
+        "realized_pnl_usd": 0.9922094841063063
+      },
+      {
+        "level": "tp_1.2",
+        "percentage": 25,
+        "price": 1.839,
+        "time": "2025-10-11T01:53:50.932783",
+        "realized_pnl_usd": 0.9922094841063063
+      },
+      {
+        "level": "tp_2.0",
+        "percentage": 25,
+        "price": 1.839,
+        "time": "2025-10-11T01:53:50.932816",
+        "realized_pnl_usd": 0.9922094841063063
+      },
+      {
+        "level": "tp_3.3",
+        "percentage": 25.0,
+        "price": 1.839,
+        "time": "2025-10-11T01:53:50.933723",
+        "realized_pnl_usd": 0.9922094841063063
+      }
+    ],
+    "notes": "Fully closed by Take Profit",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": true,
+    "achieved_50_percent_tp": true,
+    "activated_tp_levels": [
+      "tp_0.7",
+      "tp_0.8",
+      "tp_1.2",
+      "tp_1.5",
+      "tp_1.8",
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8",
+      "tp_3.0",
+      "tp_3.3"
+    ]
   }
 ]
