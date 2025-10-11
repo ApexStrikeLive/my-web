@@ -65457,10 +65457,10 @@
     "entry_time": "2025-10-11T01:19:47.083142",
     "is_monitored": true,
     "monitoring_status": "OPEN",
-    "current_price": 113030.48,
-    "profit_loss_percentage": 0.25640320736332844,
+    "current_price": 112717.2,
+    "profit_loss_percentage": 0.5323023984770625,
     "realized_pnl": 0.0,
-    "unrealized_pnl": 0.45640320736332846,
+    "unrealized_pnl": 0.7323023984770626,
     "stop_loss_price": 116955.18160000001,
     "take_profit_target": 0.0,
     "closed_percentage": 0.0,
@@ -66495,11 +66495,11 @@
     "entry_time": "2025-10-11T01:53:45.817565",
     "is_monitored": true,
     "monitoring_status": "PARTIALLY_CLOSED",
-    "current_price": 0.5739,
-    "profit_loss_percentage": 2.0982635342186016,
+    "current_price": 0.5706,
+    "profit_loss_percentage": 2.660061287027585,
     "realized_pnl": 1.4843207354443302,
-    "unrealized_pnl": 0.5745658835546504,
-    "stop_loss_price": 0.5780016,
+    "unrealized_pnl": 0.7150153217568963,
+    "stop_loss_price": 0.5744772,
     "take_profit_target": 0.0,
     "closed_percentage": 75.0,
     "exit_price": null,
@@ -66528,7 +66528,7 @@
         "realized_pnl_usd": 0.5458461014640794
       }
     ],
-    "notes": "SL moved to 1.4% profit (net)",
+    "notes": "SL moved to 2.0% profit (net)",
     "strategy_name": "Binance_OPT_DEV",
     "initial_investment": 100.0,
     "achieved_25_percent_tp": true,
@@ -66539,7 +66539,10 @@
       "tp_1.2",
       "tp_1.5",
       "tp_1.8",
-      "tp_2.0"
+      "tp_2.0",
+      "tp_2.4",
+      "tp_2.6",
+      "tp_2.8"
     ]
   },
   {
