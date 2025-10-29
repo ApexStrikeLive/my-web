@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "signal_id": "496425cd-05b9-429f-a291-1c23f0567e78",
+    "symbol": "AUCTION/USDT",
+    "timeframe": "4h",
+    "signal_type": "SELL",
+    "entry_price": 6.83,
+    "entry_time": "2025-10-29T16:26:55.686687",
+    "is_monitored": true,
+    "monitoring_status": "OPEN",
+    "current_price": 6.83,
+    "profit_loss_percentage": -0.2,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": 0.0,
+    "stop_loss_price": 7.0349,
+    "take_profit_target": 0.0,
+    "closed_percentage": 0.0,
+    "exit_price": null,
+    "exit_time": null,
+    "exit_time_obj": null,
+    "partial_closes": [],
+    "notes": "",
+    "strategy_name": "Binance_OPT_DEV",
+    "initial_investment": 100.0,
+    "achieved_25_percent_tp": false,
+    "achieved_50_percent_tp": false,
+    "activated_tp_levels": []
+  }
+]
